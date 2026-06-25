@@ -786,7 +786,7 @@ const SUPABASE_KEY = 'sb_publishable_TVjrrsB8ZezOmxTS_VYx9Q_DX2v_jud';
 
 const api = {
   client: null,
-  init() { this.client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY); },
+  init() { try { this.client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY); } catch(e) { console.log('Supabase client error:', e); } },
   async fetchAll(table) {
     if (!this.client) return null;
     const all = [];
@@ -1621,16 +1621,22 @@ createApp({
   },
   
   mounted() {
-    api.init();
-    this.supabaseReady = true;
+    // 先恢复角色，让页面立即可交互
     const savedRole = load('role', null);
     if (savedRole && this.allMembers.find(m => m.id === savedRole)) {
       this.currentRole = savedRole;
       this.currentTab = 'dashboard';
     }
-    this.$nextTick(async () => {
-      await this.loadFromCloud();
+    this.$nextTick(() => {
       this.renderCharts();
+      // 延迟初始化 Supabase，避免阻塞页面
+      setTimeout(() => {
+        try {
+          api.init();
+          this.supabaseReady = true;
+          this.loadFromCloud();
+        } catch(e) { console.log('Supabase init delayed:', e); }
+      }, 500);
     });
   },  },
   
