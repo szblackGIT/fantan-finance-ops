@@ -786,9 +786,9 @@ const SUPABASE_KEY = 'sb_publishable_TVjrrsB8ZezOmxTS_VYx9Q_DX2v_jud';
 
 const api = {
   client: null,
-  init() { try { this.client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY); } catch(e) { console.log('Supabase client error:', e); } },
+  init() { if (typeof supabase === 'undefined') { console.log('Supabase SDK not loaded, running offline'); return; } try { this.client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY); } catch(e) { console.log('Supabase client error:', e); } },
   async fetchAll(table) {
-    if (!this.client) return null;
+    if (!this.client || typeof supabase === 'undefined') return null;
     const all = [];
     let from = 0, size = 1000;
     while (true) {
@@ -1123,7 +1123,7 @@ createApp({
     showToast(msg, type = 'success') { this.toast = { show: true, msg, type }; setTimeout(() => { this.toast.show = false; }, 2500); },
     // === Supabase 数据同步 ===
     async syncToCloud() {
-      if (!this.supabaseReady) return;
+      if (!this.supabaseReady || typeof supabase === 'undefined') return;
       try {
         const memberRows = this.allMembers.map(m => ({
           id: m.id, name: m.name, icon: m.icon, role: m.role,
@@ -1632,9 +1632,7 @@ createApp({
       // 延迟初始化 Supabase，避免阻塞页面
       setTimeout(() => {
         try {
-          api.init();
-          this.supabaseReady = true;
-          this.loadFromCloud();
+          if (typeof supabase !== 'undefined') { api.init(); this.supabaseReady = true; this.loadFromCloud(); }
         } catch(e) { console.log('Supabase init delayed:', e); }
       }, 500);
     });
