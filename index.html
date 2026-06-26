@@ -255,7 +255,7 @@ textarea { resize:vertical; min-height:60px; }
 
 <!-- ===== MAIN APP ===== -->
 <div v-else>
-<header class="header" v-if="currentTab !== 'bigscreen'">
+<header class="header">
   <div class="header-inner">
     <div class="header-logo">📊 梵天金融 · 运营管理系统 v4.5</div>
     <div class="header-info">
@@ -275,12 +275,12 @@ textarea { resize:vertical; min-height:60px; }
   </div>
 </nav>
 
-<main class="main" :style="currentTab === 'bigscreen' ? 'padding:0;max-width:100%' : ''">
+<main class="main">
 
 <!-- ================================================================== -->
 <!-- ADMIN DASHBOARD -->
 <!-- ================================================================== -->
-<div v-if="(isAdmin && currentTab === 'dashboard') || currentTab === 'bigscreen'" :style="currentTab === 'bigscreen' ? 'padding:16px 20px' : ''">
+<div v-if="(isAdmin && currentTab === 'dashboard') || currentTab === 'bigscreen'" :style="currentTab === 'bigscreen' ? 'padding:0 20px' : ''">
 
   <!-- Row 1: 6 KPI cards -->
   <div class="grid grid-6" style="margin-bottom:16px">
@@ -471,8 +471,8 @@ textarea { resize:vertical; min-height:60px; }
 <!-- ================================================================== -->
 <!-- DATA BIG SCREEN -->
 <!-- ================================================================== -->
-<div v-if="currentTab === 'bigscreen'" style="background:#f0f4f8;min-height:100vh;position:relative;padding:0">
-  <button @click="currentRole=null" style="position:fixed;top:16px;right:24px;z-index:100;background:#1a365d;color:#fff !important;border:none;padding:10px 20px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.25)">← 返回登录</button>
+<div v-if="currentTab === 'bigscreen'" style="background:#f0f4f8">
+  
 </div>
 <!-- ================================================================== -->
 <!-- ADMIN: 内容管理 -->
@@ -677,8 +677,8 @@ textarea { resize:vertical; min-height:60px; }
 <!-- ================================================================== -->
 <!-- DATA BIG SCREEN -->
 <!-- ================================================================== -->
-<div v-if="currentTab === 'bigscreen'" style="background:#f0f4f8;min-height:100vh;position:relative;padding:0">
-  <button @click="currentRole=null" style="position:fixed;top:16px;right:24px;z-index:100;background:#1a365d;color:#fff !important;border:none;padding:10px 20px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.25)">← 返回登录</button>
+<div v-if="currentTab === 'bigscreen'" style="background:#f0f4f8">
+  
 </div>
 <!-- ================================================================== -->
 <!-- OPERATOR: 内容填写 (统一模板 - 所有人共用) -->
