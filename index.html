@@ -1668,30 +1668,6 @@ createApp({
         });
       }
     },
-      // v4.3 Monthly compare chart
-      const c6 = document.getElementById('chartMonthlyCompare');
-      if (c6) {
-        const months = ['1月','2月','3月','4月','5月','6月'];
-        this.chartInstances.monthlyCompare = new Chart(c6, {
-          type: 'bar',
-          data: {
-            labels: months,
-            datasets: [
-              { label: '总播放量(万)', data: [0, 0, 242, 167, 294, 613], backgroundColor: '#3182ce', yAxisID: 'y' },
-              { label: '总发布数(条)', data: [0, 0, 157, 141, 156, 198], backgroundColor: '#38a169', yAxisID: 'y1' },
-            ]
-          },
-          options: {
-            responsive: true,
-            plugins: { legend: { position: 'top' } },
-            scales: {
-              y: { type: 'linear', position: 'left', title: { display: true, text: '播放量(万)' }, beginAtZero: true },
-              y1: { type: 'linear', position: 'right', title: { display: true, text: '发布数(条)' }, grid: { drawOnChartArea: false }, beginAtZero: true },
-            }
-          }
-        });
-      }
-    },
     
     renderMyChart() {
       const c = document.getElementById('chartMyMonth');
