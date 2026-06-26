@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>梵天金融 · 新媒体矩阵运营管理系统 v4.0</title>
+<title>梵天金融 · 新媒体矩阵运营管理系统 v4.1</title>
 
 
 
@@ -245,7 +245,7 @@ textarea { resize:vertical; min-height:60px; }
 <div v-else>
 <header class="header">
   <div class="header-inner">
-    <div class="header-logo">📊 梵天金融 · 运营管理系统 v4.0</div>
+    <div class="header-logo">📊 梵天金融 · 运营管理系统 v4.1</div>
     <div class="header-info">
       <span :class="['person-badge', 'person-'+currentRole]">{{ currentPerson.icon }} {{ currentPerson.name }}</span>
       <span :class="['role-tag', isAdmin ? 'role-admin' : 'role-operator']">{{ isAdmin ? '管理员' : '运营人员' }}</span>
@@ -389,7 +389,36 @@ textarea { resize:vertical; min-height:60px; }
     </div>
   </div>
 
-  <!-- Row 8: 社群概况 -->
+    <!-- v4.1 Row 1.5: 月度数据对比 -->
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-header"><h3>📅 月度数据对比</h3></div>
+    <div class="card-body">
+      <div class="grid grid-4">
+        <div class="stat-card">
+          <div class="stat-icon">📝</div>
+          <div class="stat-value">{{ monthlyCompare.posts }}</div>
+          <div class="stat-label">本月发布数 <span :style="{color: monthlyCompare.postsGrowth >= 0 ? '#38a169' : '#e53e3e'}">{{ monthlyCompare.postsGrowth >= 0 ? '↑' : '↓' }}{{ Math.abs(monthlyCompare.postsGrowth) }}%</span></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">👁️</div>
+          <div class="stat-value">{{ monthlyCompare.plays }}</div>
+          <div class="stat-label">本月播放量 <span :style="{color: monthlyCompare.playsGrowth >= 0 ? '#38a169' : '#e53e3e'}">{{ monthlyCompare.playsGrowth >= 0 ? '↑' : '↓' }}{{ Math.abs(monthlyCompare.playsGrowth) }}%</span></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">❤️</div>
+          <div class="stat-value">{{ monthlyCompare.likes }}</div>
+          <div class="stat-label">本月点赞 <span :style="{color: monthlyCompare.likesGrowth >= 0 ? '#38a169' : '#e53e3e'}">{{ monthlyCompare.likesGrowth >= 0 ? '↑' : '↓' }}{{ Math.abs(monthlyCompare.likesGrowth) }}%</span></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">👥</div>
+          <div class="stat-value">{{ monthlyCompare.fans }}</div>
+          <div class="stat-label">本月粉丝增长</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+<!-- Row 8: 社群概况 -->
   <div class="card">
     <div class="card-header"><h3>💬 社群运营概况</h3></div>
     <div class="card-body">
@@ -533,8 +562,9 @@ textarea { resize:vertical; min-height:60px; }
           <div>账号：{{ m.accounts || '—' }}</div>
           <div>任务数：{{ getMemberTaskCount(m.id) }}</div>
         </div>
-        <div style="margin-top:10px;display:flex;gap:8px">
+        <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
           <button class="btn btn-xs btn-outline" @click="openMemberForm(m)">✏️ 编辑</button>
+          <button class="btn btn-xs btn-outline" @click="editRoutineTasks(m)" style="color:#eab308">📌 事务工作</button>
           <button class="btn btn-xs btn-outline" @click="deleteMember(m.id)" style="color:var(--danger)" v-if="m.role !== 'admin'">🗑️</button>
         </div>
       </div>
@@ -590,7 +620,7 @@ textarea { resize:vertical; min-height:60px; }
 <div v-if="!isAdmin && currentTab === 'dashboard'">
   <h2 class="section-title" style="margin-bottom:16px">👋 欢迎，{{ currentPerson.name }}</h2>
 
-  <!-- v4.0 Stats with targets -->
+  <!-- v4.1 Stats with targets -->
   <div class="grid grid-4" style="margin-bottom:16px">
     <div class="stat-card">
       <div class="stat-icon">📝</div>
@@ -623,7 +653,7 @@ textarea { resize:vertical; min-height:60px; }
     <div class="card-body"><div class="chart-container"><canvas id="chartMyMonth"></canvas></div></div>
   </div>
 
-  <!-- v4.0 本周工作 -->
+  <!-- v4.1 本周工作 -->
   <div class="grid grid-2" style="margin-bottom:16px">
     <div class="card">
       <div class="card-header"><h3>📋 内容产出（自动统计）</h3><span style="font-size:12px;color:var(--text-secondary)">{{ weekRangeStr }}</span></div>
@@ -830,7 +860,7 @@ textarea { resize:vertical; min-height:60px; }
 <!-- OPERATOR: 社群运营 (王珏) -->
 <!-- ================================================================== -->
 <div v-if="!isAdmin && currentTab === 'community' && currentRole === 'wang'">
-  <h2 class="section-title" style="margin-bottom:16px">💬 社群运营</h2>
+  <h2 class="section-title" style="margin-bottom:16px">💬 社群运营</h2><button class="btn btn-outline btn-sm" @click="exportTableToExcel(communityData, '社群运营')" style="float:right">📥 导出Excel</button><div style="clear:both"></div>
   <div class="card"><div class="card-body no-padding"><div class="table-wrap">
     <table>
       <thead><tr><th>群名</th><th>成员数</th><th>本周新增</th><th>活跃度</th><th>备注</th><th>操作</th></tr></thead>
@@ -853,7 +883,7 @@ textarea { resize:vertical; min-height:60px; }
 <!-- OPERATOR: 客户跟进 (王珏) -->
 <!-- ================================================================== -->
 <div v-if="!isAdmin && currentTab === 'customers' && currentRole === 'wang'">
-  <h2 class="section-title" style="margin-bottom:16px">📞 客户跟进</h2>
+  <h2 class="section-title" style="margin-bottom:16px">📞 客户跟进</h2><button class="btn btn-outline btn-sm" @click="exportTableToExcel(customerList, '客户跟进')" style="float:right">📥 导出Excel</button><div style="clear:both"></div>
   <button class="btn btn-primary" style="margin-bottom:12px" @click="openCustomerForm">+ 新增客户记录</button>
   <div class="card"><div class="card-body no-padding"><div class="table-wrap">
     <table>
@@ -882,7 +912,7 @@ textarea { resize:vertical; min-height:60px; }
 <!-- OPERATOR: 数据统计 (王珏) - 关联首页 -->
 <!-- ================================================================== -->
 <div v-if="!isAdmin && currentTab === 'datastats' && currentRole === 'wang'">
-  <h2 class="section-title" style="margin-bottom:16px">📈 数据统计（关联首页数据看板）</h2>
+  <h2 class="section-title" style="margin-bottom:16px">📈 数据统计（关联首页数据看板）</h2><button class="btn btn-outline btn-sm" @click="exportTableToExcel(statsEntries, '数据统计')" style="float:right">📥 导出Excel</button><div style="clear:both"></div>
   <div class="card" style="margin-bottom:16px">
     <div class="card-header"><h3>📝 填写平台周数据</h3></div>
     <div class="card-body">
@@ -931,7 +961,7 @@ textarea { resize:vertical; min-height:60px; }
 </div>
 
 </main>
-<div class="footer">梵天金融 · 新媒体矩阵运营管理系统 v4.0 | 数据存储于浏览器本地 | {{ todayStr }}</div>
+<div class="footer">梵天金融 · 新媒体矩阵运营管理系统 v4.1 | 数据存储于浏览器本地 | {{ todayStr }}</div>
 
 <!-- Toast -->
 <div v-if="toast.show" :class="['toast','toast-'+toast.type]">{{ toast.msg }}</div>
@@ -1129,7 +1159,7 @@ createApp({
       allAccounts: ['7号魏帅', '老刘说周期', '梵天咨询(蓝V)', '魏帅情报局', '7号小助理', '小助理是我呀', '7号魏帅滴小助理', '魏帅投研', '七号魏帅', '7号魏帅投研笔记', '老刘说周期(个人)', '7号魏帅(小黑屋)', '梵天金融小鹅通'],
       contentTypes: ['短视频', '图文', '长文', '海报', '直播', '沙龙演讲', '复盘视频', '金句视频', '排行榜', '资讯转发', '客户互动', '其他'],
       
-      // v4.0: 每人每日内容产出目标
+      // v4.1: 每人每日内容产出目标
       personTargets: {
         zhong: { dailyContent: 2, weeklyContent: 14, monthlyContent: 60 },
         jiang: { dailyContent: 4, weeklyContent: 28, monthlyContent: 120 },
@@ -1137,7 +1167,7 @@ createApp({
         wang:  { dailyContent: 3, weeklyContent: 21, monthlyContent: 90 },
       },
       
-      // v4.0: 事务性工作
+      // v4.1: 事务性工作
       routineTasks: load('routineTasks', {
         jiang: ['早会记录', '素材收集', '海报设计', 'PPT制作'],
         cheng: ['沙龙现场拍摄', '设备管理', '视频素材归档'],
@@ -1186,7 +1216,7 @@ createApp({
   computed: {
     todayStr() { const d = this.today; return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); },
     isAdmin() { return this.currentRole === 'zhong'; },
-    // v4.0 computed
+    // v4.1 computed
     myTarget() { return this.personTargets[this.currentRole] || { dailyContent: 2, weeklyContent: 14, monthlyContent: 60 }; },
     myTodayContent() { return this.allContents.filter(c => c.personId === this.currentRole && c.date === this.todayStr).length; },
     myWeekContent() {
@@ -1226,6 +1256,31 @@ createApp({
       return tabs;
     },
     
+    
+    monthlyCompare() {
+      const now = new Date();
+      const thisMonth = now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+      const lastMonth = now.getMonth() === 0 
+        ? (now.getFullYear()-1)+'-12'
+        : now.getFullYear()+'-'+String(now.getMonth()).padStart(2,'0');
+      const thisData = this.allContents.filter(c => c.date.startsWith(thisMonth));
+      const lastData = this.allContents.filter(c => c.date.startsWith(lastMonth));
+      const thisPosts = thisData.length;
+      const lastPosts = lastData.length;
+      const thisPlays = thisData.reduce((s,c) => s + (parseInt(c.plays)||0), 0);
+      const lastPlays = lastData.reduce((s,c) => s + (parseInt(c.plays)||0), 0);
+      const thisLikes = thisData.reduce((s,c) => s + (parseInt(c.likes)||0), 0);
+      const lastLikes = lastData.reduce((s,c) => s + (parseInt(c.likes)||0), 0);
+      return {
+        posts: thisPosts,
+        postsGrowth: lastPosts > 0 ? Math.round((thisPosts-lastPosts)/lastPosts*100) : 100,
+        plays: thisPlays >= 10000 ? (thisPlays/10000).toFixed(1)+'万' : thisPlays,
+        playsGrowth: lastPlays > 0 ? Math.round((thisPlays-lastPlays)/lastPlays*100) : 100,
+        likes: thisLikes,
+        likesGrowth: lastLikes > 0 ? Math.round((thisLikes-lastLikes)/lastLikes*100) : 100,
+        fans: this.dashboardDetail.reduce((s,d) => s + (d.fans||0), 0),
+      };
+    },
     dashboardTotal() {
       let fans = 0, plays = 0, likes = 0, comments = 0, shares = 0, posts = 0;
       this.dashboardDetail.forEach(r => {
@@ -1316,7 +1371,7 @@ createApp({
   methods: {
     formatNum(n) { if (!n && n !== 0) return '0'; return n >= 10000 ? (n/10000).toFixed(1)+'万' : n.toLocaleString(); },
     showToast(msg, type = 'success') { this.toast = { show: true, msg, type }; setTimeout(() => { this.toast.show = false; }, 2500); },
-    // v4.0: Excel 导出
+    // v4.1: Excel 导出
     exportTableToExcel(rows, filename) {
       if (!rows || rows.length === 0) { this.showToast('没有数据可导出', 'error'); return; }
       const ws = XLSX.utils.json_to_sheet(rows);
@@ -1325,7 +1380,7 @@ createApp({
       XLSX.writeFile(wb, (filename || 'export') + '.xlsx');
       this.showToast('Excel 已导出');
     },
-    // v4.0: Excel 导入
+    // v4.1: Excel 导入
     importExcel(callback) {
       const input = document.createElement('input');
       input.type = 'file';
@@ -1783,6 +1838,17 @@ createApp({
       }
     },
     
+    
+    editRoutineTasks(member) {
+      const current = (this.routineTasks[member.id] || []).join('\n');
+      const input = prompt(member.name + ' 的事务性工作（每行一项）：', current);
+      if (input !== null) {
+        const tasks = input.split('\n').map(s => s.trim()).filter(s => s);
+        this.routineTasks = { ...this.routineTasks, [member.id]: tasks };
+        save('routineTasks', this.routineTasks);
+        this.showToast('事务性工作已更新');
+      }
+    },
     deleteMember(id) {
       if (confirm('确定删除该人员？')) {
         this.allMembers = this.allMembers.filter(m => m.id !== id);
