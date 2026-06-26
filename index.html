@@ -860,18 +860,30 @@ textarea { resize:vertical; min-height:60px; }
 <!-- OPERATOR: 数据统计 (王珏) - 关联首页 -->
 <!-- ================================================================== -->
 <div v-if="!isAdmin && currentTab === 'datastats' && currentRole === 'wang'">
-  <h2 class="section-title" style="margin-bottom:16px">📈 数据统计（关联首页数据看板）</h2><button class="btn btn-outline btn-sm" @click="exportTableToExcel(statsEntries, '数据统计')" style="float:right">📥 导出Excel</button><div style="clear:both"></div>
+  <h2 class="section-title" style="margin-bottom:16px">📈 数据统计（关联首页数据看板）</h2><button class="btn btn-outline btn-sm" @click="exportTableToExcel(filteredStatsEntries, '数据统计')" style="float:right">📥 导出Excel</button><div style="clear:both"></div>
+  
+  <!-- 年月周选择 -->
   <div class="card" style="margin-bottom:16px">
-    <div class="card-header"><h3>📝 填写平台周数据</h3></div>
+    <div class="card-header"><h3>📅 选择周期</h3></div>
     <div class="card-body">
-      <div class="form-row" style="margin-bottom:12px">
-        <div class="form-group"><label>月份</label><select v-model="statsForm.month"><option v-for="m in monthOptions" :key="m" :value="m">{{ m }}</option></select></div>
-        <div class="form-group"><label>周次</label><select v-model="statsForm.week"><option v-for="w in weekOptions" :key="w" :value="w">{{ w }}</option></select></div>
+      <div class="form-row" style="align-items:end">
+        <div class="form-group"><label>年</label><select v-model="statsYear" @change="updateWeekDate"><option v-for="y in yearOptions" :key="y" :value="y">{{ y }}</option></select></div>
+        <div class="form-group"><label>月</label><select v-model="statsForm.month" @change="updateWeekDate"><option v-for="m in monthOptions" :key="m" :value="m">{{ m }}</option></select></div>
+        <div class="form-group"><label>周</label><select v-model="statsForm.week" @change="updateWeekDate"><option v-for="w in weekOptions" :key="w" :value="w">{{ w }}</option></select></div>
+        <div class="form-group"><label>日期范围</label><input :value="weekDateRange" readonly style="background:#f7fafc;font-weight:600;color:#1a365d"></div>
       </div>
+    </div>
+  </div>
+
+  <!-- 新增表单 -->
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-header"><h3>📝 新增/编辑数据</h3></div>
+    <div class="card-body">
       <div class="form-row">
+        <div class="form-group"><label>博主</label><select v-model="statsForm.personId"><option value="wei">魏总</option><option value="liu">刘老师</option><option value="">—</option></select></div>
         <div class="form-group"><label>平台 *</label><select v-model="statsForm.platform"><option v-for="p in allPlatforms" :key="p" :value="p">{{ p }}</option></select></div>
-        <div class="form-group"><label>账号 *</label><select v-model="statsForm.account"><option v-for="a in allAccounts" :key="a" :value="a">{{ a }}</option></select></div>
-        <div class="form-group"><label>运营人</label><select v-model="statsForm.personId"><option v-for="p in allMembers" :key="p.id" :value="p.id">{{ p.name }}</option></select></div>
+        <div class="form-group"><label>账号名 *</label><select v-model="statsForm.account"><option v-for="a in allAccounts" :key="a" :value="a">{{ a }}</option></select></div>
+        <div class="form-group"><label>运营人</label><select v-model="statsForm.personId2"><option v-for="p in allMembers" :key="p.id" :value="p.id">{{ p.name }}</option></select></div>
       </div>
       <div class="form-row">
         <div class="form-group"><label>粉丝数</label><input v-model.number="statsForm.fans" type="number"></div>
@@ -888,16 +900,19 @@ textarea { resize:vertical; min-height:60px; }
     </div>
   </div>
 
+  <!-- 当周数据明细 -->
   <div class="card">
-    <div class="card-header"><h3>📋 已录入数据</h3><span style="font-size:12px;color:var(--text-secondary)">数据将自动同步到首页数据看板</span></div>
+    <div class="card-header"><h3>📋 {{ statsForm.month }} {{ statsForm.week }} 数据明细</h3><span style="font-size:12px;color:var(--text-secondary)">数据可直接编辑，自动同步首页</span></div>
     <div class="card-body no-padding"><div class="table-wrap">
       <table>
-        <thead><tr><th>月份</th><th>周次</th><th>平台</th><th>账号</th><th>运营人</th><th>粉丝</th><th>发布数</th><th>播放量</th><th>点赞</th><th>评论</th><th>转发</th><th>备注</th><th>操作</th></tr></thead>
+        <thead><tr><th>博主</th><th>平台</th><th>账号名</th><th>运营人</th><th>粉丝</th><th>发布数</th><th>播放量</th><th>点赞</th><th>评论</th><th>转发</th><th>备注</th><th>操作</th></tr></thead>
         <tbody>
-          <tr v-if="statsEntries.length===0"><td colspan="13" style="text-align:center;padding:20px">暂无数据</td></tr>
-          <tr v-for="e in statsEntries" :key="e.id">
-            <td>{{ e.month }}</td><td>{{ e.week }}</td><td>{{ e.platform }}</td><td>{{ e.account }}</td>
-            <td><span :class="['person-badge','person-'+e.personId]">{{ getMemberName(e.personId) }}</span></td>
+          <tr v-if="filteredStatsEntries.length===0"><td colspan="12" style="text-align:center;padding:20px">该周暂无数据</td></tr>
+          <tr v-for="e in filteredStatsEntries" :key="e.id">
+            <td>{{ e.person }}</td>
+            <td>{{ e.platform }}</td>
+            <td>{{ e.account }}</td>
+            <td>{{ e.operator || getMemberName(e.personId) }}</td>
             <td><input v-model.number="e.fans" type="number" @change="saveStats" style="width:70px;font-size:12px"></td>
             <td><input v-model.number="e.posts" type="number" @change="saveStats" style="width:60px;font-size:12px"></td>
             <td><input v-model.number="e.plays" type="number" @change="saveStats" style="width:80px;font-size:12px"></td>
@@ -906,6 +921,16 @@ textarea { resize:vertical; min-height:60px; }
             <td><input v-model.number="e.shares" type="number" @change="saveStats" style="width:60px;font-size:12px"></td>
             <td><input v-model="e.note" @change="saveStats" style="width:100px;font-size:12px"></td>
             <td><button class="btn btn-xs btn-outline" style="color:var(--danger)" @click="deleteStatsEntry(e.id)">🗑️</button></td>
+          </tr>
+          <tr v-if="filteredStatsEntries.length>0" style="background:#f0f4f8;font-weight:700">
+            <td colspan="4">📊 合计</td>
+            <td>{{ statsSummary.fans }}</td>
+            <td>{{ statsSummary.posts }}</td>
+            <td>{{ statsSummary.plays }}</td>
+            <td>{{ statsSummary.likes }}</td>
+            <td>{{ statsSummary.comments }}</td>
+            <td>{{ statsSummary.shares }}</td>
+            <td colspan="2"></td>
           </tr>
         </tbody>
       </table>
@@ -1151,7 +1176,7 @@ createApp({
       myContentForm: { date: '', platform: '抖音', account: '7号魏帅', type: '短视频', title: '', link: '', plays: '', likes: '', comments: '', shares: '', status: '待发布' },
       historyMonth: today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0'),
       
-      statsForm: { month: '2026年6月', week: '第4周', platform: '抖音', account: '7号魏帅', personId: 'jiang', fans: '', posts: '', plays: '', likes: '', comments: '', shares: '', note: '' },
+      statsForm: { year: '2026年', month: '2026年6月', week: '第4周', platform: '抖音', account: '7号魏帅', personId: 'jiang', personId2: 'jiang', fans: '', posts: '', plays: '', likes: '', comments: '', shares: '', note: '' },
       
       // Chart instances
       chartInstances: {},
@@ -1177,7 +1202,15 @@ createApp({
         zhong: ['统筹管理', '内容审核', '团队协调'],
       }),
       materialTypes: ['宏观数据', '宏观政策', '行业研究', '个股研究', '排行榜', '周期理论', '视频素材', '海报模板', '数据工具', '其他'],
-      monthOptions: ['2026年3月', '2026年4月', '2026年5月', '2026年6月', '2026年7月', '2026年8月'],
+      monthOptions: ['2026年'],
+      yearOptions: ['2025年','2026年','2027年'],
+      statsYear: '2026年',
+      weekDateRange: '',
+      weekDateMap: {
+        '2026年3月第1周': '3.2-3.8', '2026年3月第2周': '3.9-3.15', '2026年3月第3周': '3.16-3.22', '2026年3月第4周': '3.23-3.29',
+        '2026年4月第1周': '3.30-4.5', '2026年4月第2周': '4.6-4.12', '2026年4月第3周': '4.13-4.19', '2026年4月第4周': '4.20-4.26',
+        '2026年5月第1周': '5.25-5.31', '2026年6月第1周': '6.1-6.7', '2026年6月第2周': '6.8-6.14', '2026年6月第3周': '6.15-6.21', '2026年6月第4周': '6.22-6.28',
+      },
       weekOptions: ['第1周', '第2周', '第3周', '第4周', '第5周'],
       
       communityGroups: [
@@ -1231,6 +1264,22 @@ createApp({
       return this.allContents.filter(c => c.personId === this.currentRole && c.date >= monStr && c.date <= sunStr).length;
     },
     myMonthContent() { const m = this.todayStr.substring(0,7); return this.allContents.filter(c => c.personId === this.currentRole && c.date.startsWith(m)).length; },
+    
+    filteredStatsEntries() {
+      const key = this.statsForm.month + ' ' + this.statsForm.week;
+      return this.statsEntries.filter(e => (e.month + ' ' + e.week) === key);
+    },
+    statsSummary() {
+      const list = this.filteredStatsEntries;
+      return {
+        fans: list.reduce((s,e) => s + (parseInt(e.fans)||0), 0),
+        posts: list.reduce((s,e) => s + (parseInt(e.posts)||0), 0),
+        plays: list.reduce((s,e) => s + (parseInt(e.plays)||0), 0),
+        likes: list.reduce((s,e) => s + (parseInt(e.likes)||0), 0),
+        comments: list.reduce((s,e) => s + (parseInt(e.comments)||0), 0),
+        shares: list.reduce((s,e) => s + (parseInt(e.shares)||0), 0),
+      };
+    },
     myMonthPlays() { const m = this.todayStr.substring(0,7); const total = this.allContents.filter(c => c.personId === this.currentRole && c.date.startsWith(m)).reduce((s,c) => s + (parseInt(c.plays)||0), 0); return total >= 10000 ? (total/10000).toFixed(1)+'万' : total; },
     
     currentPerson() { return this.allMembers.find(m => m.id === this.currentRole) || { name: '', icon: '' }; },
@@ -1370,6 +1419,11 @@ createApp({
   
   methods: {
     formatNum(n) { if (!n && n !== 0) return '0'; return n >= 10000 ? (n/10000).toFixed(1)+'万' : n.toLocaleString(); },
+    
+    updateWeekDate() {
+      const key = this.statsForm.month + this.statsForm.week;
+      this.weekDateRange = this.weekDateMap[key] || '';
+    },
     showToast(msg, type = 'success') { this.toast = { show: true, msg, type }; setTimeout(() => { this.toast.show = false; }, 2500); },
     // v5.1: Excel 导出
     exportTableToExcel(rows, filename) {
@@ -2108,12 +2162,12 @@ createApp({
       this.statsEntries.push({
         id: 'st'+Date.now(),
         ...this.statsForm,
-        person: this.getMemberName(this.statsForm.personId),
+        person: this.getMemberName(this.statsForm.personId), operator: this.getMemberName(this.statsForm.personId2 || this.statsForm.personId),
       });
       this.saveStats();
       this.showToast('数据已保存，将同步到首页看板');
       // Reset form
-      this.statsForm = { month: '2026年6月', week: '第4周', platform: '抖音', account: '7号魏帅', personId: 'jiang', fans: '', posts: '', plays: '', likes: '', comments: '', shares: '', note: '' };
+      this.statsForm = { year: '2026年', month: '2026年6月', week: '第4周', platform: '抖音', account: '7号魏帅', personId: 'jiang', fans: '', posts: '', plays: '', likes: '', comments: '', shares: '', note: '' };
     },
     deleteStatsEntry(id) {
       if (confirm('确定删除？')) { this.statsEntries = this.statsEntries.filter(e => e.id !== id); this.saveStats(); }
