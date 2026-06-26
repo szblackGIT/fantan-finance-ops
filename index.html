@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>梵天金融 · 新媒体矩阵运营管理系统 v4.2</title>
+<title>梵天金融 · 新媒体矩阵运营管理系统 v4.3</title>
 
 
 
@@ -208,20 +208,6 @@ textarea { resize:vertical; min-height:60px; }
 .section-title { font-size:18px; font-weight:700; }
 .empty-state { text-align:center; padding:40px; color:var(--text-secondary); }
 
-/* v4.2 数据大屏暗色模式 */
-.bigscreen-mode { background:#0f172a !important; }
-.bigscreen-mode .card { background:#1e293b !important; border-color:#334155 !important; }
-.bigscreen-mode .card-header { background:#1e293b !important; border-color:#334155 !important; }
-.bigscreen-mode .card-header h3 { color:#e2e8f0 !important; }
-.bigscreen-mode .stat-card { background:#1e293b !important; border-color:#334155 !important; }
-.bigscreen-mode .stat-value { color:#60a5fa !important; }
-.bigscreen-mode .stat-label { color:#94a3b8 !important; }
-.bigscreen-mode th { background:#334155 !important; color:#94a3b8 !important; border-color:#475569 !important; }
-.bigscreen-mode td { color:#cbd5e1 !important; border-color:#334155 !important; }
-.bigscreen-mode tr:hover { background:#334155 !important; }
-.bigscreen-mode .tag { opacity: 0.9; }
-.bigscreen-mode input, .bigscreen-mode select { background:#334155; color:#e2e8f0; border-color:#475569; }
-
 </style>
 </head>
 <body>
@@ -271,7 +257,7 @@ textarea { resize:vertical; min-height:60px; }
 <div v-else>
 <header class="header">
   <div class="header-inner">
-    <div class="header-logo">📊 梵天金融 · 运营管理系统 v4.2</div>
+    <div class="header-logo">📊 梵天金融 · 运营管理系统 v4.3</div>
     <div class="header-info">
       <span :class="['person-badge', 'person-'+currentRole]">{{ currentPerson.icon }} {{ currentPerson.name }}</span>
       <span :class="['role-tag', isAdmin ? 'role-admin' : 'role-operator']">{{ isAdmin ? '管理员' : '运营人员' }}</span>
@@ -294,7 +280,7 @@ textarea { resize:vertical; min-height:60px; }
 <!-- ================================================================== -->
 <!-- ADMIN DASHBOARD -->
 <!-- ================================================================== -->
-<div v-if="(isAdmin && currentTab === 'dashboard') || currentTab === 'bigscreen'" :class="{'bigscreen-mode': currentTab === 'bigscreen'}">
+<div v-if="(isAdmin && currentTab === 'dashboard') || currentTab === 'bigscreen'">
 
   <!-- Row 1: 6 KPI cards -->
   <div class="grid grid-6" style="margin-bottom:16px">
@@ -374,7 +360,15 @@ textarea { resize:vertical; min-height:60px; }
     </div>
   </div>
 
-  <!-- Row 6: 重点平台拆解 -->
+    <!-- v4.3 Row 5.5: 月度数据对比图 -->
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-header"><h3>📅 月度数据对比（播放量 + 发布数）</h3></div>
+    <div class="card-body">
+      <div class="chart-container"><canvas id="chartMonthlyCompare" style="max-height:320px"></canvas></div>
+    </div>
+  </div>
+  
+<!-- Row 6: 重点平台拆解 -->
   <div class="card" style="margin-bottom:16px">
     <div class="card-header"><h3>🔍 重点平台深度拆解</h3></div>
     <div class="card-body">
@@ -415,7 +409,7 @@ textarea { resize:vertical; min-height:60px; }
     </div>
   </div>
 
-    <!-- v4.2 Row 1.5: 月度数据对比 -->
+    <!-- v4.3 Row 1.5: 月度数据对比 -->
   <div class="card" style="margin-bottom:16px">
     <div class="card-header"><h3>📅 月度数据对比</h3></div>
     <div class="card-body">
@@ -477,10 +471,10 @@ textarea { resize:vertical; min-height:60px; }
 <!-- ================================================================== -->
 <!-- DATA BIG SCREEN -->
 <!-- ================================================================== -->
-<div v-if="currentTab === 'bigscreen'" style="background:#0f172a;min-height:100vh;margin:-20px;padding:20px">
+<div v-if="currentTab === 'bigscreen'" style="min-height:100vh;margin:-20px;padding:20px;background:#f0f4f8">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-    <h1 style="font-size:24px;font-weight:700;color:#e2e8f0;">📺 梵天金融 · 数据大屏</h1>
-    <button class="btn btn-outline btn-sm" style="color:#e2e8f0;border-color:#475569" @click="currentRole=null">← 返回登录</button>
+    <h1 style="font-size:24px;font-weight:700;color:#1a365d;">📺 梵天金融 · 数据大屏</h1>
+    <button class="btn btn-outline btn-sm" @click="currentRole=null">← 返回登录</button>
   </div>
 </div>
 <!-- ================================================================== -->
@@ -605,7 +599,7 @@ textarea { resize:vertical; min-height:60px; }
 <div v-if="!isAdmin && currentTab === 'dashboard'">
   <h2 class="section-title" style="margin-bottom:16px">👋 欢迎，{{ currentPerson.name }}</h2>
 
-  <!-- v4.2 Stats with targets -->
+  <!-- v4.3 Stats with targets -->
   <div class="grid grid-4" style="margin-bottom:16px">
     <div class="stat-card">
       <div class="stat-icon">📝</div>
@@ -638,7 +632,7 @@ textarea { resize:vertical; min-height:60px; }
     <div class="card-body"><div class="chart-container"><canvas id="chartMyMonth"></canvas></div></div>
   </div>
 
-  <!-- v4.2 本周工作 -->
+  <!-- v4.3 本周工作 -->
   <div class="grid grid-2" style="margin-bottom:16px">
     <div class="card">
       <div class="card-header"><h3>📋 内容产出（自动统计）</h3><span style="font-size:12px;color:var(--text-secondary)">{{ weekRangeStr }}</span></div>
@@ -686,10 +680,10 @@ textarea { resize:vertical; min-height:60px; }
 <!-- ================================================================== -->
 <!-- DATA BIG SCREEN -->
 <!-- ================================================================== -->
-<div v-if="currentTab === 'bigscreen'" style="background:#0f172a;min-height:100vh;margin:-20px;padding:20px">
+<div v-if="currentTab === 'bigscreen'" style="min-height:100vh;margin:-20px;padding:20px;background:#f0f4f8">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-    <h1 style="font-size:24px;font-weight:700;color:#e2e8f0;">📺 梵天金融 · 数据大屏</h1>
-    <button class="btn btn-outline btn-sm" style="color:#e2e8f0;border-color:#475569" @click="currentRole=null">← 返回登录</button>
+    <h1 style="font-size:24px;font-weight:700;color:#1a365d;">📺 梵天金融 · 数据大屏</h1>
+    <button class="btn btn-outline btn-sm" @click="currentRole=null">← 返回登录</button>
   </div>
 </div>
 <!-- ================================================================== -->
@@ -905,7 +899,7 @@ textarea { resize:vertical; min-height:60px; }
 </div>
 
 </main>
-<div class="footer">梵天金融 · 新媒体矩阵运营管理系统 v4.2 | 数据存储于浏览器本地 | {{ todayStr }}</div>
+<div class="footer">梵天金融 · 新媒体矩阵运营管理系统 v4.3 | 数据存储于浏览器本地 | {{ todayStr }}</div>
 
 <!-- Toast -->
 <div v-if="toast.show" :class="['toast','toast-'+toast.type]">{{ toast.msg }}</div>
@@ -1103,7 +1097,7 @@ createApp({
       allAccounts: ['7号魏帅', '老刘说周期', '梵天咨询(蓝V)', '魏帅情报局', '7号小助理', '小助理是我呀', '7号魏帅滴小助理', '魏帅投研', '七号魏帅', '7号魏帅投研笔记', '老刘说周期(个人)', '7号魏帅(小黑屋)', '梵天金融小鹅通'],
       contentTypes: ['短视频', '图文', '长文', '海报', '直播', '沙龙演讲', '复盘视频', '金句视频', '排行榜', '资讯转发', '客户互动', '其他'],
       
-      // v4.2: 每人每日内容产出目标
+      // v4.3: 每人每日内容产出目标
       personTargets: {
         zhong: { dailyContent: 2, weeklyContent: 14, monthlyContent: 60 },
         jiang: { dailyContent: 4, weeklyContent: 28, monthlyContent: 120 },
@@ -1111,7 +1105,7 @@ createApp({
         wang:  { dailyContent: 3, weeklyContent: 21, monthlyContent: 90 },
       },
       
-      // v4.2: 事务性工作
+      // v4.3: 事务性工作
       routineTasks: load('routineTasks', {
         jiang: ['早会记录', '素材收集', '海报设计', 'PPT制作'],
         cheng: ['沙龙现场拍摄', '设备管理', '视频素材归档'],
@@ -1160,7 +1154,7 @@ createApp({
   computed: {
     todayStr() { const d = this.today; return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); },
     isAdmin() { return this.currentRole === 'zhong'; },
-    // v4.2 computed
+    // v4.3 computed
     myTarget() { return this.personTargets[this.currentRole] || { dailyContent: 2, weeklyContent: 14, monthlyContent: 60 }; },
     myTodayContent() { return this.allContents.filter(c => c.personId === this.currentRole && c.date === this.todayStr).length; },
     myWeekContent() {
@@ -1313,7 +1307,7 @@ createApp({
   methods: {
     formatNum(n) { if (!n && n !== 0) return '0'; return n >= 10000 ? (n/10000).toFixed(1)+'万' : n.toLocaleString(); },
     showToast(msg, type = 'success') { this.toast = { show: true, msg, type }; setTimeout(() => { this.toast.show = false; }, 2500); },
-    // v4.2: Excel 导出
+    // v4.3: Excel 导出
     exportTableToExcel(rows, filename) {
       if (!rows || rows.length === 0) { this.showToast('没有数据可导出', 'error'); return; }
       const ws = XLSX.utils.json_to_sheet(rows);
@@ -1322,7 +1316,7 @@ createApp({
       XLSX.writeFile(wb, (filename || 'export') + '.xlsx');
       this.showToast('Excel 已导出');
     },
-    // v4.2: Excel 导入
+    // v4.3: Excel 导入
     importExcel(callback) {
       const input = document.createElement('input');
       input.type = 'file';
@@ -1674,6 +1668,31 @@ createApp({
         });
       }
     },
+      // v4.3 Monthly compare chart
+      const c6 = document.getElementById('chartMonthlyCompare');
+      if (c6) {
+        const months = ['1月','2月','3月','4月','5月','6月'];
+        this.chartInstances.monthlyCompare = new Chart(c6, {
+          type: 'bar',
+          data: {
+            labels: months,
+            datasets: [
+              { label: '总播放量(万)', data: [0, 0, 242, 167, 294, 613], backgroundColor: '#3182ce', yAxisID: 'y' },
+              { label: '总发布数(条)', data: [0, 0, 157, 141, 156, 198], backgroundColor: '#38a169', yAxisID: 'y1' },
+            ]
+          },
+          options: {
+            responsive: true,
+            plugins: { legend: { position: 'top' } },
+            scales: {
+              y: { type: 'linear', position: 'left', title: { display: true, text: '播放量(万)' }, beginAtZero: true },
+              y1: { type: 'linear', position: 'right', title: { display: true, text: '发布数(条)' }, grid: { drawOnChartArea: false }, beginAtZero: true },
+            }
+          }
+        });
+      }
+    },
+    
     renderMyChart() {
       const c = document.getElementById('chartMyMonth');
       if (!c) return;
