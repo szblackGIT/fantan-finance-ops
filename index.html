@@ -1507,8 +1507,13 @@ createApp({
       api.init();
       this.loadFromCloud();
     },
-    loginAs(role) { this.currentRole = role; this.currentTab = 'dashboard'; save('role', role); this.$nextTick(() => this.renderCharts()); },
-    logout() { this.currentRole = null; save('role', null); this.destroyCharts(); },
+    loginAs(role) {
+      this.loginTargetRole = role;
+      this.loginPassword = '';
+      this.passwordError = '';
+      this.showPasswordInput = true;
+    },
+    logout() { this.currentRole = null; this.destroyCharts(); },
     
     switchTab(tab) { this.currentTab = tab; this.$nextTick(() => this.renderCharts()); },
     
