@@ -1513,6 +1513,38 @@ createApp({
       this.passwordError = '';
       this.showPasswordInput = true;
     },
+    verifyPassword() {
+      const stored = this.userPasswords[this.loginTargetRole] || '000000';
+      if (this.loginPassword === stored) {
+        this.showPasswordInput = false;
+        this.currentRole = this.loginTargetRole;
+        this.currentTab = 'dashboard';
+        this.passwordError = '';
+        api.init();
+        this.loadFromCloud();
+      } else {
+        this.passwordError = '密码错误，请重试';
+      }
+    },
+    cancelLogin() {
+      this.showPasswordInput = false;
+      this.loginTargetRole = null;
+      this.loginPassword = '';
+      this.passwordError = '';
+    },
+    changePassword() {
+      const oldPwd = prompt('请输入当前密码：');
+      if (!oldPwd) return;
+      const stored = this.userPasswords[this.currentRole] || '000000';
+      if (oldPwd !== stored) { this.showToast('当前密码错误', 'error'); return; }
+      const newPwd = prompt('请输入新密码（至少4位）：');
+      if (!newPwd || newPwd.length < 4) { this.showToast('密码至少4位', 'error'); return; }
+      const confirmPwd = prompt('请再次输入新密码：');
+      if (newPwd !== confirmPwd) { this.showToast('两次密码不一致', 'error'); return; }
+      this.userPasswords = { ...this.userPasswords, [this.currentRole]: newPwd };
+      save('passwords', this.userPasswords);
+      this.showToast('密码修改成功！');
+    },
     logout() { this.currentRole = null; this.destroyCharts(); },
     
     switchTab(tab) { this.currentTab = tab; this.$nextTick(() => this.renderCharts()); },
