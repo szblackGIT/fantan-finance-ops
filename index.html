@@ -1504,8 +1504,6 @@ createApp({
     viewBigScreen() {
       this.currentRole = 'zhong';
       this.currentTab = 'bigscreen';
-      api.init();
-      this.loadFromCloud();
     },
     loginAs(role) {
       this.loginTargetRole = role;
@@ -1520,8 +1518,6 @@ createApp({
         this.currentRole = this.loginTargetRole;
         this.currentTab = 'dashboard';
         this.passwordError = '';
-        api.init();
-        this.loadFromCloud();
       } else {
         this.passwordError = '密码错误，请重试';
       }
