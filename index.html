@@ -255,7 +255,7 @@ textarea { resize:vertical; min-height:60px; }
 
 <!-- ===== MAIN APP ===== -->
 <div v-else>
-<header class="header">
+<header class="header" v-if="currentTab !== 'bigscreen'">
   <div class="header-inner">
     <div class="header-logo">📊 梵天金融 · 运营管理系统 v4.5</div>
     <div class="header-info">
@@ -267,7 +267,7 @@ textarea { resize:vertical; min-height:60px; }
   </div>
 </header>
 
-<nav class="nav">
+<nav class="nav" v-if="currentTab !== 'bigscreen'">
   <div class="nav-inner">
     <div v-for="tab in visibleTabs" :key="tab.id" class="nav-item" :class="{ active: currentTab === tab.id }" @click="switchTab(tab.id)">
       {{ tab.icon }} {{ tab.label }}
@@ -275,7 +275,7 @@ textarea { resize:vertical; min-height:60px; }
   </div>
 </nav>
 
-<main class="main">
+<main class="main" :style="currentTab === 'bigscreen' ? 'padding:0;max-width:100%' : ''">
 
 <!-- ================================================================== -->
 <!-- ADMIN DASHBOARD -->
@@ -471,8 +471,8 @@ textarea { resize:vertical; min-height:60px; }
 <!-- ================================================================== -->
 <!-- DATA BIG SCREEN -->
 <!-- ================================================================== -->
-<div v-if="currentTab === 'bigscreen'" style="margin:-20px;padding:0;background:#f0f4f8;position:relative">
-  <button @click="currentRole=null" style="position:absolute;top:12px;right:20px;z-index:10;background:#1a365d;color:#fff;border:none;padding:8px 18px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.15)">← 返回登录</button>
+<div v-if="currentTab === 'bigscreen'" style="background:#f0f4f8;min-height:100vh;position:relative;padding:0">
+  <button @click="currentRole=null" style="position:fixed;top:16px;right:24px;z-index:100;background:#1a365d;color:#fff !important;border:none;padding:10px 20px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.25)">← 返回登录</button>
 </div>
 <!-- ================================================================== -->
 <!-- ADMIN: 内容管理 -->
@@ -677,8 +677,8 @@ textarea { resize:vertical; min-height:60px; }
 <!-- ================================================================== -->
 <!-- DATA BIG SCREEN -->
 <!-- ================================================================== -->
-<div v-if="currentTab === 'bigscreen'" style="margin:-20px;padding:0;background:#f0f4f8;position:relative">
-  <button @click="currentRole=null" style="position:absolute;top:12px;right:20px;z-index:10;background:#1a365d;color:#fff;border:none;padding:8px 18px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.15)">← 返回登录</button>
+<div v-if="currentTab === 'bigscreen'" style="background:#f0f4f8;min-height:100vh;position:relative;padding:0">
+  <button @click="currentRole=null" style="position:fixed;top:16px;right:24px;z-index:100;background:#1a365d;color:#fff !important;border:none;padding:10px 20px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.25)">← 返回登录</button>
 </div>
 <!-- ================================================================== -->
 <!-- OPERATOR: 内容填写 (统一模板 - 所有人共用) -->
@@ -893,7 +893,7 @@ textarea { resize:vertical; min-height:60px; }
 </div>
 
 </main>
-<div class="footer">梵天金融 · 新媒体矩阵运营管理系统 v4.5 | 数据存储于浏览器本地 | {{ todayStr }}</div>
+<div class="footer" v-if="currentTab !== 'bigscreen'">梵天金融 · 新媒体矩阵运营管理系统 v4.5 | 数据存储于浏览器本地 | {{ todayStr }}</div>
 
 <!-- Toast -->
 <div v-if="toast.show" :class="['toast','toast-'+toast.type]">{{ toast.msg }}</div>
