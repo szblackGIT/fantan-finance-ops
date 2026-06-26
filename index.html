@@ -404,11 +404,13 @@ textarea { resize:vertical; min-height:60px; }
     <div class="card-body no-padding">
       <div class="table-wrap">
         <table>
-          <thead><tr><th>运营人</th><th>平台</th><th>最新粉丝</th><th>累计播放量</th><th>累计点赞</th><th>累计评论</th><th>累计转发</th><th>发布数</th><th>点赞率</th></tr></thead>
+          <thead><tr><th>博主</th><th>平台</th><th>账号名</th><th>运营人</th><th>最新粉丝</th><th>累计播放量</th><th>累计点赞</th><th>累计评论</th><th>累计转发</th><th>发布数</th><th>点赞率</th></tr></thead>
           <tbody>
             <tr v-for="(row, i) in dashboardDetail" :key="i">
               <td><span :class="['person-badge','person-'+row.personId]">{{ row.person }}</span></td>
               <td>{{ row.platform }}</td>
+              <td>{{ row.accountName || row.account || '-' }}</td>
+              <td>{{ row.operator || getOperatorForAccount(row) }}</td>
               <td><input v-model.number="row.fans" type="number" @change="saveDashboardData"></td>
               <td><input v-model.number="row.plays" type="number" @change="saveDashboardData"></td>
               <td><input v-model.number="row.likes" type="number" @change="saveDashboardData"></td>
@@ -968,15 +970,16 @@ const defaultMembers = [
 
 // Default dashboard detail rows
 const defaultDashboardDetail = [
-  { person: '魏总', personId: 'jiang', platform: '抖音', fans: 2135, plays: 861312, likes: 9641, comments: 751, shares: 2432, posts: 89, likeRate: '1.12%' },
-  { person: '魏总', personId: 'jiang', platform: '视频号', fans: 4224, plays: 145607, likes: 2925, comments: 434, shares: 4642, posts: 103, likeRate: '2.01%' },
-  { person: '魏总', personId: 'jiang', platform: '微博', fans: 52046, plays: 13643234, likes: 32117, comments: 7198, shares: 3341, posts: 950, likeRate: '0.24%' },
-  { person: '魏总', personId: 'jiang', platform: '公众号', fans: 45882, plays: 67063, likes: 1842, comments: 804, shares: 1710, posts: 44, likeRate: '2.75%' },
-  { person: '魏总', personId: 'jiang', platform: '雪球', fans: 1096, plays: 2178003, likes: 1757, comments: 521, shares: 25, posts: 14, likeRate: '0.08%' },
-  { person: '魏总', personId: 'jiang', platform: '淘股吧', fans: 10, plays: 2333, likes: 3, comments: 7, shares: 0, posts: 19, likeRate: '0.13%' },
-  { person: '魏总', personId: 'jiang', platform: '东方财富', fans: 6, plays: 841, likes: 0, comments: 2, shares: 0, posts: 19, likeRate: '0.00%' },
-  { person: '王珏', personId: 'wang', platform: '抖音', fans: 114, plays: 76445, likes: 559, comments: 55, shares: 29, posts: 57, likeRate: '0.73%' },
-  { person: '王珏', personId: 'wang', platform: '视频号', fans: 468, plays: 51528, likes: 286, comments: 22, shares: 971, posts: 46, likeRate: '0.56%' },
+  { person: '魏总', personId: 'wei', platform: '抖音', accountName: '7号魏帅', operator: '成家琦', fans: 2135, plays: 861312, likes: 9641, comments: 751, shares: 2432, posts: 89, likeRate: '1.12%' },
+  { person: '魏总', personId: 'wei', platform: '视频号', accountName: '7号魏帅', operator: '成家琦', fans: 4224, plays: 145607, likes: 2925, comments: 434, shares: 4642, posts: 103, likeRate: '2.01%' },
+  { person: '魏总', personId: 'wei', platform: '微博', accountName: '7号魏帅', operator: '魏总', fans: 52046, plays: 13643234, likes: 32117, comments: 7198, shares: 3341, posts: 950, likeRate: '0.24%' },
+  { person: '魏总', personId: 'wei', platform: '公众号', accountName: '7号魏帅投研笔记', operator: '姜四', fans: 45882, plays: 67063, likes: 1842, comments: 804, shares: 1710, posts: 44, likeRate: '2.75%' },
+  { person: '魏总', personId: 'wei', platform: '雪球', accountName: '魏帅投研', operator: '魏总', fans: 1096, plays: 2178003, likes: 1757, comments: 521, shares: 25, posts: 14, likeRate: '0.08%' },
+  { person: '魏总', personId: 'wei', platform: '淘股吧', accountName: '7号魏帅', operator: '王珏', fans: 10, plays: 2333, likes: 3, comments: 7, shares: 0, posts: 19, likeRate: '0.13%' },
+  { person: '魏总', personId: 'wei', platform: '东方财富', accountName: '七号魏帅', operator: '王珏', fans: 6, plays: 841, likes: 0, comments: 2, shares: 0, posts: 19, likeRate: '0.00%' },
+  { person: '魏总', personId: 'wei', platform: '抖音', accountName: '魏帅情报局', operator: '姜四', fans: 2135, plays: 764835, likes: 8613, comments: 648, shares: 2360, posts: 5, likeRate: '1.13%' },
+  { person: '刘老师', personId: 'liu', platform: '抖音', accountName: '老刘说周期', operator: '王珏', fans: 114, plays: 76445, likes: 559, comments: 55, shares: 29, posts: 57, likeRate: '0.73%' },
+  { person: '刘老师', personId: 'liu', platform: '视频号', accountName: '老刘说周期', operator: '成家琦', fans: 468, plays: 51528, likes: 286, comments: 22, shares: 971, posts: 46, likeRate: '0.56%' },
 ];
 
 // Default task templates per person
@@ -1953,6 +1956,16 @@ createApp({
     },
     
     getMemberName(id) { const m = this.allMembers.find(m => m.id === id); return m ? m.name : id; },
+    getOperatorForAccount(row) {
+      if (row.operator) return row.operator;
+      const map = {
+        '7号魏帅|抖音': '成家琦', '7号魏帅|视频号': '成家琦', '7号魏帅|微博': '魏总',
+        '7号魏帅投研笔记|公众号': '姜四', '魏帅投研|雪球': '魏总',
+        '7号魏帅|淘股吧': '王珏', '七号魏帅|东方财富': '王珏',
+        '魏帅情报局|抖音': '姜四', '老刘说周期|抖音': '王珏', '老刘说周期|视频号': '成家琦',
+      };
+      return map[row.accountName+'|'+row.platform] || '-';
+    },
     getMemberTaskCount(id) { return (this.allTasks[id] || []).filter(t => t.active !== false).length; },
     
     // Tasks
