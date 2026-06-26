@@ -902,7 +902,7 @@ textarea { resize:vertical; min-height:60px; }
 
   <!-- 当周数据明细 -->
   <div class="card">
-    <div class="card-header"><h3>📋 {{ statsForm.month }} {{ statsForm.week }} 数据明细</h3><span style="font-size:12px;color:var(--text-secondary)">数据可直接编辑，自动同步首页</span></div>
+    <div class="card-header"><h3>📋 {{ statsYear }} {{ statsForm.month }} {{ statsForm.week }} 数据明细</h3><span style="font-size:12px;color:var(--text-secondary)">数据可直接编辑，自动同步首页</span></div>
     <div class="card-body no-padding"><div class="table-wrap">
       <table>
         <thead><tr><th>博主</th><th>平台</th><th>账号名</th><th>运营人</th><th>粉丝</th><th>发布数</th><th>播放量</th><th>点赞</th><th>评论</th><th>转发</th><th>备注</th><th>操作</th></tr></thead>
@@ -1176,7 +1176,7 @@ createApp({
       myContentForm: { date: '', platform: '抖音', account: '7号魏帅', type: '短视频', title: '', link: '', plays: '', likes: '', comments: '', shares: '', status: '待发布' },
       historyMonth: today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0'),
       
-      statsForm: { year: '2026年', month: '2026年6月', week: '第4周', platform: '抖音', account: '7号魏帅', personId: 'jiang', personId2: 'jiang', fans: '', posts: '', plays: '', likes: '', comments: '', shares: '', note: '' },
+      statsForm: { year: '2026年', month: '6月', week: '第4周', platform: '抖音', account: '7号魏帅', personId: 'jiang', personId2: 'jiang', fans: '', posts: '', plays: '', likes: '', comments: '', shares: '', note: '' },
       
       // Chart instances
       chartInstances: {},
@@ -1202,14 +1202,14 @@ createApp({
         zhong: ['统筹管理', '内容审核', '团队协调'],
       }),
       materialTypes: ['宏观数据', '宏观政策', '行业研究', '个股研究', '排行榜', '周期理论', '视频素材', '海报模板', '数据工具', '其他'],
-      monthOptions: ['2026年'],
+      monthOptions: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
       yearOptions: ['2025年','2026年','2027年'],
       statsYear: '2026年',
       weekDateRange: '',
       weekDateMap: {
-        '2026年3月第1周': '3.2-3.8', '2026年3月第2周': '3.9-3.15', '2026年3月第3周': '3.16-3.22', '2026年3月第4周': '3.23-3.29',
-        '2026年4月第1周': '3.30-4.5', '2026年4月第2周': '4.6-4.12', '2026年4月第3周': '4.13-4.19', '2026年4月第4周': '4.20-4.26',
-        '2026年5月第1周': '5.25-5.31', '2026年6月第1周': '6.1-6.7', '2026年6月第2周': '6.8-6.14', '2026年6月第3周': '6.15-6.21', '2026年6月第4周': '6.22-6.28',
+        '3月第1周': '3.2-3.8', '3月第2周': '3.9-3.15', '3月第3周': '3.16-3.22', '3月第4周': '3.23-3.29',
+        '4月第1周': '3.30-4.5', '4月第2周': '4.6-4.12', '4月第3周': '4.13-4.19', '4月第4周': '4.20-4.26',
+        '5月第1周': '5.25-5.31', '6月第1周': '6.1-6.7', '6月第2周': '6.8-6.14', '6月第3周': '6.15-6.21', '6月第4周': '6.22-6.28',
       },
       weekOptions: ['第1周', '第2周', '第3周', '第4周', '第5周'],
       
@@ -1267,7 +1267,7 @@ createApp({
     
     filteredStatsEntries() {
       const key = this.statsForm.month + ' ' + this.statsForm.week;
-      return this.statsEntries.filter(e => (e.month + ' ' + e.week) === key);
+      const list = this.statsEntries.filter(e => (e.month.replace('2026年','') + ' ' + e.week) === key); return list.sort((a,b) => { const order = { '魏总':1, '刘老师':2 }; return (order[a.person]||3) - (order[b.person]||3); });
     },
     statsSummary() {
       const list = this.filteredStatsEntries;
@@ -1421,7 +1421,7 @@ createApp({
     formatNum(n) { if (!n && n !== 0) return '0'; return n >= 10000 ? (n/10000).toFixed(1)+'万' : n.toLocaleString(); },
     
     updateWeekDate() {
-      const key = this.statsForm.month + this.statsForm.week;
+      const key = this.statsForm.month.replace('2026年','') + this.statsForm.week;
       this.weekDateRange = this.weekDateMap[key] || '';
     },
     showToast(msg, type = 'success') { this.toast = { show: true, msg, type }; setTimeout(() => { this.toast.show = false; }, 2500); },
@@ -2167,7 +2167,7 @@ createApp({
       this.saveStats();
       this.showToast('数据已保存，将同步到首页看板');
       // Reset form
-      this.statsForm = { year: '2026年', month: '2026年6月', week: '第4周', platform: '抖音', account: '7号魏帅', personId: 'jiang', fans: '', posts: '', plays: '', likes: '', comments: '', shares: '', note: '' };
+      this.statsForm = { year: '2026年', month: '6月', week: '第4周', platform: '抖音', account: '7号魏帅', personId: 'jiang', personId2: 'jiang', fans: '', posts: '', plays: '', likes: '', comments: '', shares: '', note: '' };
     },
     deleteStatsEntry(id) {
       if (confirm('确定删除？')) { this.statsEntries = this.statsEntries.filter(e => e.id !== id); this.saveStats(); }
