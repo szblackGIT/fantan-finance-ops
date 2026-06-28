@@ -1399,6 +1399,18 @@ createApp({
       const key = this.statsForm.month.replace('2026年','') + this.statsForm.week;
       this.weekDateRange = this.weekDateMap[key] || '';
     },
+    
+    exportPDF() {
+      this.showToast('正在生成PDF，请稍候...');
+      // 使用浏览器原生打印功能导出PDF
+      const style = document.createElement('style');
+      style.textContent = '@media print { body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } .nav, .btn, button:not(.keep-print) { display: none !important; } .card { break-inside: avoid; } }';
+      document.head.appendChild(style);
+      setTimeout(() => {
+        window.print();
+        document.head.removeChild(style);
+      }, 300);
+    },
     showToast(msg, type = 'success') { this.toast = { show: true, msg, type }; setTimeout(() => { this.toast.show = false; }, 2500); },
     // v5.2.2: Excel 导出
     exportTableToExcel(rows, filename) {
