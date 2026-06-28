@@ -270,13 +270,18 @@ textarea { resize:vertical; min-height:60px; }
 <div v-else>
 <header class="header">
   <div class="header-inner">
-    <div class="header-logo">📊 梵天金融 · 运营管理系统 v5.2.2</div>
-    <div class="header-info">
+    <div class="header-logo">📊 梵天金融 · 运营管理系统 v5.4</div>
+    <div class="header-info" v-if="currentTab !== 'bigscreen'">
       <span :class="['person-badge', 'person-'+currentRole]">{{ currentPerson.icon }} {{ currentPerson.name }}</span>
       <span :class="['role-tag', isAdmin ? 'role-admin' : 'role-operator']">{{ isAdmin ? '管理员' : '运营人员' }}</span>
       <span style="font-size:12px;opacity:0.8">{{ todayStr }}</span>
       <button class="btn btn-xs btn-outline" style="color:#fff;border-color:rgba(255,255,255,0.3);margin-right:4px" @click="changePassword">🔑 改密</button>
       <button class="btn btn-xs btn-outline" style="color:#fff;border-color:rgba(255,255,255,0.3)" @click="logout">切换角色</button>
+    </div>
+    <div class="header-info" v-if="currentTab === 'bigscreen'">
+      <span style="font-size:12px;opacity:0.8">{{ todayStr }}</span>
+      <button @click="exportPDF" style="background:rgba(255,255,255,0.2);color:#fff;border:1px solid rgba(255,255,255,0.4);padding:6px 16px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;margin-right:8px">📄 导出PDF</button>
+      <button @click="currentRole=null" style="background:rgba(255,255,255,0.2);color:#fff;border:1px solid rgba(255,255,255,0.4);padding:6px 16px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer">← 返回登录</button>
     </div>
   </div>
 </header>
