@@ -1406,15 +1406,21 @@ createApp({
     },
     
     exportPDF() {
-      this.showToast('正在生成PDF，请稍候...');
-      // 使用浏览器原生打印功能导出PDF
+      // 隐藏toast提示
+      const toastEl = document.querySelector('.toast');
+      if (toastEl) toastEl.style.display = 'none';
+      // 添加打印样式
       const style = document.createElement('style');
-      style.textContent = '@media print { body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } .nav, .btn, button:not(.keep-print) { display: none !important; } .card { break-inside: avoid; } }';
+      style.id = 'print-style';
+      style.textContent = '@media print { body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } .nav, .toast, button:not(.keep-print) { display: none !important; } .card { break-inside: avoid; } @page { margin: 10mm; } }';
       document.head.appendChild(style);
       setTimeout(() => {
         window.print();
-        document.head.removeChild(style);
-      }, 300);
+        // 清理
+        const s = document.getElementById('print-style');
+        if (s) s.remove();
+        if (toastEl) toastEl.style.display = '';
+      }, 200);
     },
     showToast(msg, type = 'success') { this.toast = { show: true, msg, type }; setTimeout(() => { this.toast.show = false; }, 2500); },
     // v5.2.2: Excel 导出
