@@ -876,6 +876,7 @@ textarea { resize:vertical; min-height:60px; }
         <div class="form-group"><label>周</label><select v-model="statsForm.week" @change="updateWeekDate"><option v-for="w in weekOptions" :key="w" :value="w">{{ w }}</option></select></div>
         <div class="form-group"><label>日期范围</label><input :value="weekDateRange" readonly style="background:#f7fafc;font-weight:600;color:#1a365d"></div>
         <button class="btn btn-primary btn-sm" @click="addStatsRow" style="margin-bottom:4px">+ 新增账号行</button>
+        <button class="btn btn-success btn-sm" @click="saveAllStats" style="margin-bottom:4px">💾 保存全部</button>
         <button class="btn btn-outline btn-sm" @click="exportTableToExcel(currentWeekStats, '数据统计_'+statsYear+statsForm.month+statsForm.week)" style="margin-bottom:4px">📥 导出</button>
       </div>
     </div>
@@ -929,42 +930,24 @@ textarea { resize:vertical; min-height:60px; }
 const { createApp } = Vue;
 
 const defaultStatsEntries = [
-  { id: 'st001', year: '2026年', month: '3月', week: '第1周', platform: '抖音', account: '7号魏帅', personId: 'cheng', person: '成家琦', fans: 516, posts: 18, plays: 3112, likes: 87, comments: 5, shares: 3, note: '' },
-  { id: 'st002', year: '2026年', month: '3月', week: '第1周', platform: '视频号', account: '7号魏帅', personId: 'cheng', person: '成家琦', fans: 3312, posts: 12, plays: 16863, likes: 402, comments: 42, shares: 819, note: '' },
-  { id: 'st003', year: '2026年', month: '3月', week: '第2周', platform: '抖音', account: '7号魏帅', personId: 'cheng', person: '成家琦', fans: 526, posts: 10, plays: 6416, likes: 63, comments: 6, shares: 1, note: '' },
-  { id: 'st004', year: '2026年', month: '3月', week: '第2周', platform: '视频号', account: '7号魏帅', personId: 'cheng', person: '成家琦', fans: 3384, posts: 10, plays: 18589, likes: 326, comments: 44, shares: 367, note: '' },
-  { id: 'st005', year: '2026年', month: '3月', week: '第3周', platform: '抖音', account: '7号魏帅', personId: 'cheng', person: '成家琦', fans: 566, posts: 20, plays: 20703, likes: 300, comments: 26, shares: 0, note: '' },
-  { id: 'st006', year: '2026年', month: '3月', week: '第3周', platform: '视频号', account: '7号魏帅', personId: 'cheng', person: '成家琦', fans: 3485, posts: 21, plays: 27784, likes: 530, comments: 57, shares: 986, note: '' },
-  { id: 'st007', year: '2026年', month: '3月', week: '第3周', platform: '公众号', account: '7号魏帅投研笔记', personId: 'jiang', person: '姜四', fans: 42960, posts: 7, plays: 2924, likes: 68, comments: 5, shares: 101, note: '' },
-  { id: 'st008', year: '2026年', month: '3月', week: '第4周', platform: '抖音', account: '7号魏帅', personId: 'cheng', person: '成家琦', fans: 586, posts: 10, plays: 13089, likes: 141, comments: 27, shares: 28, note: '' },
-  { id: 'st009', year: '2026年', month: '3月', week: '第4周', platform: '视频号', account: '7号魏帅', personId: 'cheng', person: '成家琦', fans: 3559, posts: 10, plays: 14787, likes: 252, comments: 22, shares: 523, note: '' },
-  { id: 'st010', year: '2026年', month: '3月', week: '第4周', platform: '公众号', account: '7号魏帅投研笔记', personId: 'jiang', person: '姜四', fans: 43104, posts: 5, plays: 4414, likes: 96, comments: 12, shares: 129, note: '' },
-  { id: 'st011', year: '2026年', month: '3月', week: '第4周', platform: '微博', account: '7号魏帅', personId: 'wei', person: '魏总', fans: 45901, posts: 107, plays: 2343000, likes: 3530, comments: 640, shares: 431, note: '浏览量万' },
-  { id: 'st012', year: '2026年', month: '4月', week: '第1周', platform: '抖音', account: '7号魏帅', personId: 'cheng', person: '成家琦', fans: 598, posts: 7, plays: 4988, likes: 55, comments: 8, shares: 1, note: '' },
-  { id: 'st013', year: '2026年', month: '4月', week: '第1周', platform: '视频号', account: '7号魏帅', personId: 'cheng', person: '成家琦', fans: 3604, posts: 6, plays: 6977, likes: 100, comments: 22, shares: 184, note: '' },
-  { id: 'st014', year: '2026年', month: '4月', week: '第1周', platform: '公众号', account: '7号魏帅投研笔记', personId: 'jiang', person: '姜四', fans: 43472, posts: 5, plays: 4959, likes: 124, comments: 11, shares: 140, note: '' },
-  { id: 'st015', year: '2026年', month: '4月', week: '第1周', platform: '微博', account: '7号魏帅', personId: 'wei', person: '魏总', fans: 45946, posts: 107, plays: 1589000, likes: 3124, comments: 594, shares: 264, note: '浏览量万' },
-  { id: 'st016', year: '2026年', month: '4月', week: '第3周', platform: '抖音', account: '7号魏帅', personId: 'cheng', person: '成家琦', fans: 622, posts: 15, plays: 17609, likes: 167, comments: 18, shares: 10, note: '两周数据' },
-  { id: 'st017', year: '2026年', month: '4月', week: '第3周', platform: '视频号', account: '7号魏帅', personId: 'cheng', person: '成家琦', fans: 3725, posts: 14, plays: 20913, likes: 471, comments: 146, shares: 544, note: '两周数据' },
-  { id: 'st018', year: '2026年', month: '4月', week: '第3周', platform: '公众号', account: '7号魏帅投研笔记', personId: 'jiang', person: '姜四', fans: 44133, posts: 10, plays: 21910, likes: 238, comments: 92, shares: 552, note: '' },
-  { id: 'st019', year: '2026年', month: '4月', week: '第3周', platform: '微博', account: '7号魏帅', personId: 'wei', person: '魏总', fans: 46012, posts: 114, plays: 1150000, likes: 2624, comments: 369, shares: 193, note: '一周数据' },
-  { id: 'st020', year: '2026年', month: '6月', week: '第1周', platform: '抖音', account: '梵天咨询(蓝V)', personId: 'cheng', person: '成家琦', fans: 3, posts: 5, plays: 3997, likes: 26, comments: 0, shares: 0, note: '新号' },
-  { id: 'st021', year: '2026年', month: '6月', week: '第1周', platform: '视频号', account: '7号魏帅', personId: 'cheng', person: '成家琦', fans: 3980, posts: 6, plays: 5304, likes: 111, comments: 5, shares: 138, note: '' },
-  { id: 'st022', year: '2026年', month: '6月', week: '第1周', platform: '公众号', account: '7号魏帅投研笔记', personId: 'jiang', person: '姜四', fans: 45446, posts: 5, plays: 8566, likes: 383, comments: 333, shares: 59, note: '' },
-  { id: 'st023', year: '2026年', month: '6月', week: '第1周', platform: '微博', account: '7号魏帅', personId: 'wei', person: '魏总', fans: 50663, posts: 124, plays: 2440000, likes: 4786, comments: 1033, shares: 522, note: '浏览量万' },
-  { id: 'st024', year: '2026年', month: '6月', week: '第2周', platform: '视频号', account: '7号魏帅', personId: 'cheng', person: '成家琦', fans: 4034, posts: 6, plays: 8660, likes: 163, comments: 12, shares: 376, note: '' },
-  { id: 'st025', year: '2026年', month: '6月', week: '第2周', platform: '微博', account: '7号魏帅', personId: 'wei', person: '魏总', fans: 51021, posts: 135, plays: 3400000, likes: 4402, comments: 1056, shares: 557, note: '浏览量万' },
-  { id: 'st026', year: '2026年', month: '6月', week: '第3周', platform: '抖音', account: '魏帅情报局', personId: 'jiang', person: '姜四', fans: 40, posts: 4, plays: 30560, likes: 215, comments: 13, shares: 29, note: '新号' },
-  { id: 'st027', year: '2026年', month: '6月', week: '第3周', platform: '视频号', account: '7号魏帅', personId: 'cheng', person: '成家琦', fans: 4116, posts: 6, plays: 10275, likes: 247, comments: 24, shares: 376, note: '' },
-  { id: 'st028', year: '2026年', month: '6月', week: '第3周', platform: '公众号', account: '7号魏帅投研笔记', personId: 'jiang', person: '姜四', fans: 45530, posts: 3, plays: 4336, likes: 181, comments: 119, shares: 33, note: '' },
-  { id: 'st029', year: '2026年', month: '6月', week: '第3周', platform: '微博', account: '7号魏帅', personId: 'wei', person: '魏总', fans: 51472, posts: 106, plays: 3110000, likes: 4016, comments: 1048, shares: 364, note: '浏览量万' },
-  { id: 'st030', year: '2026年', month: '6月', week: '第3周', platform: '淘股吧', account: '7号魏帅', personId: 'wang', person: '王珏', fans: 0, posts: 6, plays: 631, likes: 1, comments: 6, shares: 0, note: '新号' },
-  { id: 'st031', year: '2026年', month: '6月', week: '第4周', platform: '抖音', account: '魏帅情报局', personId: 'jiang', person: '姜四', fans: 2135, posts: 5, plays: 764835, likes: 8613, comments: 648, shares: 2360, note: '' },
-  { id: 'st032', year: '2026年', month: '6月', week: '第4周', platform: '视频号', account: '7号魏帅', personId: 'cheng', person: '成家琦', fans: 4224, posts: 5, plays: 8321, likes: 207, comments: 21, shares: 186, note: '' },
-  { id: 'st033', year: '2026年', month: '6月', week: '第4周', platform: '公众号', account: '7号魏帅投研笔记', personId: 'jiang', person: '姜四', fans: 45882, posts: 4, plays: 8192, likes: 353, comments: 71, shares: 351, note: '' },
-  { id: 'st034', year: '2026年', month: '6月', week: '第4周', platform: '微博', account: '7号魏帅', personId: 'wei', person: '魏总', fans: 52046, posts: 146, plays: 4693000, likes: 6687, comments: 1695, shares: 695, note: '浏览量万' },
+  { id: 's01', year: '2026年', month: '6月', week: '第4周', person: '魏总', platform: '公众号', account: '7号魏帅投研笔记', operator: '姜四', fans: 45882, posts: 4, plays: 8192, likes: 353, comments: 71, shares: 351, note: '' },
+  { id: 's02', year: '2026年', month: '6月', week: '第4周', person: '魏总', platform: '抖音', account: '7号魏帅', operator: '成家琦', fans: 673, posts: 0, plays: 0, likes: 0, comments: 0, shares: 0, note: '' },
+  { id: 's03', year: '2026年', month: '6月', week: '第4周', person: '魏总', platform: '抖音', account: '梵天咨询', operator: '成家琦', fans: 16, posts: 4, plays: 1528, likes: 23, comments: 2, shares: 0, note: '' },
+  { id: 's04', year: '2026年', month: '6月', week: '第4周', person: '魏总', platform: '抖音', account: '魏帅情报局', operator: '姜四', fans: 2135, posts: 5, plays: 764835, likes: 8613, comments: 648, shares: 2360, note: '' },
+  { id: 's05', year: '2026年', month: '6月', week: '第4周', person: '魏总', platform: '抖音', account: '7号小助理', operator: '成家琦', fans: 0, posts: 0, plays: 0, likes: 0, comments: 0, shares: 0, note: '' },
+  { id: 's06', year: '2026年', month: '6月', week: '第4周', person: '魏总', platform: '视频号', account: '7号魏帅', operator: '成家琦', fans: 4224, posts: 5, plays: 8321, likes: 207, comments: 21, shares: 186, note: '' },
+  { id: 's07', year: '2026年', month: '6月', week: '第4周', person: '魏总', platform: '视频号', account: '小助理是我呀', operator: '王珏', fans: 0, posts: 0, plays: 0, likes: 0, comments: 0, shares: 0, note: '' },
+  { id: 's08', year: '2026年', month: '6月', week: '第4周', person: '魏总', platform: '微博', account: '7号魏帅', operator: '魏总', fans: 52046, posts: 146, plays: 4693000, likes: 6687, comments: 1695, shares: 695, note: '' },
+  { id: 's09', year: '2026年', month: '6月', week: '第4周', person: '魏总', platform: '微博', account: '7号魏帅滴小助理', operator: '王珏', fans: 0, posts: 0, plays: 0, likes: 0, comments: 0, shares: 0, note: '' },
+  { id: 's10', year: '2026年', month: '6月', week: '第4周', person: '魏总', platform: '雪球', account: '魏帅投研', operator: '魏总', fans: 1096, posts: 7, plays: 644000, likes: 566, comments: 74, shares: 6, note: '' },
+  { id: 's11', year: '2026年', month: '6月', week: '第4周', person: '魏总', platform: '淘股吧', account: '7号魏帅', operator: '王珏', fans: 10, posts: 13, plays: 1702, likes: 2, comments: 1, shares: 0, note: '' },
+  { id: 's12', year: '2026年', month: '6月', week: '第4周', person: '魏总', platform: '东方财富', account: '七号魏帅', operator: '王珏', fans: 6, posts: 15, plays: 717, likes: 0, comments: 2, shares: 0, note: '' },
+  { id: 's13', year: '2026年', month: '6月', week: '第4周', person: '刘老师', platform: '抖音', account: '老刘说周期', operator: '成家琦', fans: 118, posts: 0, plays: 0, likes: 0, comments: 0, shares: 0, note: '' },
+  { id: 's14', year: '2026年', month: '6月', week: '第4周', person: '刘老师', platform: '视频号', account: '老刘说周期', operator: '成家琦', fans: 468, posts: 4, plays: 5662, likes: 43, comments: 0, shares: 112, note: '' },
+  { id: 's15', year: '2026年', month: '6月', week: '第4周', person: '刘老师', platform: '微博', account: '老刘说周期', operator: '王珏', fans: 0, posts: 0, plays: 0, likes: 0, comments: 0, shares: 0, note: '' },
 ];
-const STORAGE = 'fantan_v5_';
+
+const STORAGE = 'fantan_v6_';
 const save = (k, v) => { localStorage.setItem(STORAGE + k, JSON.stringify(v)); };
 const load = (k, d) => { const r = localStorage.getItem(STORAGE + k); return r ? JSON.parse(r) : d; };
 
@@ -1963,15 +1946,37 @@ createApp({
     saveCommunity() { save('community', this.communityData); this.syncToCloud(); },
     saveCustomers() { save('customers', this.customerList); this.syncToCloud(); },
     saveStats() { save('statsEntries', this.statsEntries); this.syncToCloud(); },
+    saveAllStats() {
+      this.saveStats();
+      // 同步到数据看板 dashboardDetail
+      this.currentWeekStats.forEach(s => {
+        const existing = this.dashboardDetail.find(d => d.accountName === s.account && d.platform === s.platform);
+        if (existing) {
+          existing.fans = parseInt(s.fans) || 0;
+          existing.plays = parseInt(s.plays) || 0;
+          existing.likes = parseInt(s.likes) || 0;
+          existing.comments = parseInt(s.comments) || 0;
+          existing.shares = parseInt(s.shares) || 0;
+          existing.posts = parseInt(s.posts) || 0;
+        }
+      });
+      this.saveDashboardData();
+      this.showToast('数据已保存并同步到数据看板 ✅');
+    },
     addStatsRow() {
       const id = 'st' + Date.now();
+      const defaults = [
+        { person: '魏总', platform: '抖音', account: '7号魏帅', operator: '成家琦' },
+        { person: '刘老师', platform: '抖音', account: '老刘说周期', operator: '成家琦' },
+        { person: '魏总', platform: '公众号', account: '7号魏帅投研笔记', operator: '姜四' },
+      ];
+      const d = defaults[this.currentWeekStats.length % defaults.length];
       this.statsEntries.push({
         id, year: this.statsYear, month: this.statsForm.month, week: this.statsForm.week,
-        person: '魏总', platform: '抖音', account: '', operator: '成家琦',
-        fans: 0, posts: 0, plays: 0, likes: 0, comments: 0, shares: 0, note: ''
+        ...d, fans: 0, posts: 0, plays: 0, likes: 0, comments: 0, shares: 0, note: ''
       });
       this.saveStats();
-      this.showToast('已添加新行，请填写账号信息');
+      this.showToast('已添加新行');
     },
     
     // Content (admin)
