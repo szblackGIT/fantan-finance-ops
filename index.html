@@ -1629,7 +1629,7 @@ createApp({
     },
     logout() { this.currentRole = null; this.destroyCharts(); },
     
-    switchTab(tab) { this.currentTab = tab; this.$nextTick(() => this.renderCharts()); },
+    switchTab(tab) { this.currentTab = tab; if (tab === 'datastats') { this.$nextTick(() => { this.updateWeekDate(); }); } this.$nextTick(() => this.renderCharts()); },
     
     // Charts
     renderCharts() {
