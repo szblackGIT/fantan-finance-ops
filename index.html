@@ -1261,6 +1261,12 @@ createApp({
           this.saveStats();
         });
       }
+      // 自动将临时账号加入 statsEntries
+      list.forEach(s => {
+        if (s.id && s.id.toString().startsWith('auto') && !this.statsEntries.find(e => e.id === s.id)) {
+          this.statsEntries.push(s);
+        }
+      });
       return list.sort((a,b) => { const o = {'魏总':1,'刘老师':2}; return (o[a.person]||3) - (o[b.person]||3); });
     },
     statsSummary() {
@@ -1976,8 +1982,18 @@ createApp({
     saveSalons() { save('salons', this.salons); },
     saveCommunity() { save('community', this.communityData); this.syncToCloud(); },
     saveCustomers() { save('customers', this.customerList); this.syncToCloud(); },
-    saveStats() { save('statsEntries', this.statsEntries); this.syncToCloud(); },
+    saveStats() { save('statsEntries', this.statsEntries); try { this.syncToCloud(); } catch(e) {} },
     saveAllStats() {
+      // 先确保 currentWeekStats 中的临时数据已被添加到 statsEntries
+      const key = this.statsYear + '|' + this.statsForm.month + '|' + this.statsForm.week;
+      this.currentWeekStats.forEach(s => {
+        if (!s.id || s.id.toString().startsWith('auto')) {
+          const exists = this.statsEntries.find(e => e.id === s.id);
+          if (!exists) {
+            this.statsEntries.push({...s});
+          }
+        }
+      });
       this.saveStats();
       // 同步到数据看板 dashboardDetail
       this.currentWeekStats.forEach(s => {
@@ -1989,20 +2005,10 @@ createApp({
           existing.comments = parseInt(s.comments) || 0;
           existing.shares = parseInt(s.shares) || 0;
           existing.posts = parseInt(s.posts) || 0;
-        } else {
-          // 如果数据看板中没有该账号，新增
-          this.dashboardDetail.push({
-            person: s.person, personId: s.person === '魏总' ? 'wei' : 'liu',
-            platform: s.platform, accountName: s.account, operator: s.operator,
-            fans: parseInt(s.fans) || 0, plays: parseInt(s.plays) || 0,
-            likes: parseInt(s.likes) || 0, comments: parseInt(s.comments) || 0,
-            shares: parseInt(s.shares) || 0, posts: parseInt(s.posts) || 0,
-            likeRate: ((parseInt(s.likes)||0) / Math.max(parseInt(s.plays)||1, 1) * 100).toFixed(2) + '%'
-          });
         }
       });
       this.saveDashboardData();
-      this.syncToCloud();
+      try { this.syncToCloud(); } catch(e) {}
       this.showToast('数据已保存并同步到数据看板 ✅');
     },
     addStatsRow() {
