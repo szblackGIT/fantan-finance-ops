@@ -875,7 +875,7 @@ textarea { resize:vertical; min-height:60px; }
         <div class="form-group"><label>月</label><select v-model="statsForm.month" @change="updateWeekDate"><option v-for="m in monthOptions" :key="m" :value="m">{{ m }}</option></select></div>
         <div class="form-group"><label>周</label><select v-model="statsForm.week" @change="updateWeekDate"><option v-for="w in weekOptions" :key="w" :value="w">{{ w }}</option></select></div>
         <div class="form-group"><label>日期范围</label><input :value="weekDateRange" readonly style="background:#f7fafc;font-weight:600;color:#1a365d"></div>
-        <!-- 账号行已默认显示，隐藏新增按钮 -->
+        
         <button class="btn btn-success btn-sm" @click="saveAllStats" style="margin-bottom:4px">💾 保存全部</button>
         <button class="btn btn-outline btn-sm" @click="exportTableToExcel(currentWeekStats, '数据统计_'+statsYear+statsForm.month+statsForm.week)" style="margin-bottom:4px">📥 导出</button>
       </div>
@@ -1124,7 +1124,7 @@ createApp({
         { id: 'g6', name: '价值投机2群', members: 210, weeklyNew: 113, activity: '高', note: '新建' },
       ]),
       customerList: load('customers', []),
-      statsEntries: load('statsEntries', defaultStatsEntries),
+      statsEntries: defaultStatsEntries.map(e => ({...e})),
       myTaskDone: load('myTaskDone', {}),
       
       // Filters
@@ -1229,7 +1229,38 @@ createApp({
     
     currentWeekStats() {
       const key = this.statsYear + '|' + this.statsForm.month + '|' + this.statsForm.week;
-      const list = this.statsEntries.filter(e => (e.year + '|' + e.month + '|' + e.week) === key);
+      let list = this.statsEntries.filter(e => (e.year + '|' + e.month + '|' + e.week) === key);
+      if (list.length === 0) {
+        // 如果没有该周数据，用账号清单初始化
+        const defaultAccounts = [
+          { person: '魏总', platform: '公众号', account: '7号魏帅投研笔记', operator: '姜四' },
+          { person: '魏总', platform: '抖音', account: '7号魏帅', operator: '成家琦' },
+          { person: '魏总', platform: '抖音', account: '梵天咨询', operator: '成家琦' },
+          { person: '魏总', platform: '抖音', account: '魏帅情报局', operator: '姜四' },
+          { person: '魏总', platform: '抖音', account: '7号小助理', operator: '成家琦' },
+          { person: '魏总', platform: '视频号', account: '7号魏帅', operator: '成家琦' },
+          { person: '魏总', platform: '视频号', account: '小助理是我呀', operator: '王珏' },
+          { person: '魏总', platform: '微博', account: '7号魏帅', operator: '魏总' },
+          { person: '魏总', platform: '微博', account: '7号魏帅滴小助理', operator: '王珏' },
+          { person: '魏总', platform: '雪球', account: '魏帅投研', operator: '魏总' },
+          { person: '魏总', platform: '淘股吧', account: '7号魏帅', operator: '王珏' },
+          { person: '魏总', platform: '东方财富', account: '七号魏帅', operator: '王珏' },
+          { person: '刘老师', platform: '抖音', account: '老刘说周期', operator: '成家琦' },
+          { person: '刘老师', platform: '视频号', account: '老刘说周期', operator: '成家琦' },
+          { person: '刘老师', platform: '微博', account: '老刘说周期', operator: '王珏' },
+        ];
+        const now = Date.now();
+        list = defaultAccounts.map((a, i) => ({
+          id: 'auto' + now + i,
+          year: this.statsYear, month: this.statsForm.month, week: this.statsForm.week,
+          ...a, fans: 0, posts: 0, plays: 0, likes: 0, comments: 0, shares: 0, note: ''
+        }));
+        // 异步保存（不阻塞渲染）
+        this.$nextTick(() => {
+          list.forEach(e => this.statsEntries.push(e));
+          this.saveStats();
+        });
+      }
       return list.sort((a,b) => { const o = {'魏总':1,'刘老师':2}; return (o[a.person]||3) - (o[b.person]||3); });
     },
     statsSummary() {
@@ -1386,37 +1417,6 @@ createApp({
     updateWeekDate() {
       const key = this.statsForm.month + this.statsForm.week;
       this.weekDateRange = this.weekDateMap[key] || '';
-      // 始终确保账号清单存在：如果该周数据不足15条，补充缺失的账号
-      const defaultAccounts = [
-        { person: '魏总', platform: '公众号', account: '7号魏帅投研笔记', operator: '姜四' },
-        { person: '魏总', platform: '抖音', account: '7号魏帅', operator: '成家琦' },
-        { person: '魏总', platform: '抖音', account: '梵天咨询', operator: '成家琦' },
-        { person: '魏总', platform: '抖音', account: '魏帅情报局', operator: '姜四' },
-        { person: '魏总', platform: '抖音', account: '7号小助理', operator: '成家琦' },
-        { person: '魏总', platform: '视频号', account: '7号魏帅', operator: '成家琦' },
-        { person: '魏总', platform: '视频号', account: '小助理是我呀', operator: '王珏' },
-        { person: '魏总', platform: '微博', account: '7号魏帅', operator: '魏总' },
-        { person: '魏总', platform: '微博', account: '7号魏帅滴小助理', operator: '王珏' },
-        { person: '魏总', platform: '雪球', account: '魏帅投研', operator: '魏总' },
-        { person: '魏总', platform: '淘股吧', account: '7号魏帅', operator: '王珏' },
-        { person: '魏总', platform: '东方财富', account: '七号魏帅', operator: '王珏' },
-        { person: '刘老师', platform: '抖音', account: '老刘说周期', operator: '成家琦' },
-        { person: '刘老师', platform: '视频号', account: '老刘说周期', operator: '成家琦' },
-        { person: '刘老师', platform: '微博', account: '老刘说周期', operator: '王珏' },
-      ];
-      const existingKeys = this.currentWeekStats.map(e => e.account + '|' + e.platform);
-      let added = false;
-      defaultAccounts.forEach((a, i) => {
-        if (!existingKeys.includes(a.account + '|' + a.platform)) {
-          this.statsEntries.push({
-            id: 'auto' + Date.now() + i,
-            year: this.statsYear, month: this.statsForm.month, week: this.statsForm.week,
-            ...a, fans: 0, posts: 0, plays: 0, likes: 0, comments: 0, shares: 0, note: ''
-          });
-          added = true;
-        }
-      });
-      if (added) this.saveStats();
     },
     
     exportPDF() {
