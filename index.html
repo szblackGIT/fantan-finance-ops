@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>梵天金融 · 新媒体矩阵运营管理系统 v6.3.1</title>
+<title>梵天金融 · 新媒体矩阵运营管理系统 v6.3.2</title>
+  <!-- cache-break: 1782832398 -->
 
 
 
@@ -927,7 +928,7 @@ textarea { resize:vertical; min-height:60px; }
   </div>
 </div>
 </main>
-<div class="footer" v-if="currentTab !== 'bigscreen'">梵天金融 · 新媒体矩阵运营管理系统 v6.3.1 | 数据存储于浏览器本地 | {{ todayStr }}</div>
+<div class="footer" v-if="currentTab !== 'bigscreen'">梵天金融 · 新媒体矩阵运营管理系统 v6.3.2 | 数据存储于浏览器本地 | {{ todayStr }}</div>
 
 <!-- Toast -->
 <div v-if="toast.show" :class="['toast','toast-'+toast.type]">{{ toast.msg }}</div>
@@ -2348,5 +2349,5 @@ createApp({
 </script>
 </body>
 <!-- build: 202607030100 -->
-<!-- v6.3.1: 修复登录问题 - 移除自动恢复，每次打开显示登录页 -->
+<!-- v6.3.2: 强制缓存刷新 + 登录修复 -->
 </html>
