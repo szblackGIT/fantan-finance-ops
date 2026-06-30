@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>梵天金融 · 新媒体矩阵运营管理系统 v7.0.0</title>
+<title>梵天金融 · 新媒体矩阵运营管理系统 v7.1.0</title>
   <!-- cache-break: 1782832398 -->
 
 
@@ -928,7 +928,7 @@ textarea { resize:vertical; min-height:60px; }
   </div>
 </div>
 </main>
-<div class="footer" v-if="currentTab !== 'bigscreen'">梵天金融 · 新媒体矩阵运营管理系统 v7.0.0 | 数据存储于浏览器本地 | {{ todayStr }}</div>
+<div class="footer" v-if="currentTab !== 'bigscreen'">梵天金融 · 新媒体矩阵运营管理系统 v7.1.0 | 数据存储于浏览器本地 | {{ todayStr }}</div>
 
 <!-- Toast -->
 <div v-if="toast.show" :class="['toast','toast-'+toast.type]">{{ toast.msg }}</div>
@@ -939,7 +939,7 @@ textarea { resize:vertical; min-height:60px; }
 const { createApp } = Vue;
 
 const defaultStatsEntries = [
-  // Excel W2/W3/W4
+  // Excel W2/W3/W4 完整数据
   { id: 's01', year: '2026年', month: '6月', week: '第2周', person: '魏总', platform: '抖音', account: '7号魏帅', operator: '成家琦', fans: 625, posts: 0, plays: 0, likes: 0, comments: 0, shares: 0, note: '减少推荐到6.28' },
   { id: 's02', year: '2026年', month: '6月', week: '第2周', person: '魏总', platform: '抖音', account: '梵天咨询（蓝V）', operator: '成家琦', fans: 4, posts: 7, plays: 1390, likes: 26, comments: 0, shares: 0, note: '' },
   { id: 's03', year: '2026年', month: '6月', week: '第2周', person: '魏总', platform: '抖音', account: '魏帅情报局', operator: '姜四', fans: 40, posts: 4, plays: 30560, likes: 215, comments: 13, shares: 29, note: '新号' },
@@ -979,7 +979,7 @@ const defaultStatsEntries = [
 ];
 
 
-const STORAGE = 'fantan_v9_';
+const STORAGE = 'fantan_v10_';
 const save = (k, v) => { localStorage.setItem(STORAGE + k, JSON.stringify(v)); };
 const load = (k, d) => { const r = localStorage.getItem(STORAGE + k); return r ? JSON.parse(r) : d; };
 
@@ -1030,7 +1030,7 @@ const defaultMembers = [
 
 // Default dashboard detail rows
 const defaultDashboardDetail = [
-  // Excel W4 + 累计
+  // Excel W4粉丝 + 累计播放/互动
   { person: '魏总', personId: 'wei', platform: '抖音', accountName: '7号魏帅', operator: '成家琦', fans: 678, plays: 431, likes: 19, comments: 1, shares: 0, posts: 5, likeRate: '4.41%' },
   { person: '魏总', personId: 'wei', platform: '抖音', accountName: '梵天咨询（蓝V）', operator: '成家琦', fans: 19, plays: 2960, likes: 51, comments: 2, shares: 1, posts: 13, likeRate: '1.72%' },
   { person: '魏总', personId: 'wei', platform: '抖音', accountName: '魏帅情报局', operator: '姜四', fans: 2769, plays: 1044108, likes: 11312, comments: 745, shares: 3204, posts: 20, likeRate: '1.08%' },
@@ -2348,6 +2348,6 @@ createApp({
 }).mount('#app');
 </script>
 </body>
-<!-- build: 202607031200 -->
-<!-- v7.0.0: 修复Python语法污染JS - 15处if/else改为三元运算符 -->
+<!-- build: 202607040100 -->
+<!-- v7.1.0: 严格按最新Excel重建，v10存储键 -->
 </html>
