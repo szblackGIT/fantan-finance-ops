@@ -301,6 +301,12 @@ textarea { resize:vertical; min-height:60px; }
 <!-- ================================================================== -->
 <div v-if="(isAdmin && currentTab === 'dashboard') || currentTab === 'bigscreen'" :style="currentTab === 'bigscreen' ? 'padding:0 20px' : ''">
 
+  <!-- 数据大屏：最新周标签 -->
+  <div v-if="currentTab === 'bigscreen' && latestWeekLabel" style="text-align:center;padding:12px 0 4px;font-size:14px;color:var(--text-secondary)">
+    📅 当前展示：<b style="color:var(--primary);font-size:16px">{{ latestWeekLabel }}</b> 数据
+    <span style="font-size:12px;margin-left:8px">（{{ weekDateRange || latestWeekLabel }}）</span>
+  </div>
+
   <!-- Row 1: 6 KPI cards -->
   <div class="grid grid-6" style="margin-bottom:16px">
     <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-value">{{ formatNum(dashboardTotal.fans) }}</div><div class="stat-label">累计总粉丝</div></div>
@@ -403,7 +409,7 @@ textarea { resize:vertical; min-height:60px; }
 
   <!-- Row 7: 数据明细表 -->
   <div class="card" style="margin-bottom:16px">
-    <div class="card-header"><h3>📋 各账号平台数据明细</h3><button class="btn btn-outline btn-sm" @click="exportTableToExcel(dashboardDetail, '数据看板明细')" style="margin-left:auto">📥 导出</button><span style="font-size:12px;color:var(--text-secondary)">可直接编辑</span></div>
+    <div class="card-header"><h3>📋 各账号平台数据明细 <span v-if="latestWeekLabel" style="font-size:13px;color:var(--primary);font-weight:normal">（{{ latestWeekLabel }}）</span></h3><button class="btn btn-outline btn-sm" @click="exportTableToExcel(dashboardDetail, '数据看板明细')" style="margin-left:auto">📥 导出</button><span style="font-size:12px;color:var(--text-secondary)">可直接编辑</span></div>
     <div class="card-body no-padding">
       <div class="table-wrap">
         <table>
@@ -934,7 +940,7 @@ textarea { resize:vertical; min-height:60px; }
   </div>
 </div>
 </main>
-<div class="footer" v-if="currentTab !== 'bigscreen'">梵天金融 · 新媒体矩阵运营管理系统 v6.0.0 | 数据存储于浏览器本地 | {{ todayStr }}</div>
+<div class="footer" v-if="currentTab !== 'bigscreen'">梵天金融 · 新媒体矩阵运营管理系统 v6.1.0 | 数据存储于浏览器本地 | {{ todayStr }}</div>
 
 <!-- Toast -->
 <div v-if="toast.show" :class="['toast','toast-'+toast.type]">{{ toast.msg }}</div>
@@ -1182,7 +1188,7 @@ createApp({
       myContentForm: { date: '', platform: '抖音', account: '7号魏帅', type: '短视频', title: '', link: '', plays: '', likes: '', comments: '', shares: '', status: '待发布' },
       historyMonth: today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0'),
       
-      statsForm: { year: '2026年', month: '6月', week: '第4周' },
+      statsForm: { year: '2026年', month: '7月', week: '第1周' },
       
       // Chart instances
       chartInstances: {},
@@ -1212,11 +1218,6 @@ createApp({
       yearOptions: ['2025年','2026年','2027年'],
       statsYear: '2026年',
       weekDateRange: '',
-      weekDateMap: {
-        '3月第1周': '3.2-3.8', '3月第2周': '3.9-3.15', '3月第3周': '3.16-3.22', '3月第4周': '3.23-3.29',
-        '4月第1周': '3.30-4.5', '4月第2周': '4.6-4.12', '4月第3周': '4.13-4.19', '4月第4周': '4.20-4.26',
-        '5月第1周': '5.25-5.31', '6月第1周': '6.1-6.7', '6月第2周': '6.8-6.14', '6月第3周': '6.15-6.21', '6月第4周': '6.22-6.28',
-      },
       weekOptions: ['第1周', '第2周', '第3周', '第4周', '第5周'],
       
       // communityGroups 现在是 computed，从 communityData 动态生成
@@ -1366,19 +1367,53 @@ createApp({
     },
     dashboardTotal() {
       let fans = 0, plays = 0, likes = 0, comments = 0, shares = 0, posts = 0;
+      // 数据大屏/看板：优先使用最新周统计数据的粉丝数，其他用累计
+      const latestWeek = this.latestWeekStats;
+      const latestAccounts = new Set(latestWeek.map(s => s.account + '|' + s.platform));
       this.dashboardDetail.forEach(r => {
-        fans += r.fans || 0;
-        plays += r.plays || 0;
-        likes += r.likes || 0;
-        comments += r.comments || 0;
-        shares += r.shares || 0;
-        posts += r.posts || 0;
+        // 粉丝数：如果有最新周数据就用最新周的，否则保留 dashboardDetail 中的值
+        const match = latestWeek.find(s => s.account === r.accountName && s.platform === r.platform);
+        if (match) {
+          fans += parseInt(match.fans) || 0;
+          plays += parseInt(match.plays) || 0;
+          likes += parseInt(match.likes) || 0;
+          comments += parseInt(match.comments) || 0;
+          shares += parseInt(match.shares) || 0;
+          posts += parseInt(match.posts) || 0;
+        } else {
+          fans += r.fans || 0;
+          plays += r.plays || 0;
+          likes += r.likes || 0;
+          comments += r.comments || 0;
+          shares += r.shares || 0;
+          posts += r.posts || 0;
+        }
       });
       return {
         fans,
         plays: (plays / 10000).toFixed(1),
         likes, comments, shares, posts
       };
+    },
+    
+    // 获取 statsEntries 中最新一周的数据
+    latestWeekStats() {
+      if (this.statsEntries.length === 0) return [];
+      // 按年月周排序，取最新
+      const sorted = [...this.statsEntries].sort((a, b) => {
+        const ka = a.year + a.month + a.week;
+        const kb = b.year + b.month + b.week;
+        return kb.localeCompare(ka); // 降序
+      });
+      const latestKey = sorted[0].year + '|' + sorted[0].month + '|' + sorted[0].week;
+      return sorted.filter(s => (s.year + '|' + s.month + '|' + s.week) === latestKey);
+    },
+    
+    // 最新周标签（用于数据大屏显示）
+    latestWeekLabel() {
+      const latest = this.latestWeekStats;
+      if (latest.length === 0) return '';
+      return latest[0].month + ' ' + latest[0].week;
     },
     
     filteredContents() {
@@ -1472,8 +1507,32 @@ createApp({
     formatNum(n) { if (!n && n !== 0) return '0'; return n >= 10000 ? (n/10000).toFixed(1)+'万' : n.toLocaleString(); },
     
     updateWeekDate() {
-      const key = this.statsForm.month + this.statsForm.week;
-      this.weekDateRange = this.weekDateMap[key] || '';
+      // 动态计算日期范围：基于年月周自动推算
+      const monthNum = parseInt(this.statsForm.month);
+      const weekNum = parseInt(this.statsForm.week);
+      const yearNum = parseInt(this.statsYear);
+      if (isNaN(monthNum) || isNaN(weekNum) || isNaN(yearNum)) {
+        this.weekDateRange = '';
+        return;
+      }
+      // 计算该月第N周的周一日期
+      // 先找该月1号是周几，然后算第N周的周一
+      const firstDay = new Date(yearNum, monthNum - 1, 1);
+      const firstDayOfWeek = firstDay.getDay(); // 0=周日
+      // 第1周的周一：如果1号不是周一，第1周从1号开始
+      // 我们定义：每月第1周从1号开始，第N周从 (N-1)*7+1 号开始
+      const weekStartDay = (weekNum - 1) * 7 + 1;
+      const startDate = new Date(yearNum, monthNum - 1, weekStartDay);
+      // 周末 = 开始+6天
+      const endDate = new Date(startDate);
+      endDate.setDate(startDate.getDate() + 6);
+      // 如果结束日期超出当月，截断到月末
+      const lastDayOfMonth = new Date(yearNum, monthNum, 0).getDate();
+      if (endDate.getDate() > lastDayOfMonth && endDate.getMonth() === monthNum - 1) {
+        endDate.setDate(lastDayOfMonth);
+      }
+      const fd = d => d.getFullYear() + '.' + (d.getMonth() + 1) + '.' + d.getDate();
+      this.weekDateRange = fd(startDate) + ' - ' + fd(endDate);
     },
     
     exportPDF() {
@@ -2329,6 +2388,6 @@ createApp({
 }).mount('#app');
 </script>
 </body>
-<!-- build: 202606302100 -->
-<!-- v6.0.0: 社群数据同步、全链路保存、员工页保存按钮 -->
+<!-- build: 202607012200 -->
+<!-- v6.1.0: 自动日期计算 + 数据大屏只显示最新周 -->
 </html>
