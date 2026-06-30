@@ -940,7 +940,7 @@ textarea { resize:vertical; min-height:60px; }
   </div>
 </div>
 </main>
-<div class="footer" v-if="currentTab !== 'bigscreen'">梵天金融 · 新媒体矩阵运营管理系统 v6.1.0 | 数据存储于浏览器本地 | {{ todayStr }}</div>
+<div class="footer" v-if="currentTab !== 'bigscreen'">梵天金融 · 新媒体矩阵运营管理系统 v6.2.0 | 数据存储于浏览器本地 | {{ todayStr }}</div>
 
 <!-- Toast -->
 <div v-if="toast.show" :class="['toast','toast-'+toast.type]">{{ toast.msg }}</div>
@@ -1739,6 +1739,13 @@ createApp({
       this.currentTab = 'bigscreen';
     },
     loginAs(role) {
+      // 直接登录，无需密码
+      this.currentRole = role;
+      this.currentTab = 'dashboard';
+      save('role', role);
+    },
+    // 密码功能保留（仅用于管理员修改他人密码等场景）
+    showPwdDialog(role) {
       this.loginTargetRole = role;
       this.loginPassword = '';
       this.passwordError = '';
@@ -1751,6 +1758,7 @@ createApp({
         this.currentRole = this.loginTargetRole;
         this.currentTab = 'dashboard';
         this.passwordError = '';
+        save('role', this.loginTargetRole);
       } else {
         this.passwordError = '密码错误，请重试';
       }
@@ -2388,6 +2396,6 @@ createApp({
 }).mount('#app');
 </script>
 </body>
-<!-- build: 202607012200 -->
-<!-- v6.1.0: 自动日期计算 + 数据大屏只显示最新周 -->
+<!-- build: 202607021000 -->
+<!-- v6.2.0: 简化登录流程，去掉密码弹窗，点击直接进入 -->
 </html>
