@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>梵天金融 · 新媒体矩阵运营管理系统 v6.3.2</title>
+<title>梵天金融 · 新媒体矩阵运营管理系统 v6.3.3</title>
   <!-- cache-break: 1782832398 -->
 
 
@@ -928,7 +928,7 @@ textarea { resize:vertical; min-height:60px; }
   </div>
 </div>
 </main>
-<div class="footer" v-if="currentTab !== 'bigscreen'">梵天金融 · 新媒体矩阵运营管理系统 v6.3.2 | 数据存储于浏览器本地 | {{ todayStr }}</div>
+<div class="footer" v-if="currentTab !== 'bigscreen'">梵天金融 · 新媒体矩阵运营管理系统 v6.3.3 | 数据存储于浏览器本地 | {{ todayStr }}</div>
 
 <!-- Toast -->
 <div v-if="toast.show" :class="['toast','toast-'+toast.type]">{{ toast.msg }}</div>
@@ -1141,21 +1141,21 @@ createApp({
       materials: load('materials', defaultMaterials),
       salons: load('salons', generateSalons()),
       communityData: load('community', [
-        { id: 'g1', name: '价值投机1群', members: 500, weeklyNew: 0, activity: '高' if 500 >= 500 else ('中' if 500 > 0 else '低'), note: '' },
-        { id: 'g2', name: '价值投机2群', members: 210, weeklyNew: 0, activity: '高' if 210 >= 500 else ('中' if 210 > 0 else '低'), note: '' },
-        { id: 'g3', name: '聚焦龙头', members: 500, weeklyNew: 0, activity: '高' if 500 >= 500 else ('中' if 500 > 0 else '低'), note: '' },
-        { id: 'g4', name: '聚焦龙头1群', members: 496, weeklyNew: 0, activity: '高' if 496 >= 500 else ('中' if 496 > 0 else '低'), note: '' },
-        { id: 'g5', name: '聚焦龙头2群', members: 500, weeklyNew: 0, activity: '高' if 500 >= 500 else ('中' if 500 > 0 else '低'), note: '' },
-        { id: 'g6', name: '聚焦龙头3群', members: 500, weeklyNew: 0, activity: '高' if 500 >= 500 else ('中' if 500 > 0 else '低'), note: '' },
-        { id: 'g7', name: '聚焦花魁', members: 500, weeklyNew: 0, activity: '高' if 500 >= 500 else ('中' if 500 > 0 else '低'), note: '' },
-        { id: 'g8', name: '聚焦花魁1群', members: 500, weeklyNew: 0, activity: '高' if 500 >= 500 else ('中' if 500 > 0 else '低'), note: '' },
-        { id: 'g9', name: '聚焦花魁2群', members: 500, weeklyNew: 0, activity: '高' if 500 >= 500 else ('中' if 500 > 0 else '低'), note: '' },
-        { id: 'g10', name: '聚焦花魁3群', members: 500, weeklyNew: 0, activity: '高' if 500 >= 500 else ('中' if 500 > 0 else '低'), note: '' },
-        { id: 'g11', name: '聚焦主线', members: 499, weeklyNew: 0, activity: '高' if 499 >= 500 else ('中' if 499 > 0 else '低'), note: '' },
-        { id: 'g12', name: '聚焦主线1群', members: 498, weeklyNew: 0, activity: '高' if 498 >= 500 else ('中' if 498 > 0 else '低'), note: '' },
-        { id: 'g13', name: '价值投机', members: 141, weeklyNew: 0, activity: '高' if 141 >= 500 else ('中' if 141 > 0 else '低'), note: '' },
-        { id: 'g14', name: '聚焦主线花魁2026', members: 265, weeklyNew: 0, activity: '高' if 265 >= 500 else ('中' if 265 > 0 else '低'), note: '' },
-        { id: 'g15', name: '业问证券资产群', members: 0, weeklyNew: 0, activity: '高' if 0 >= 500 else ('中' if 0 > 0 else '低'), note: '' }
+        { id: 'g1', name: '价值投机1群', members: 500, weeklyNew: 0, activity: '高', note: '' },
+        { id: 'g2', name: '价值投机2群', members: 210, weeklyNew: 0, activity: '中', note: '' },
+        { id: 'g3', name: '聚焦龙头', members: 500, weeklyNew: 0, activity: '高', note: '' },
+        { id: 'g4', name: '聚焦龙头1群', members: 496, weeklyNew: 0, activity: '中', note: '' },
+        { id: 'g5', name: '聚焦龙头2群', members: 500, weeklyNew: 0, activity: '高', note: '' },
+        { id: 'g6', name: '聚焦龙头3群', members: 500, weeklyNew: 0, activity: '高', note: '' },
+        { id: 'g7', name: '聚焦花魁', members: 500, weeklyNew: 0, activity: '高', note: '' },
+        { id: 'g8', name: '聚焦花魁1群', members: 500, weeklyNew: 0, activity: '高', note: '' },
+        { id: 'g9', name: '聚焦花魁2群', members: 500, weeklyNew: 0, activity: '高', note: '' },
+        { id: 'g10', name: '聚焦花魁3群', members: 500, weeklyNew: 0, activity: '高', note: '' },
+        { id: 'g11', name: '聚焦主线', members: 499, weeklyNew: 0, activity: '中', note: '' },
+        { id: 'g12', name: '聚焦主线1群', members: 498, weeklyNew: 0, activity: '中', note: '' },
+        { id: 'g13', name: '价值投机', members: 141, weeklyNew: 0, activity: '中', note: '' },
+        { id: 'g14', name: '聚焦主线花魁2026', members: 265, weeklyNew: 0, activity: '中', note: '' },
+        { id: 'g15', name: '业问证券资产群', members: 0, weeklyNew: 0, activity: '低', note: '' }
       ]),
       customerList: load('customers', []),
       statsEntries: defaultStatsEntries.map(e => ({...e})),
@@ -2348,6 +2348,6 @@ createApp({
 }).mount('#app');
 </script>
 </body>
-<!-- build: 202607030100 -->
-<!-- v6.3.2: 强制缓存刷新 + 登录修复 -->
+<!-- build: 202607030300 -->
+<!-- v6.3.3: 修复Python语法污染JS - 15处if/else改为三元运算符 -->
 </html>
