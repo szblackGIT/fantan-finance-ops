@@ -1351,27 +1351,13 @@ createApp({
     },
     dashboardTotal() {
       let fans = 0, plays = 0, likes = 0, comments = 0, shares = 0, posts = 0;
-      // 数据大屏/看板：优先使用最新周统计数据的粉丝数，其他用累计
-      const latestWeek = this.latestWeekStats;
-      const latestAccounts = new Set(latestWeek.map(s => s.account + '|' + s.platform));
       this.dashboardDetail.forEach(r => {
-        // 粉丝数：如果有最新周数据就用最新周的，否则保留 dashboardDetail 中的值
-        const match = latestWeek.find(s => s.account === r.accountName && s.platform === r.platform);
-        if (match) {
-          fans += parseInt(match.fans) || 0;
-          plays += parseInt(match.plays) || 0;
-          likes += parseInt(match.likes) || 0;
-          comments += parseInt(match.comments) || 0;
-          shares += parseInt(match.shares) || 0;
-          posts += parseInt(match.posts) || 0;
-        } else {
-          fans += r.fans || 0;
-          plays += r.plays || 0;
-          likes += r.likes || 0;
-          comments += r.comments || 0;
-          shares += r.shares || 0;
-          posts += r.posts || 0;
-        }
+        fans += r.fans || 0;
+        plays += r.plays || 0;
+        likes += r.likes || 0;
+        comments += r.comments || 0;
+        shares += r.shares || 0;
+        posts += r.posts || 0;
       });
       return {
         fans,
@@ -1379,7 +1365,7 @@ createApp({
         likes, comments, shares, posts
       };
     },
-    
+
     // 获取 statsEntries 中最新一周的数据
     latestWeekStats() {
       if (this.statsEntries.length === 0) return [];
