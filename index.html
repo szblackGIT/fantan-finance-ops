@@ -1,38 +1,31 @@
 <!DOCTYPE html>
-
-<script>
-// 强制清除旧缓存 - v11.1.0
-(function(){
-  var currentVersion = 'v11.1.0';
-  var storedVersion = localStorage.getItem('_app_version');
-  if (storedVersion !== currentVersion) {
-    // 清除所有旧数据
-    var keys = [];
-    for (var i = 0; i < localStorage.length; i++) {
-      keys.push(localStorage.key(i));
-    }
-    keys.forEach(function(k) {
-      if (k.indexOf('fantan_') === 0) {
-        localStorage.removeItem(k);
-      }
-    });
-    localStorage.setItem('_app_version', currentVersion);
-    // 强制重新加载
-    window.location.reload(true);
-  }
-})();
-</script>
-
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>梵天金融 · 新媒体矩阵运营管理系统 v11.1.0</title>
-  <!-- cache-break: 1782832398 -->
-
-
-
-
+<title>梵天金融 · 新媒体矩阵运营管理系统 v11.2.0</title>
+<script>
+// 自动清除旧版本 localStorage 数据
+(function(){
+  var v = 'v11.2.0';
+  if (localStorage.getItem('_v') !== v) {
+    for (var i = localStorage.length - 1; i >= 0; i--) {
+      var k = localStorage.key(i);
+      if (k && k.indexOf('fantan_') === 0) localStorage.removeItem(k);
+    }
+    localStorage.setItem('_v', v);
+  }
+})();
+</script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --primary: #1a365d; --success: #38a169; --danger: #e53e3e; --warning: #dd6b20;
+  --bg: #f7fafc; --card-bg: #fff; --text: #1a202c; --text-secondary: #718096;
+  --wei: #3b82f6; --liu: #f97316;
+}
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); }
+</style>
 <script>/**
 * vue v3.5.38
 * (c) 2018-present Yuxi (Evan) You and Vue contributors
@@ -1198,7 +1191,7 @@ textarea { resize:vertical; min-height:60px; }
   </div>
 </div>
 </main>
-<div class="footer" v-if="currentTab !== 'bigscreen'">梵天金融 · 新媒体矩阵运营管理系统 v11.1.0 | 数据存储于浏览器本地 | {{ todayStr }}</div>
+<div class="footer" v-if="currentTab !== 'bigscreen'">梵天金融 · 新媒体矩阵运营管理系统 v11.2.0 | 数据存储于浏览器本地 | {{ todayStr }}</div>
 
 <!-- Toast -->
 <div v-if="toast.show" :class="['toast','toast-'+toast.type]">{{ toast.msg }}</div>
@@ -2617,5 +2610,5 @@ createApp({
 </script>
 </body>
 <!-- build: 202607050500 -->
-<!-- v11.1.0: 完全按Excel重建数据大屏 -->
+<!-- v11.2.0: 完全按Excel重建数据大屏 -->
 </html>
