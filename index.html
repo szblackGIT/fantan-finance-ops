@@ -1,9 +1,33 @@
 <!DOCTYPE html>
+
+<script>
+// 强制清除旧缓存 - v11.1.0
+(function(){
+  var currentVersion = 'v11.1.0';
+  var storedVersion = localStorage.getItem('_app_version');
+  if (storedVersion !== currentVersion) {
+    // 清除所有旧数据
+    var keys = [];
+    for (var i = 0; i < localStorage.length; i++) {
+      keys.push(localStorage.key(i));
+    }
+    keys.forEach(function(k) {
+      if (k.indexOf('fantan_') === 0) {
+        localStorage.removeItem(k);
+      }
+    });
+    localStorage.setItem('_app_version', currentVersion);
+    // 强制重新加载
+    window.location.reload(true);
+  }
+})();
+</script>
+
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>梵天金融 · 新媒体矩阵运营管理系统 v10.0.0</title>
+<title>梵天金融 · 新媒体矩阵运营管理系统 v11.1.0</title>
   <!-- cache-break: 1782832398 -->
 
 
@@ -1174,7 +1198,7 @@ textarea { resize:vertical; min-height:60px; }
   </div>
 </div>
 </main>
-<div class="footer" v-if="currentTab !== 'bigscreen'">梵天金融 · 新媒体矩阵运营管理系统 v10.0.0 | 数据存储于浏览器本地 | {{ todayStr }}</div>
+<div class="footer" v-if="currentTab !== 'bigscreen'">梵天金融 · 新媒体矩阵运营管理系统 v11.1.0 | 数据存储于浏览器本地 | {{ todayStr }}</div>
 
 <!-- Toast -->
 <div v-if="toast.show" :class="['toast','toast-'+toast.type]">{{ toast.msg }}</div>
@@ -1224,7 +1248,7 @@ const defaultStatsEntries = [
 ];
 
 
-const STORAGE = 'fantan_v12_';
+const STORAGE = 'fantan_v13_';
 const save = (k, v) => { localStorage.setItem(STORAGE + k, JSON.stringify(v)); };
 const load = (k, d) => { const r = localStorage.getItem(STORAGE + k); return r ? JSON.parse(r) : d; };
 
@@ -2592,6 +2616,6 @@ createApp({
 }).mount('#app');
 </script>
 </body>
-<!-- build: 202607020500 -->
-<!-- v10.0.0: 完全按Excel重建数据大屏 -->
+<!-- build: 202607050500 -->
+<!-- v11.1.0: 完全按Excel重建数据大屏 -->
 </html>
