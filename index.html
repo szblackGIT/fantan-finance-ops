@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>梵天金融 · 新媒体矩阵运营管理系统 v7.2.0</title>
+<title>梵天金融 · 新媒体矩阵运营管理系统 v8.0.0</title>
   <!-- cache-break: 1782832398 -->
 
 
@@ -312,11 +312,11 @@ textarea { resize:vertical; min-height:60px; }
       <div class="card-body">
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px">
           <div><b>总粉丝</b><br><span style="font-size:22px;font-weight:700;color:var(--primary)">107,613</span></div>
-          <div><b>总播放量</b><br><span style="font-size:22px;font-weight:700;color:var(--primary)">1,544.7万</span></div>
-          <div><b>总点赞</b><br><span style="font-size:22px;font-weight:700;color:var(--primary)">32,677</span></div>
-          <div><b>总评论</b><br><span style="font-size:22px;font-weight:700;color:var(--primary)">5,492</span></div>
-          <div><b>总转发</b><br><span style="font-size:22px;font-weight:700;color:var(--primary)">6,316</span></div>
-          <div><b>发布作品</b><br><span style="font-size:22px;font-weight:700;color:var(--primary)">641</span></div>
+          <div><b>当周播放量</b><br><span style="font-size:22px;font-weight:700;color:var(--primary)">566.5万</span></div>
+          <div><b>当周点赞</b><br><span style="font-size:22px;font-weight:700;color:var(--primary)">11,227</span></div>
+          <div><b>当周评论</b><br><span style="font-size:22px;font-weight:700;color:var(--primary)">1,624</span></div>
+          <div><b>当周转发</b><br><span style="font-size:22px;font-weight:700;color:var(--primary)">1,910</span></div>
+          <div><b>当周发布</b><br><span style="font-size:22px;font-weight:700;color:var(--primary)">253</span></div>
         </div>
         <div style="font-size:12px;color:var(--text-secondary)">
           📌 各平台粉丝：微博 <b>52,686</b> | 公众号 <b>45,996</b> | 视频号 <b>4,284</b> | 抖音 <b>3,466</b> | 雪球 <b>1,164</b> | 淘股吧 <b>9</b> | 东方财富 <b>8</b></div>
@@ -327,12 +327,12 @@ textarea { resize:vertical; min-height:60px; }
       <div class="card-header" style="background:#FFEDD5"><h3>🟠 刘老师 · 账号画像</h3><span style="font-size:12px">2个平台</span></div>
       <div class="card-body">
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px">
-          <div><b>总粉丝</b><br><span style="font-size:22px;font-weight:700;color:var(--primary)">788</span></div>
-          <div><b>总播放量</b><br><span style="font-size:22px;font-weight:700;color:var(--primary)">6.9万</span></div>
-          <div><b>总点赞</b><br><span style="font-size:22px;font-weight:700;color:var(--primary)">568</span></div>
-          <div><b>总评论</b><br><span style="font-size:22px;font-weight:700;color:var(--primary)">46</span></div>
-          <div><b>总转发</b><br><span style="font-size:22px;font-weight:700;color:var(--primary)">423</span></div>
-          <div><b>发布作品</b><br><span style="font-size:22px;font-weight:700;color:var(--primary)">31</span></div>
+          <div><b>总粉丝</b><br><span style="font-size:22px;font-weight:700;color:var(--primary)">107,613</span></div>
+          <div><b>当周播放量</b><br><span style="font-size:22px;font-weight:700;color:var(--primary)">566.5万</span></div>
+          <div><b>当周点赞</b><br><span style="font-size:22px;font-weight:700;color:var(--primary)">11,227</span></div>
+          <div><b>当周评论</b><br><span style="font-size:22px;font-weight:700;color:var(--primary)">1,624</span></div>
+          <div><b>当周转发</b><br><span style="font-size:22px;font-weight:700;color:var(--primary)">1,910</span></div>
+          <div><b>当周发布</b><br><span style="font-size:22px;font-weight:700;color:var(--primary)">253</span></div>
         </div>
         <div style="font-size:12px;color:var(--text-secondary)">
           📌 各平台粉丝：视频号 <b>509</b> | 抖音 <b>279</b> · 账号处于起步阶段</div>
@@ -928,7 +928,7 @@ textarea { resize:vertical; min-height:60px; }
   </div>
 </div>
 </main>
-<div class="footer" v-if="currentTab !== 'bigscreen'">梵天金融 · 新媒体矩阵运营管理系统 v7.2.0 | 数据存储于浏览器本地 | {{ todayStr }}</div>
+<div class="footer" v-if="currentTab !== 'bigscreen'">梵天金融 · 新媒体矩阵运营管理系统 v8.0.0 | 数据存储于浏览器本地 | {{ todayStr }}</div>
 
 <!-- Toast -->
 <div v-if="toast.show" :class="['toast','toast-'+toast.type]">{{ toast.msg }}</div>
@@ -1030,19 +1030,19 @@ const defaultMembers = [
 
 // Default dashboard detail rows
 const defaultDashboardDetail = [
-  // Excel W4粉丝 + 累计播放/互动
+  // Excel W4 单周数据（最新）
   { person: '魏总', personId: 'wei', platform: '抖音', accountName: '7号魏帅', operator: '成家琦', fans: 678, plays: 431, likes: 19, comments: 1, shares: 0, posts: 5, likeRate: '4.41%' },
-  { person: '魏总', personId: 'wei', platform: '抖音', accountName: '梵天咨询（蓝V）', operator: '成家琦', fans: 19, plays: 2960, likes: 51, comments: 2, shares: 1, posts: 13, likeRate: '1.72%' },
-  { person: '魏总', personId: 'wei', platform: '抖音', accountName: '魏帅情报局', operator: '姜四', fans: 2769, plays: 1044108, likes: 11312, comments: 745, shares: 3204, posts: 20, likeRate: '1.08%' },
-  { person: '魏总', personId: 'wei', platform: '视频号', accountName: '7号魏帅', operator: '成家琦', fans: 4284, plays: 26630, likes: 611, comments: 61, shares: 729, posts: 17, likeRate: '2.29%' },
-  { person: '魏总', personId: 'wei', platform: '公众号', accountName: '7号魏帅投研笔记', operator: '姜四', fans: 45996, plays: 16741, likes: 434, comments: 106, shares: 621, posts: 9, likeRate: '2.59%' },
-  { person: '魏总', personId: 'wei', platform: '微博', accountName: '7号魏帅', operator: '魏总', fans: 52686, plays: 12559000, likes: 18554, comments: 4172, shares: 1710, posts: 416, likeRate: '0.15%' },
-  { person: '魏总', personId: 'wei', platform: '雪球', accountName: '魏帅投研', operator: '魏总', fans: 1164, plays: 1788000, likes: 1505, comments: 274, shares: 17, posts: 90, likeRate: '0.08%' },
-  { person: '魏总', personId: 'wei', platform: '淘股吧', accountName: '7号魏帅', operator: '王珏', fans: 9, plays: 3233, likes: 4, comments: 7, shares: 0, posts: 27, likeRate: '0.12%' },
-  { person: '魏总', personId: 'wei', platform: '东方财富股吧', accountName: '七号魏帅', operator: '王珏', fans: 8, plays: 1810, likes: 6, comments: 5, shares: 1, posts: 41, likeRate: '0.33%' },
+  { person: '魏总', personId: 'wei', platform: '抖音', accountName: '梵天咨询（蓝V）', operator: '成家琦', fans: 19, plays: 42, likes: 2, comments: 0, shares: 1, posts: 2, likeRate: '4.76%' },
+  { person: '魏总', personId: 'wei', platform: '抖音', accountName: '魏帅情报局', operator: '姜四', fans: 2769, plays: 248713, likes: 2484, comments: 84, shares: 815, posts: 11, likeRate: '1.00%' },
+  { person: '魏总', personId: 'wei', platform: '视频号', accountName: '7号魏帅', operator: '成家琦', fans: 4284, plays: 8034, likes: 157, comments: 16, shares: 167, posts: 6, likeRate: '1.95%' },
+  { person: '魏总', personId: 'wei', platform: '公众号', accountName: '7号魏帅投研笔记', operator: '姜四', fans: 45996, plays: 8549, likes: 81, comments: 35, shares: 270, posts: 5, likeRate: '0.95%' },
+  { person: '魏总', personId: 'wei', platform: '微博', accountName: '7号魏帅', operator: '魏总', fans: 52686, plays: 4756000, likes: 7851, comments: 1429, shares: 651, posts: 164, likeRate: '0.17%' },
+  { person: '魏总', personId: 'wei', platform: '雪球', accountName: '魏帅投研', operator: '魏总', fans: 1164, plays: 641000, likes: 626, comments: 56, shares: 5, posts: 30, likeRate: '0.10%' },
+  { person: '魏总', personId: 'wei', platform: '淘股吧', accountName: '7号魏帅', operator: '王珏', fans: 9, plays: 900, likes: 1, comments: 0, shares: 0, posts: 8, likeRate: '0.11%' },
+  { person: '魏总', personId: 'wei', platform: '东方财富股吧', accountName: '七号魏帅', operator: '王珏', fans: 8, plays: 969, likes: 6, comments: 3, shares: 1, posts: 22, likeRate: '0.62%' },
   { person: '刘老师', personId: 'liu', platform: '抖音', accountName: '老刘说周期', operator: '成家琦', fans: 119, plays: 0, likes: 0, comments: 0, shares: 0, posts: 0, likeRate: '0.00%' },
-  { person: '刘老师', personId: 'liu', platform: '抖音', accountName: '老刘说周期（个人）', operator: '成家琦', fans: 160, plays: 46724, likes: 413, comments: 34, shares: 33, posts: 16, likeRate: '0.88%' },
-  { person: '刘老师', personId: 'liu', platform: '视频号', accountName: '老刘说周期', operator: '成家琦', fans: 509, plays: 21955, likes: 155, comments: 12, shares: 390, posts: 15, likeRate: '0.71%' }
+  { person: '刘老师', personId: 'liu', platform: '抖音', accountName: '老刘说周期（个人）', operator: '成家琦', fans: 160, plays: 24573, likes: 216, comments: 13, shares: 19, posts: 6, likeRate: '0.88%' },
+  { person: '刘老师', personId: 'liu', platform: '视频号', accountName: '老刘说周期', operator: '成家琦', fans: 509, plays: 9862, likes: 49, comments: 4, shares: 167, posts: 6, likeRate: '0.50%' }
 ];
 
 
@@ -1207,13 +1207,13 @@ createApp({
       // communityGroups 现在是 computed，从 communityData 动态生成
       
       platformBreakdown: [
-        { icon: '🎵', name: '抖音', plays: '109.4万', likes: 11795, comments: 782, shares: 3238 },
-        { icon: '💚', name: '视频号', plays: '4.9万', likes: 766, comments: 73, shares: 1119 },
-        { icon: '🔥', name: '微博', plays: '1255.9万', likes: 18554, comments: 4172, shares: 1710 },
-        { icon: '📝', name: '公众号', plays: '2.1万', likes: 615, comments: 225, shares: 654 },
-        { icon: '📘', name: '雪球', plays: '178.8万', likes: 1505, comments: 274, shares: 17 },
-        { icon: '📈', name: '淘股吧', plays: '0.3万', likes: 4, comments: 7, shares: 0 },
-        { icon: '📰', name: '东方财富', plays: '0.2万', likes: 6, comments: 5, shares: 1 }
+        { icon: '🎵', name: '抖音', plays: '27.4万', likes: 2721, comments: 98, shares: 835 },
+        { icon: '💚', name: '视频号', plays: '1.8万', likes: 206, comments: 20, shares: 334 },
+        { icon: '🔥', name: '微博', plays: '475.6万', likes: 7851, comments: 1429, shares: 651 },
+        { icon: '📝', name: '公众号', plays: '0.9万', likes: 81, comments: 35, shares: 270 },
+        { icon: '📘', name: '雪球', plays: '64.1万', likes: 626, comments: 56, shares: 5 },
+        { icon: '📈', name: '淘股吧', plays: '0.1万', likes: 1, comments: 0, shares: 0 },
+        { icon: '📰', name: '东方财富', plays: '0.0万', likes: 0, comments: 0, shares: 0 }
       ],
       
       // Platform-account mapping
@@ -1790,7 +1790,7 @@ createApp({
           type: 'doughnut',
           data: {
             labels: ['微博', '抖音', '雪球', '视频号', '公众号', '淘股吧', '东方财富'],
-            datasets: [{ data: [80.9, 7.0, 11.5, 0.3, 0.1, 0.02, 0.01], backgroundColor: ['#e53e3e','#3b82f6','#8b5cf6','#22c55e','#eab308','#f97316','#06b6d4'] }]
+            datasets: [{ data: [4.8, 0.3, 83.5, 0.2, 11.2, 0.0, 0.0], backgroundColor: ['#e53e3e','#3b82f6','#8b5cf6','#22c55e','#eab308','#f97316','#06b6d4'] }]
           },
           options: { responsive: true, plugins: { legend: { position: 'right' } } }
         });
@@ -1804,7 +1804,7 @@ createApp({
           data: {
             labels: ['抖音', '视频号', '微博', '公众号', '雪球', '淘股吧', '东方财富'],
             datasets: [
-              { label: '魏总', data: [3466, 4284, 52686, 45996, 1164, 9, 8], backgroundColor: '#3b82f6' },
+              { label: '魏总', data: [3466, 4284, 52686, 45996, 1164, 9, 0], backgroundColor: '#3b82f6' },
               { label: '刘老师', data: [279, 509, 0, 0, 0, 0, 0], backgroundColor: '#f97316' },
             ]
           },
@@ -1838,7 +1838,7 @@ createApp({
           type: 'bar',
           data: {
             labels: ['抖音', '视频号', '微博', '公众号', '雪球', '淘股吧', '东方财富'],
-            datasets: [{ label: '点赞率', data: [1.08, 1.58, 0.15, 2.92, 0.08, 0.12, 0.33], backgroundColor: '#3182ce' }]
+            datasets: [{ label: '点赞率', data: [0.99, 1.15, 0.17, 0.95, 0.10, 0.11, 0.00], backgroundColor: '#3182ce' }]
           },
           options: {
             responsive: true,
@@ -2348,6 +2348,6 @@ createApp({
 }).mount('#app');
 </script>
 </body>
-<!-- build: 202607041600 -->
-<!-- v7.1.0: 严格按Excel重建，v10存储键 -->
+<!-- build: 202607050100 -->
+<!-- v8.0.0: 全部数据改为W4单周，严格匹配Excel -->
 </html>
