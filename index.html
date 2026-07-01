@@ -1213,7 +1213,7 @@ createApp({
         { icon: '📝', name: '公众号', plays: '2.1万', likes: 615, comments: 225, shares: 654 },
         { icon: '📘', name: '雪球', plays: '178.8万', likes: 1505, comments: 274, shares: 17 },
         { icon: '📈', name: '淘股吧', plays: '0.3万', likes: 4, comments: 7, shares: 0 },
-        { icon: '📰', name: '东方财富', plays: '0.0万', likes: 0, comments: 0, shares: 0 }
+        { icon: '📰', name: '东方财富', plays: '0.2万', likes: 6, comments: 5, shares: 1 }
       ],
       
       // Platform-account mapping
@@ -1797,15 +1797,28 @@ createApp({
         });
       }
       
-      // Chart 2: Platform share
+      // Chart 2: Platform share (播放量占比 - doughnut)
       const c2 = document.getElementById('chartPlatformShare');
       if (c2) {
         this.chartInstances.platformShare = new Chart(c2, {
           type: 'doughnut',
           data: {
+            labels: ['微博', '抖音', '雪球', '视频号', '公众号', '淘股吧', '东方财富'],
+            datasets: [{ data: [80.9, 7.0, 11.5, 0.3, 0.1, 0.02, 0.01], backgroundColor: ['#e53e3e','#3b82f6','#8b5cf6','#22c55e','#eab308','#f97316','#06b6d4'] }]
+          },
+          options: { responsive: true, plugins: { legend: { position: 'right' } } }
+        });
+      }
+      
+      // Chart 3: Platform fans (各平台粉丝量对比 - bar)
+      const c3 = document.getElementById('chartPlatformFans');
+      if (c3) {
+        this.chartInstances.platformFans = new Chart(c3, {
+          type: 'bar',
+          data: {
             labels: ['抖音', '视频号', '微博', '公众号', '雪球', '淘股吧', '东方财富'],
             datasets: [
-              { label: '魏总', data: [3466, 4284, 52686, 45996, 1164, 9, 0], backgroundColor: '#3b82f6' },
+              { label: '魏总', data: [3466, 4284, 52686, 45996, 1164, 9, 8], backgroundColor: '#3b82f6' },
               { label: '刘老师', data: [279, 509, 0, 0, 0, 0, 0], backgroundColor: '#f97316' },
             ]
           },
@@ -1820,6 +1833,7 @@ createApp({
                   ctx.fillStyle = ds.backgroundColor;
                   ctx.textAlign = 'left';
                   ds.data.forEach(function(v, j) {
+                    if (v === 0) return;
                     const meta = this.getDatasetMeta(i);
                     const pt = meta.data[j];
                     ctx.fillText(v, pt.x + 4, pt.y + 4);
@@ -1838,7 +1852,7 @@ createApp({
           type: 'bar',
           data: {
             labels: ['抖音', '视频号', '微博', '公众号', '雪球', '淘股吧', '东方财富'],
-            datasets: [{ label: '点赞率', data: [1.08, 1.58, 0.15, 2.92, 0.08, 0.12, 0.00], backgroundColor: '#3182ce' }]
+            datasets: [{ label: '点赞率', data: [1.08, 1.58, 0.15, 2.92, 0.08, 0.12, 0.33], backgroundColor: '#3182ce' }]
           },
           options: {
             responsive: true,
