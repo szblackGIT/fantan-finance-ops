@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>梵天金融 · 新媒体矩阵运营管理系统 v12.0</title>
+<title>梵天金融 · 新媒体矩阵运营管理系统 v14.0</title>
 <script>
 // 自动清除旧版本 localStorage 数据
 (function(){
-  var v = 'v12.0';
+  var v = 'v14.0';
   if (localStorage.getItem('_v') !== v) {
     for (var i = localStorage.length - 1; i >= 0; i--) {
       var k = localStorage.key(i);
@@ -242,7 +242,7 @@ textarea { resize:vertical; min-height:60px; }
 <div v-else>
 <header class="header">
   <div class="header-inner">
-    <div class="header-logo">📊 梵天金融 · 运营管理系统 v6.1</div>
+    <div class="header-logo">📊 梵天金融 · 运营管理系统 v14.0</div>
     <div class="header-info" v-if="currentTab !== 'bigscreen'">
       <span :class="['person-badge', 'person-'+currentRole]">{{ currentPerson.icon }} {{ currentPerson.name }}</span>
       <span :class="['role-tag', isAdmin ? 'role-admin' : 'role-operator']">{{ isAdmin ? '管理员' : '运营人员' }}</span>
@@ -278,45 +278,44 @@ textarea { resize:vertical; min-height:60px; }
     📅 当前展示：<b style="color:var(--primary);font-size:16px">{{ latestWeekLabel }}</b> 数据
   </div>
 
-  <!-- Row 1: 6 KPI cards -->
+  <!-- Row 1: 6 KPI cards (动态绑定) -->
   <div class="grid grid-6" style="margin-bottom:16px">
-    <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-value">108,401</div><div class="stat-label">累计总粉丝</div></div>
-    <div class="stat-card"><div class="stat-icon">📊</div><div class="stat-value">569.9万</div><div class="stat-label">当周播放/浏览量</div></div>
-    <div class="stat-card"><div class="stat-icon">❤️</div><div class="stat-value">11,492</div><div class="stat-label">当周点赞数</div></div>
-    <div class="stat-card"><div class="stat-icon">💬</div><div class="stat-value">1,641</div><div class="stat-label">当周评论数</div></div>
-    <div class="stat-card"><div class="stat-icon">🔄</div><div class="stat-value">2,096</div><div class="stat-label">当周转发数</div></div>
-    <div class="stat-card"><div class="stat-icon">🎬</div><div class="stat-value">265</div><div class="stat-label">当周发布作品数</div></div>
+    <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-value">{{ dashboardTotal.fans.toLocaleString() }}</div><div class="stat-label">累计总粉丝</div></div>
+    <div class="stat-card"><div class="stat-icon">📊</div><div class="stat-value">{{ dashboardTotal.plays }}万</div><div class="stat-label">当周播放/浏览量</div></div>
+    <div class="stat-card"><div class="stat-icon">❤️</div><div class="stat-value">{{ dashboardTotal.likes.toLocaleString() }}</div><div class="stat-label">当周点赞数</div></div>
+    <div class="stat-card"><div class="stat-icon">💬</div><div class="stat-value">{{ dashboardTotal.comments.toLocaleString() }}</div><div class="stat-label">当周评论数</div></div>
+    <div class="stat-card"><div class="stat-icon">🔄</div><div class="stat-value">{{ dashboardTotal.shares.toLocaleString() }}</div><div class="stat-label">当周转发数</div></div>
+    <div class="stat-card"><div class="stat-icon">🎬</div><div class="stat-value">{{ dashboardTotal.posts.toLocaleString() }}</div><div class="stat-label">当周发布作品数</div></div>
   </div>
-  <!-- Row 2: 核心账号画像 -->
+  <!-- Row 2: 核心账号画像 (动态绑定) -->
   <div class="grid grid-2" style="margin-bottom:16px">
     <div class="card" style="border-left:4px solid var(--wei)">
       <div class="card-header" style="background:#DBEAFE"><h3>🔵 魏总 · 账号画像</h3><span style="font-size:12px">7个平台</span></div>
       <div class="card-body">
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px">
-          <div><b>总粉丝</b><br><span style="font-size:22px;font-weight:700;color:var(--primary)">107,613</span></div>
-          <div><b>当周播放量</b><br><span style="font-size:22px;font-weight:700;color:var(--primary)">566.5万</span></div>
-          <div><b>当周点赞</b><br><span style="font-size:22px;font-weight:700;color:var(--primary)">11,227</span></div>
-          <div><b>当周评论</b><br><span style="font-size:22px;font-weight:700;color:var(--primary)">1,624</span></div>
-          <div><b>当周转发</b><br><span style="font-size:22px;font-weight:700;color:var(--primary)">1,910</span></div>
-          <div><b>当周发布</b><br><span style="font-size:22px;font-weight:700;color:var(--primary)">253</span></div>
+          <div><b>总粉丝</b><br><span style="font-size:22px;font-weight:700;color:var(--primary)">{{ weiProfile.fans.toLocaleString() }}</span></div>
+          <div><b>当周播放量</b><br><span style="font-size:22px;font-weight:700;color:var(--primary)">{{ weiProfile.plays }}</span></div>
+          <div><b>当周点赞</b><br><span style="font-size:22px;font-weight:700;color:var(--primary)">{{ weiProfile.likes.toLocaleString() }}</span></div>
+          <div><b>当周评论</b><br><span style="font-size:22px;font-weight:700;color:var(--primary)">{{ weiProfile.comments.toLocaleString() }}</span></div>
+          <div><b>当周转发</b><br><span style="font-size:22px;font-weight:700;color:var(--primary)">{{ weiProfile.shares.toLocaleString() }}</span></div>
+          <div><b>当周发布</b><br><span style="font-size:22px;font-weight:700;color:var(--primary)">{{ weiProfile.posts }}</span></div>
         </div>
-        <div style="font-size:12px;color:var(--text-secondary)">📌 各平台粉丝：抖音 <b>3,466</b> | 视频号 <b>4,284</b> | 微博 <b>52,686</b> | 公众号 <b>45,996</b> | 雪球 <b>1,164</b> | 淘股吧 <b>9</b></div>
-        <div style="margin-top:8px"><span class="tag tag-danger">🚫 7号魏帅抖音：风控至6.28</span> <span class="tag tag-done">✅ 魏帅情报局：新号爆发</span></div>
+        <div style="font-size:12px;color:var(--text-secondary)">📌 各平台粉丝：抖音 <b>{{ weiProfile.platformFans.抖音 }}</b> | 视频号 <b>{{ weiProfile.platformFans.视频号 }}</b> | 微博 <b>{{ weiProfile.platformFans.微博 }}</b> | 公众号 <b>{{ weiProfile.platformFans.公众号 }}</b> | 雪球 <b>{{ weiProfile.platformFans.雪球 }}</b> | 淘股吧 <b>{{ weiProfile.platformFans.淘股吧 }}</b></div>
+        <div style="margin-top:8px"><span class="tag tag-done">✅ 魏帅情报局：新号爆发</span></div>
       </div>
     </div>
     <div class="card" style="border-left:4px solid var(--liu)">
       <div class="card-header" style="background:#FFEDD5"><h3>🟠 刘老师 · 账号画像</h3><span style="font-size:12px">2个平台</span></div>
       <div class="card-body">
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px">
-          <div><b>总粉丝</b><br><span style="font-size:22px;font-weight:700;color:var(--primary)">788</span></div>
-          <div><b>当周播放量</b><br><span style="font-size:22px;font-weight:700;color:var(--primary)">3.4万</span></div>
-          <div><b>当周点赞</b><br><span style="font-size:22px;font-weight:700;color:var(--primary)">265</span></div>
-          <div><b>当周评论</b><br><span style="font-size:22px;font-weight:700;color:var(--primary)">17</span></div>
-          <div><b>当周转发</b><br><span style="font-size:22px;font-weight:700;color:var(--primary)">186</span></div>
-          <div><b>当周发布</b><br><span style="font-size:22px;font-weight:700;color:var(--primary)">12</span></div>
+          <div><b>总粉丝</b><br><span style="font-size:22px;font-weight:700;color:var(--primary)">{{ liuProfile.fans.toLocaleString() }}</span></div>
+          <div><b>当周播放量</b><br><span style="font-size:22px;font-weight:700;color:var(--primary)">{{ liuProfile.plays }}</span></div>
+          <div><b>当周点赞</b><br><span style="font-size:22px;font-weight:700;color:var(--primary)">{{ liuProfile.likes.toLocaleString() }}</span></div>
+          <div><b>当周评论</b><br><span style="font-size:22px;font-weight:700;color:var(--primary)">{{ liuProfile.comments.toLocaleString() }}</span></div>
+          <div><b>当周转发</b><br><span style="font-size:22px;font-weight:700;color:var(--primary)">{{ liuProfile.shares.toLocaleString() }}</span></div>
+          <div><b>当周发布</b><br><span style="font-size:22px;font-weight:700;color:var(--primary)">{{ liuProfile.posts }}</span></div>
         </div>
-        <div style="font-size:12px;color:var(--text-secondary)">📌 各平台粉丝：抖音 <b>279</b> | 视频号 <b>509</b> · 账号处于起步阶段</div>
-        <div style="margin-top:8px"><span class="tag tag-danger">🚫 老刘说周期抖音：禁言至6.21</span></div>
+        <div style="font-size:12px;color:var(--text-secondary)">📌 各平台粉丝：抖音 <b>{{ liuProfile.platformFans.抖音 }}</b> | 视频号 <b>{{ liuProfile.platformFans.视频号 }}</b> · 账号处于起步阶段</div>
       </div>
     </div>
   </div>
@@ -423,161 +422,18 @@ textarea { resize:vertical; min-height:60px; }
         <table>
           <thead><tr><th>博主</th><th>平台</th><th>账号名</th><th>运营人</th><th>最新粉丝</th><th>当周播放量</th><th>当周点赞</th><th>当周评论</th><th>当周转发</th><th>当周发布数</th><th>点赞率</th></tr></thead>
           <tbody>
-              <tr>
-                <td><span class="person-badge person-wei">魏总</span></td>
-                <td>抖音</td>
-                <td>7号魏帅</td>
-                <td>成家琦</td>
-                <td>678</td>
-                <td>431</td>
-                <td>19</td>
-                <td>1</td>
-                <td>0</td>
-                <td>5</td>
-                <td>4.41%</td>
-              </tr>
-              <tr>
-                <td><span class="person-badge person-wei">魏总</span></td>
-                <td>抖音</td>
-                <td>梵天咨询（蓝V）</td>
-                <td>成家琦</td>
-                <td>19</td>
-                <td>42</td>
-                <td>2</td>
-                <td>0</td>
-                <td>1</td>
-                <td>2</td>
-                <td>4.76%</td>
-              </tr>
-              <tr>
-                <td><span class="person-badge person-wei">魏总</span></td>
-                <td>抖音</td>
-                <td>魏帅情报局</td>
-                <td>姜四</td>
-                <td>2,769</td>
-                <td>248,713</td>
-                <td>2,484</td>
-                <td>84</td>
-                <td>815</td>
-                <td>11</td>
-                <td>1.00%</td>
-              </tr>
-              <tr>
-                <td><span class="person-badge person-wei">魏总</span></td>
-                <td>视频号</td>
-                <td>7号魏帅</td>
-                <td>成家琦</td>
-                <td>4,284</td>
-                <td>8,034</td>
-                <td>157</td>
-                <td>16</td>
-                <td>167</td>
-                <td>6</td>
-                <td>1.95%</td>
-              </tr>
-              <tr>
-                <td><span class="person-badge person-wei">魏总</span></td>
-                <td>公众号</td>
-                <td>7号魏帅投研笔记</td>
-                <td>姜四</td>
-                <td>45,996</td>
-                <td>8,549</td>
-                <td>81</td>
-                <td>35</td>
-                <td>270</td>
-                <td>5</td>
-                <td>0.95%</td>
-              </tr>
-              <tr>
-                <td><span class="person-badge person-wei">魏总</span></td>
-                <td>微博</td>
-                <td>7号魏帅</td>
-                <td>魏总</td>
-                <td>52,686</td>
-                <td>4,756,000</td>
-                <td>7,851</td>
-                <td>1,429</td>
-                <td>651</td>
-                <td>164</td>
-                <td>0.17%</td>
-              </tr>
-              <tr>
-                <td><span class="person-badge person-wei">魏总</span></td>
-                <td>雪球</td>
-                <td>魏帅投研</td>
-                <td>魏总</td>
-                <td>1,164</td>
-                <td>641,000</td>
-                <td>626</td>
-                <td>56</td>
-                <td>5</td>
-                <td>30</td>
-                <td>0.10%</td>
-              </tr>
-              <tr>
-                <td><span class="person-badge person-wei">魏总</span></td>
-                <td>淘股吧</td>
-                <td>7号魏帅</td>
-                <td>王珏</td>
-                <td>9</td>
-                <td>900</td>
-                <td>1</td>
-                <td>0</td>
-                <td>0</td>
-                <td>8</td>
-                <td>0.11%</td>
-              </tr>
-              <tr>
-                <td><span class="person-badge person-wei">魏总</span></td>
-                <td>东方财富股吧</td>
-                <td>七号魏帅</td>
-                <td>王珏</td>
-                <td>8</td>
-                <td>969</td>
-                <td>6</td>
-                <td>3</td>
-                <td>1</td>
-                <td>22</td>
-                <td>0.62%</td>
-              </tr>
-              <tr>
-                <td><span class="person-badge person-liu">刘老师</span></td>
-                <td>抖音</td>
-                <td>老刘说周期</td>
-                <td>成家琦</td>
-                <td>119</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0.00%</td>
-              </tr>
-              <tr>
-                <td><span class="person-badge person-liu">刘老师</span></td>
-                <td>抖音</td>
-                <td>老刘说周期（个人）</td>
-                <td>成家琦</td>
-                <td>160</td>
-                <td>24,573</td>
-                <td>216</td>
-                <td>13</td>
-                <td>19</td>
-                <td>6</td>
-                <td>0.88%</td>
-              </tr>
-              <tr>
-                <td><span class="person-badge person-liu">刘老师</span></td>
-                <td>视频号</td>
-                <td>老刘说周期</td>
-                <td>成家琦</td>
-                <td>509</td>
-                <td>9,862</td>
-                <td>49</td>
-                <td>4</td>
-                <td>167</td>
-                <td>6</td>
-                <td>0.50%</td>
+              <tr v-for="d in dashboardDetail" :key="d.accountName + d.platform">
+                <td><span :class="'person-badge person-' + (d.personId === 'liu' ? 'liu' : 'wei')">{{ d.person }}</span></td>
+                <td>{{ d.platform }}</td>
+                <td>{{ d.accountName }}</td>
+                <td>{{ d.operator }}</td>
+                <td>{{ d.fans.toLocaleString() }}</td>
+                <td>{{ d.plays.toLocaleString() }}</td>
+                <td>{{ d.likes.toLocaleString() }}</td>
+                <td>{{ d.comments.toLocaleString() }}</td>
+                <td>{{ d.shares.toLocaleString() }}</td>
+                <td>{{ d.posts }}</td>
+                <td>{{ d.likeRate }}</td>
               </tr>
           </tbody>
         </table>
@@ -585,36 +441,7 @@ textarea { resize:vertical; min-height:60px; }
     </div>
   </div>
 
-  <!-- Row 9: 月度数据对比 -->
-  <div class="card" style="margin-bottom:16px">
-    <div class="card-header"><h3>📅 月度数据对比</h3></div>
-    <div class="card-body">
-      <div class="grid grid-4">
-        <div class="stat-card">
-          <div class="stat-icon">📝</div>
-          <div class="stat-value">{{ monthlyCompare.posts }}</div>
-          <div class="stat-label">本月发布数 <span :style="{color: monthlyCompare.postsGrowth >= 0 ? '#38a169' : '#e53e3e'}">{{ monthlyCompare.postsGrowth >= 0 ? '↑' : '↓' }}{{ Math.abs(monthlyCompare.postsGrowth) }}%</span></div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon">👁️</div>
-          <div class="stat-value">{{ monthlyCompare.plays }}</div>
-          <div class="stat-label">本月播放量 <span :style="{color: monthlyCompare.playsGrowth >= 0 ? '#38a169' : '#e53e3e'}">{{ monthlyCompare.playsGrowth >= 0 ? '↑' : '↓' }}{{ Math.abs(monthlyCompare.playsGrowth) }}%</span></div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon">❤️</div>
-          <div class="stat-value">{{ monthlyCompare.likes }}</div>
-          <div class="stat-label">本月点赞 <span :style="{color: monthlyCompare.likesGrowth >= 0 ? '#38a169' : '#e53e3e'}">{{ monthlyCompare.likesGrowth >= 0 ? '↑' : '↓' }}{{ Math.abs(monthlyCompare.likesGrowth) }}%</span></div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon">👥</div>
-          <div class="stat-value">{{ monthlyCompare.fans }}</div>
-          <div class="stat-label">本月粉丝增长</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Row 10: 社群概况 -->
+  <!-- Row 9: 社群概况（月度对比已移除） -->
   <div class="card">
     <div class="card-header"><h3>💬 社群运营概况</h3></div>
     <div class="card-body">
@@ -1158,7 +985,7 @@ textarea { resize:vertical; min-height:60px; }
   </div>
 </div>
 </main>
-<div class="footer" v-if="currentTab !== 'bigscreen'">梵天金融 · 新媒体矩阵运营管理系统 v12.0 | 数据存储于浏览器本地 | {{ todayStr }}</div>
+<div class="footer" v-if="currentTab !== 'bigscreen'">梵天金融 · 新媒体矩阵运营管理系统 v14.0 | 数据存储于浏览器本地 | {{ todayStr }}</div>
 
 <!-- Toast -->
 <div v-if="toast.show" :class="['toast','toast-'+toast.type]">{{ toast.msg }}</div>
@@ -1169,46 +996,46 @@ textarea { resize:vertical; min-height:60px; }
 const { createApp } = Vue;
 
 const defaultStatsEntries = [
-  { id: 's01', year: '2026年', month: '6月', week: '第2周', person: '魏总', platform: '抖音', account: '7号魏帅', operator: '成家琦', fans: 625, posts: 0, plays: 0, likes: 0, comments: 0, shares: 0, note: '减少推荐到6.28' },
-  { id: 's02', year: '2026年', month: '6月', week: '第2周', person: '魏总', platform: '抖音', account: '梵天咨询（蓝V）', operator: '成家琦', fans: 4, posts: 7, plays: 1390, likes: 26, comments: 0, shares: 0, note: '' },
-  { id: 's03', year: '2026年', month: '6月', week: '第2周', person: '魏总', platform: '抖音', account: '魏帅情报局', operator: '姜四', fans: 40, posts: 4, plays: 30560, likes: 215, comments: 13, shares: 29, note: '新号' },
-  { id: 's04', year: '2026年', month: '6月', week: '第2周', person: '魏总', platform: '视频号', account: '7号魏帅', operator: '成家琦', fans: 4116, posts: 6, plays: 10275, likes: 247, comments: 24, shares: 376, note: '' },
-  { id: 's05', year: '2026年', month: '6月', week: '第2周', person: '魏总', platform: '公众号', account: '7号魏帅', operator: '姜四', fans: 45530, posts: 3, plays: 4336, likes: 181, comments: 119, shares: 33, note: '周三恢复' },
-  { id: 's06', year: '2026年', month: '6月', week: '第2周', person: '魏总', platform: '微博', account: '7号魏帅', operator: '魏总', fans: 51472, posts: 106, plays: 3110000, likes: 4016, comments: 1048, shares: 364, note: '浏览量单位为万取整' },
-  { id: 's07', year: '2026年', month: '6月', week: '第2周', person: '魏总', platform: '雪球', account: '魏帅投研', operator: '魏总', fans: 982, posts: 30, plays: 503000, likes: 313, comments: 144, shares: 6, note: '浏览量单位为万取整' },
-  { id: 's08', year: '2026年', month: '6月', week: '第2周', person: '魏总', platform: '淘股吧', account: '7号魏帅', operator: '王珏', fans: 0, posts: 6, plays: 631, likes: 1, comments: 6, shares: 0, note: '新号-后台无数据统计手工测算' },
-  { id: 's09', year: '2026年', month: '6月', week: '第2周', person: '魏总', platform: '东方财富股吧', account: '七号魏帅', operator: '王珏', fans: 0, posts: 4, plays: 124, likes: 0, comments: 0, shares: 0, note: '新号' },
-  { id: 's10', year: '2026年', month: '6月', week: '第2周', person: '刘老师', platform: '抖音', account: '老刘说周期', operator: '成家琦', fans: 118, posts: 0, plays: 0, likes: 0, comments: 0, shares: 0, note: '禁言到6.21' },
-  { id: 's11', year: '2026年', month: '6月', week: '第2周', person: '刘老师', platform: '抖音', account: '老刘说周期（个人）', operator: '成家琦', fans: 111, posts: 6, plays: 17404, likes: 140, comments: 12, shares: 9, note: '' },
-  { id: 's12', year: '2026年', month: '6月', week: '第2周', person: '刘老师', platform: '视频号', account: '老刘说周期', operator: '成家琦', fans: 443, posts: 5, plays: 6431, likes: 63, comments: 8, shares: 111, note: '' },
-  { id: 's13', year: '2026年', month: '6月', week: '第3周', person: '魏总', platform: '抖音', account: '7号魏帅', operator: '成家琦', fans: 673, posts: 0, plays: 0, likes: 0, comments: 0, shares: 0, note: '减少推荐到6.28' },
-  { id: 's14', year: '2026年', month: '6月', week: '第3周', person: '魏总', platform: '抖音', account: '梵天咨询（蓝V）', operator: '成家琦', fans: 16, posts: 4, plays: 1528, likes: 23, comments: 2, shares: 0, note: '' },
-  { id: 's15', year: '2026年', month: '6月', week: '第3周', person: '魏总', platform: '抖音', account: '魏帅情报局', operator: '姜四', fans: 2135, posts: 5, plays: 764835, likes: 8613, comments: 648, shares: 2360, note: '其中6.18单条67.23w播放量' },
-  { id: 's16', year: '2026年', month: '6月', week: '第3周', person: '魏总', platform: '视频号', account: '7号魏帅', operator: '成家琦', fans: 4224, posts: 5, plays: 8321, likes: 207, comments: 21, shares: 186, note: '' },
-  { id: 's17', year: '2026年', month: '6月', week: '第3周', person: '魏总', platform: '公众号', account: '7号魏帅投研笔记', operator: '姜四', fans: 45882, posts: 4, plays: 8192, likes: 353, comments: 71, shares: 351, note: '' },
-  { id: 's18', year: '2026年', month: '6月', week: '第3周', person: '魏总', platform: '微博', account: '7号魏帅', operator: '魏总', fans: 52046, posts: 146, plays: 4693000, likes: 6687, comments: 1695, shares: 695, note: '' },
-  { id: 's19', year: '2026年', month: '6月', week: '第3周', person: '魏总', platform: '雪球', account: '魏帅投研', operator: '魏总', fans: 1096, posts: 30, plays: 644000, likes: 566, comments: 74, shares: 6, note: '' },
-  { id: 's20', year: '2026年', month: '6月', week: '第3周', person: '魏总', platform: '淘股吧', account: '7号魏帅', operator: '王珏', fans: 10, posts: 13, plays: 1702, likes: 2, comments: 1, shares: 0, note: '后台无数据统计手工测算' },
-  { id: 's21', year: '2026年', month: '6月', week: '第3周', person: '魏总', platform: '东方财富股吧', account: '七号魏帅', operator: '王珏', fans: 6, posts: 15, plays: 717, likes: 0, comments: 2, shares: 0, note: '' },
-  { id: 's22', year: '2026年', month: '6月', week: '第3周', person: '刘老师', platform: '抖音', account: '老刘说周期', operator: '成家琦', fans: 118, posts: 0, plays: 0, likes: 0, comments: 0, shares: 0, note: '禁言到6.21' },
-  { id: 's23', year: '2026年', month: '6月', week: '第3周', person: '刘老师', platform: '抖音', account: '老刘说周期（个人）', operator: '成家琦', fans: 114, posts: 4, plays: 4747, likes: 57, comments: 9, shares: 5, note: '' },
-  { id: 's24', year: '2026年', month: '6月', week: '第3周', person: '刘老师', platform: '视频号', account: '老刘说周期', operator: '成家琦', fans: 468, posts: 4, plays: 5662, likes: 43, comments: 0, shares: 112, note: '' },
-  { id: 's25', year: '2026年', month: '6月', week: '第4周', person: '魏总', platform: '抖音', account: '7号魏帅', operator: '成家琦', fans: 678, posts: 5, plays: 431, likes: 19, comments: 1, shares: 0, note: '' },
-  { id: 's26', year: '2026年', month: '6月', week: '第4周', person: '魏总', platform: '抖音', account: '梵天咨询（蓝V）', operator: '成家琦', fans: 19, posts: 2, plays: 42, likes: 2, comments: 0, shares: 1, note: '' },
-  { id: 's27', year: '2026年', month: '6月', week: '第4周', person: '魏总', platform: '抖音', account: '魏帅情报局', operator: '姜四', fans: 2769, posts: 11, plays: 248713, likes: 2484, comments: 84, shares: 815, note: '' },
-  { id: 's28', year: '2026年', month: '6月', week: '第4周', person: '魏总', platform: '视频号', account: '7号魏帅', operator: '成家琦', fans: 4284, posts: 6, plays: 8034, likes: 157, comments: 16, shares: 167, note: '' },
-  { id: 's29', year: '2026年', month: '6月', week: '第4周', person: '魏总', platform: '公众号', account: '7号魏帅投研笔记', operator: '姜四', fans: 45996, posts: 5, plays: 8549, likes: 81, comments: 35, shares: 270, note: '' },
-  { id: 's30', year: '2026年', month: '6月', week: '第4周', person: '魏总', platform: '微博', account: '7号魏帅', operator: '魏总', fans: 52686, posts: 164, plays: 4756000, likes: 7851, comments: 1429, shares: 651, note: '' },
-  { id: 's31', year: '2026年', month: '6月', week: '第4周', person: '魏总', platform: '雪球', account: '魏帅投研', operator: '魏总', fans: 1164, posts: 30, plays: 641000, likes: 626, comments: 56, shares: 5, note: '' },
-  { id: 's32', year: '2026年', month: '6月', week: '第4周', person: '魏总', platform: '淘股吧', account: '7号魏帅', operator: '王珏', fans: 9, posts: 8, plays: 900, likes: 1, comments: 0, shares: 0, note: '后台无数据统计手工测算' },
-  { id: 's33', year: '2026年', month: '6月', week: '第4周', person: '魏总', platform: '东方财富股吧', account: '七号魏帅', operator: '王珏', fans: 8, posts: 22, plays: 969, likes: 6, comments: 3, shares: 1, note: '' },
-  { id: 's34', year: '2026年', month: '6月', week: '第4周', person: '刘老师', platform: '抖音', account: '老刘说周期', operator: '成家琦', fans: 119, posts: 0, plays: 0, likes: 0, comments: 0, shares: 0, note: '禁言解除暂缓发布' },
-  { id: 's35', year: '2026年', month: '6月', week: '第4周', person: '刘老师', platform: '抖音', account: '老刘说周期（个人）', operator: '成家琦', fans: 160, posts: 6, plays: 24573, likes: 216, comments: 13, shares: 19, note: '' },
-  { id: 's36', year: '2026年', month: '6月', week: '第4周', person: '刘老师', platform: '视频号', account: '老刘说周期', operator: '成家琦', fans: 509, posts: 6, plays: 9862, likes: 49, comments: 4, shares: 167, note: '' }
+  { id: 's01', year: '2026年', month: '6月', week: '6W2', person: '魏总', platform: '抖音', account: '7号魏帅', operator: '成家琦', fans: 625, posts: 0, plays: 0, likes: 0, comments: 0, shares: 0, note: '减少推荐到6.28' },
+  { id: 's02', year: '2026年', month: '6月', week: '6W2', person: '魏总', platform: '抖音', account: '梵天咨询（蓝V）', operator: '成家琦', fans: 4, posts: 7, plays: 1390, likes: 26, comments: 0, shares: 0, note: '' },
+  { id: 's03', year: '2026年', month: '6月', week: '6W2', person: '魏总', platform: '抖音', account: '魏帅情报局', operator: '姜四', fans: 40, posts: 4, plays: 30560, likes: 215, comments: 13, shares: 29, note: '新号' },
+  { id: 's04', year: '2026年', month: '6月', week: '6W2', person: '魏总', platform: '视频号', account: '7号魏帅', operator: '成家琦', fans: 4116, posts: 6, plays: 10275, likes: 247, comments: 24, shares: 376, note: '' },
+  { id: 's05', year: '2026年', month: '6月', week: '6W2', person: '魏总', platform: '公众号', account: '7号魏帅', operator: '姜四', fans: 45530, posts: 3, plays: 4336, likes: 181, comments: 119, shares: 33, note: '周三恢复' },
+  { id: 's06', year: '2026年', month: '6月', week: '6W2', person: '魏总', platform: '微博', account: '7号魏帅', operator: '魏总', fans: 51472, posts: 106, plays: 3110000, likes: 4016, comments: 1048, shares: 364, note: '浏览量单位为万取整' },
+  { id: 's07', year: '2026年', month: '6月', week: '6W2', person: '魏总', platform: '雪球', account: '魏帅投研', operator: '魏总', fans: 982, posts: 30, plays: 503000, likes: 313, comments: 144, shares: 6, note: '浏览量单位为万取整' },
+  { id: 's08', year: '2026年', month: '6月', week: '6W2', person: '魏总', platform: '淘股吧', account: '7号魏帅', operator: '王珏', fans: 0, posts: 6, plays: 631, likes: 1, comments: 6, shares: 0, note: '新号-后台无数据统计手工测算' },
+  { id: 's09', year: '2026年', month: '6月', week: '6W2', person: '魏总', platform: '东方财富股吧', account: '七号魏帅', operator: '王珏', fans: 0, posts: 4, plays: 124, likes: 0, comments: 0, shares: 0, note: '新号' },
+  { id: 's10', year: '2026年', month: '6月', week: '6W2', person: '刘老师', platform: '抖音', account: '老刘说周期', operator: '成家琦', fans: 118, posts: 0, plays: 0, likes: 0, comments: 0, shares: 0, note: '禁言到6.21' },
+  { id: 's11', year: '2026年', month: '6月', week: '6W2', person: '刘老师', platform: '抖音', account: '老刘说周期（个人）', operator: '成家琦', fans: 111, posts: 6, plays: 17404, likes: 140, comments: 12, shares: 9, note: '' },
+  { id: 's12', year: '2026年', month: '6月', week: '6W2', person: '刘老师', platform: '视频号', account: '老刘说周期', operator: '成家琦', fans: 443, posts: 5, plays: 6431, likes: 63, comments: 8, shares: 111, note: '' },
+  { id: 's13', year: '2026年', month: '6月', week: '6W3', person: '魏总', platform: '抖音', account: '7号魏帅', operator: '成家琦', fans: 673, posts: 0, plays: 0, likes: 0, comments: 0, shares: 0, note: '减少推荐到6.28' },
+  { id: 's14', year: '2026年', month: '6月', week: '6W3', person: '魏总', platform: '抖音', account: '梵天咨询（蓝V）', operator: '成家琦', fans: 16, posts: 4, plays: 1528, likes: 23, comments: 2, shares: 0, note: '' },
+  { id: 's15', year: '2026年', month: '6月', week: '6W3', person: '魏总', platform: '抖音', account: '魏帅情报局', operator: '姜四', fans: 2135, posts: 5, plays: 764835, likes: 8613, comments: 648, shares: 2360, note: '其中6.18单条67.23w播放量' },
+  { id: 's16', year: '2026年', month: '6月', week: '6W3', person: '魏总', platform: '视频号', account: '7号魏帅', operator: '成家琦', fans: 4224, posts: 5, plays: 8321, likes: 207, comments: 21, shares: 186, note: '' },
+  { id: 's17', year: '2026年', month: '6月', week: '6W3', person: '魏总', platform: '公众号', account: '7号魏帅投研笔记', operator: '姜四', fans: 45882, posts: 4, plays: 8192, likes: 353, comments: 71, shares: 351, note: '' },
+  { id: 's18', year: '2026年', month: '6月', week: '6W3', person: '魏总', platform: '微博', account: '7号魏帅', operator: '魏总', fans: 52046, posts: 146, plays: 4693000, likes: 6687, comments: 1695, shares: 695, note: '' },
+  { id: 's19', year: '2026年', month: '6月', week: '6W3', person: '魏总', platform: '雪球', account: '魏帅投研', operator: '魏总', fans: 1096, posts: 30, plays: 644000, likes: 566, comments: 74, shares: 6, note: '' },
+  { id: 's20', year: '2026年', month: '6月', week: '6W3', person: '魏总', platform: '淘股吧', account: '7号魏帅', operator: '王珏', fans: 10, posts: 13, plays: 1702, likes: 2, comments: 1, shares: 0, note: '后台无数据统计手工测算' },
+  { id: 's21', year: '2026年', month: '6月', week: '6W3', person: '魏总', platform: '东方财富股吧', account: '七号魏帅', operator: '王珏', fans: 6, posts: 15, plays: 717, likes: 0, comments: 2, shares: 0, note: '' },
+  { id: 's22', year: '2026年', month: '6月', week: '6W3', person: '刘老师', platform: '抖音', account: '老刘说周期', operator: '成家琦', fans: 118, posts: 0, plays: 0, likes: 0, comments: 0, shares: 0, note: '禁言到6.21' },
+  { id: 's23', year: '2026年', month: '6月', week: '6W3', person: '刘老师', platform: '抖音', account: '老刘说周期（个人）', operator: '成家琦', fans: 114, posts: 4, plays: 4747, likes: 57, comments: 9, shares: 5, note: '' },
+  { id: 's24', year: '2026年', month: '6月', week: '6W3', person: '刘老师', platform: '视频号', account: '老刘说周期', operator: '成家琦', fans: 468, posts: 4, plays: 5662, likes: 43, comments: 0, shares: 112, note: '' },
+  { id: 's25', year: '2026年', month: '6月', week: '6W4', person: '魏总', platform: '抖音', account: '7号魏帅', operator: '成家琦', fans: 678, posts: 5, plays: 431, likes: 19, comments: 1, shares: 0, note: '' },
+  { id: 's26', year: '2026年', month: '6月', week: '6W4', person: '魏总', platform: '抖音', account: '梵天咨询（蓝V）', operator: '成家琦', fans: 19, posts: 2, plays: 42, likes: 2, comments: 0, shares: 1, note: '' },
+  { id: 's27', year: '2026年', month: '6月', week: '6W4', person: '魏总', platform: '抖音', account: '魏帅情报局', operator: '姜四', fans: 2769, posts: 11, plays: 248713, likes: 2484, comments: 84, shares: 815, note: '' },
+  { id: 's28', year: '2026年', month: '6月', week: '6W4', person: '魏总', platform: '视频号', account: '7号魏帅', operator: '成家琦', fans: 4284, posts: 6, plays: 8034, likes: 157, comments: 16, shares: 167, note: '' },
+  { id: 's29', year: '2026年', month: '6月', week: '6W4', person: '魏总', platform: '公众号', account: '7号魏帅投研笔记', operator: '姜四', fans: 45996, posts: 5, plays: 8549, likes: 81, comments: 35, shares: 270, note: '' },
+  { id: 's30', year: '2026年', month: '6月', week: '6W4', person: '魏总', platform: '微博', account: '7号魏帅', operator: '魏总', fans: 52686, posts: 164, plays: 4756000, likes: 7851, comments: 1429, shares: 651, note: '' },
+  { id: 's31', year: '2026年', month: '6月', week: '6W4', person: '魏总', platform: '雪球', account: '魏帅投研', operator: '魏总', fans: 1164, posts: 30, plays: 641000, likes: 626, comments: 56, shares: 5, note: '' },
+  { id: 's32', year: '2026年', month: '6月', week: '6W4', person: '魏总', platform: '淘股吧', account: '7号魏帅', operator: '王珏', fans: 9, posts: 8, plays: 900, likes: 1, comments: 0, shares: 0, note: '后台无数据统计手工测算' },
+  { id: 's33', year: '2026年', month: '6月', week: '6W4', person: '魏总', platform: '东方财富股吧', account: '七号魏帅', operator: '王珏', fans: 8, posts: 22, plays: 969, likes: 6, comments: 3, shares: 1, note: '' },
+  { id: 's34', year: '2026年', month: '6月', week: '6W4', person: '刘老师', platform: '抖音', account: '老刘说周期', operator: '成家琦', fans: 119, posts: 0, plays: 0, likes: 0, comments: 0, shares: 0, note: '禁言解除暂缓发布' },
+  { id: 's35', year: '2026年', month: '6月', week: '6W4', person: '刘老师', platform: '抖音', account: '老刘说周期（个人）', operator: '成家琦', fans: 160, posts: 6, plays: 24573, likes: 216, comments: 13, shares: 19, note: '' },
+  { id: 's36', year: '2026年', month: '6月', week: '6W4', person: '刘老师', platform: '视频号', account: '老刘说周期', operator: '成家琦', fans: 509, posts: 6, plays: 9862, likes: 49, comments: 4, shares: 167, note: '' }
 ];
 
 
-const STORAGE = 'fantan_v15_';
+const STORAGE = 'fantan_v16_';
 const save = (k, v) => { localStorage.setItem(STORAGE + k, JSON.stringify(v)); };
 const load = (k, d) => { const r = localStorage.getItem(STORAGE + k); return r ? JSON.parse(r) : d; };
 
@@ -1257,20 +1084,20 @@ const defaultMembers = [
   { id: 'wang', name: '王珏', icon: '🟣', role: 'operator', color: '#8b5cf6', bgColor: '#E0E7FF', textColor: '#3730a3', desc: '账号运营 · 社群运营 · 客服 · 数据统计', accounts: '微博@老刘说周期, 淘股吧, 东方财富' },
 ];
 
-// Default dashboard detail rows
+// Default dashboard detail rows（始终只保留最新一周数据）
 const defaultDashboardDetail = [
-  { person: '魏总', personId: 'wei', platform: '抖音', accountName: '7号魏帅', operator: '成家琦', fans: 678, plays: 431, likes: 19, comments: 1, shares: 0, posts: 5, likeRate: '4.41%' },
-  { person: '魏总', personId: 'wei', platform: '抖音', accountName: '梵天咨询（蓝V）', operator: '成家琦', fans: 19, plays: 42, likes: 2, comments: 0, shares: 1, posts: 2, likeRate: '4.76%' },
-  { person: '魏总', personId: 'wei', platform: '抖音', accountName: '魏帅情报局', operator: '姜四', fans: 2769, plays: 248713, likes: 2484, comments: 84, shares: 815, posts: 11, likeRate: '1.00%' },
-  { person: '魏总', personId: 'wei', platform: '视频号', accountName: '7号魏帅', operator: '成家琦', fans: 4284, plays: 8034, likes: 157, comments: 16, shares: 167, posts: 6, likeRate: '1.95%' },
-  { person: '魏总', personId: 'wei', platform: '公众号', accountName: '7号魏帅投研笔记', operator: '姜四', fans: 45996, plays: 8549, likes: 81, comments: 35, shares: 270, posts: 5, likeRate: '0.95%' },
-  { person: '魏总', personId: 'wei', platform: '微博', accountName: '7号魏帅', operator: '魏总', fans: 52686, plays: 4756000, likes: 7851, comments: 1429, shares: 651, posts: 164, likeRate: '0.17%' },
-  { person: '魏总', personId: 'wei', platform: '雪球', accountName: '魏帅投研', operator: '魏总', fans: 1164, plays: 641000, likes: 626, comments: 56, shares: 5, posts: 30, likeRate: '0.10%' },
-  { person: '魏总', personId: 'wei', platform: '淘股吧', accountName: '7号魏帅', operator: '王珏', fans: 9, plays: 900, likes: 1, comments: 0, shares: 0, posts: 8, likeRate: '0.11%' },
-  { person: '魏总', personId: 'wei', platform: '东方财富股吧', accountName: '七号魏帅', operator: '王珏', fans: 8, plays: 969, likes: 6, comments: 3, shares: 1, posts: 22, likeRate: '0.62%' },
-  { person: '刘老师', personId: 'liu', platform: '抖音', accountName: '老刘说周期', operator: '成家琦', fans: 119, plays: 0, likes: 0, comments: 0, shares: 0, posts: 0, likeRate: '0.00%' },
-  { person: '刘老师', personId: 'liu', platform: '抖音', accountName: '老刘说周期（个人）', operator: '成家琦', fans: 160, plays: 24573, likes: 216, comments: 13, shares: 19, posts: 6, likeRate: '0.88%' },
-  { person: '刘老师', personId: 'liu', platform: '视频号', accountName: '老刘说周期', operator: '成家琦', fans: 509, plays: 9862, likes: 49, comments: 4, shares: 167, posts: 6, likeRate: '0.50%' }
+  { person: '魏总', personId: 'wei', platform: '抖音', accountName: '7号魏帅', operator: '成家琦', week: '6W4', fans: 678, plays: 431, likes: 19, comments: 1, shares: 0, posts: 5, likeRate: '4.41%' },
+  { person: '魏总', personId: 'wei', platform: '抖音', accountName: '梵天咨询（蓝V）', operator: '成家琦', week: '6W4', fans: 19, plays: 42, likes: 2, comments: 0, shares: 1, posts: 2, likeRate: '4.76%' },
+  { person: '魏总', personId: 'wei', platform: '抖音', accountName: '魏帅情报局', operator: '姜四', week: '6W4', fans: 2769, plays: 248713, likes: 2484, comments: 84, shares: 815, posts: 11, likeRate: '1.00%' },
+  { person: '魏总', personId: 'wei', platform: '视频号', accountName: '7号魏帅', operator: '成家琦', week: '6W4', fans: 4284, plays: 8034, likes: 157, comments: 16, shares: 167, posts: 6, likeRate: '1.95%' },
+  { person: '魏总', personId: 'wei', platform: '公众号', accountName: '7号魏帅投研笔记', operator: '姜四', week: '6W4', fans: 45996, plays: 8549, likes: 81, comments: 35, shares: 270, posts: 5, likeRate: '0.95%' },
+  { person: '魏总', personId: 'wei', platform: '微博', accountName: '7号魏帅', operator: '魏总', week: '6W4', fans: 52686, plays: 4756000, likes: 7851, comments: 1429, shares: 651, posts: 164, likeRate: '0.17%' },
+  { person: '魏总', personId: 'wei', platform: '雪球', accountName: '魏帅投研', operator: '魏总', week: '6W4', fans: 1164, plays: 641000, likes: 626, comments: 56, shares: 5, posts: 30, likeRate: '0.10%' },
+  { person: '魏总', personId: 'wei', platform: '淘股吧', accountName: '7号魏帅', operator: '王珏', week: '6W4', fans: 9, plays: 900, likes: 1, comments: 0, shares: 0, posts: 8, likeRate: '0.11%' },
+  { person: '魏总', personId: 'wei', platform: '东方财富股吧', accountName: '七号魏帅', operator: '王珏', week: '6W4', fans: 8, plays: 969, likes: 6, comments: 3, shares: 1, posts: 22, likeRate: '0.62%' },
+  { person: '刘老师', personId: 'liu', platform: '抖音', accountName: '老刘说周期', operator: '成家琦', week: '6W4', fans: 119, plays: 0, likes: 0, comments: 0, shares: 0, posts: 0, likeRate: '0.00%' },
+  { person: '刘老师', personId: 'liu', platform: '抖音', accountName: '老刘说周期（个人）', operator: '成家琦', week: '6W4', fans: 160, plays: 24573, likes: 216, comments: 13, shares: 19, posts: 6, likeRate: '0.88%' },
+  { person: '刘老师', personId: 'liu', platform: '视频号', accountName: '老刘说周期', operator: '成家琦', week: '6W4', fans: 509, plays: 9862, likes: 49, comments: 4, shares: 167, posts: 6, likeRate: '0.50%' }
 ];
 
 
@@ -1386,7 +1213,7 @@ createApp({
         { id: 'g15', name: '业问证券资产群', members: 0, weeklyNew: 0, activity: '低', note: '' }
       ]),
       customerList: load('customers', []),
-      statsEntries: defaultStatsEntries.map(e => ({...e})),
+      statsEntries: load('statsEntries', defaultStatsEntries),
       myTaskDone: load('myTaskDone', {}),
       
       // Filters
@@ -1400,7 +1227,7 @@ createApp({
       myContentForm: { date: '', platform: '抖音', account: '7号魏帅', type: '短视频', title: '', link: '', plays: '', likes: '', comments: '', shares: '', status: '待发布' },
       historyMonth: today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0'),
       
-      statsForm: { year: '2026年', month: '7月', week: '第1周' },
+      statsForm: { year: '2026年', month: '6月', week: '6W4' },
       
       // Chart instances
       chartInstances: {},
@@ -1430,7 +1257,7 @@ createApp({
       yearOptions: ['2025年','2026年','2027年'],
       statsYear: '2026年',
       weekDateRange: '',
-      weekOptions: ['第1周', '第2周', '第3周', '第4周', '第5周'],
+      weekOptions: ['6W1', '6W2', '6W3', '6W4', '6W5'],
       
       // communityGroups 现在是 computed，从 communityData 动态生成
       
@@ -1591,6 +1418,38 @@ createApp({
         fans,
         plays: (plays / 10000).toFixed(1),
         likes, comments, shares, posts
+      };
+    },
+    weiProfile() {
+      const rows = this.dashboardDetail.filter(d => d.person === '魏总');
+      const fans = rows.reduce((s,d) => s + (d.fans||0), 0);
+      const plays = rows.reduce((s,d) => s + (d.plays||0), 0);
+      const likes = rows.reduce((s,d) => s + (d.likes||0), 0);
+      const comments = rows.reduce((s,d) => s + (d.comments||0), 0);
+      const shares = rows.reduce((s,d) => s + (d.shares||0), 0);
+      const posts = rows.reduce((s,d) => s + (d.posts||0), 0);
+      const platformFans = {};
+      rows.forEach(d => { platformFans[d.platform] = (platformFans[d.platform]||0) + (d.fans||0); });
+      return {
+        fans,
+        plays: plays >= 10000 ? (plays/10000).toFixed(1)+'万' : plays,
+        likes, comments, shares, posts, platformFans
+      };
+    },
+    liuProfile() {
+      const rows = this.dashboardDetail.filter(d => d.person === '刘老师');
+      const fans = rows.reduce((s,d) => s + (d.fans||0), 0);
+      const plays = rows.reduce((s,d) => s + (d.plays||0), 0);
+      const likes = rows.reduce((s,d) => s + (d.likes||0), 0);
+      const comments = rows.reduce((s,d) => s + (d.comments||0), 0);
+      const shares = rows.reduce((s,d) => s + (d.shares||0), 0);
+      const posts = rows.reduce((s,d) => s + (d.posts||0), 0);
+      const platformFans = {};
+      rows.forEach(d => { platformFans[d.platform] = (platformFans[d.platform]||0) + (d.fans||0); });
+      return {
+        fans,
+        plays: plays >= 10000 ? (plays/10000).toFixed(1)+'万' : plays,
+        likes, comments, shares, posts, platformFans
       };
     },
 
@@ -1910,20 +1769,65 @@ createApp({
           save('customers', this.customerList);
         }
         if (stats && stats.length) {
-          this.statsEntries = stats.map(s => ({
-            id: s.id, month: s.month, week: s.week, platform: s.platform,
-            account: s.account, personId: s.person_id, person: s.person,
-            fans: s.fans, posts: s.posts, plays: s.plays, likes: s.likes,
-            comments: s.comments, shares: s.shares, note: s.note
-          }));
-          save('statsEntries', this.statsEntries);
+          // 仅当云端 stats 全部使用新格式（如 6W4）时才覆盖本地，避免旧格式污染
+          const isNewFormat = stats.every(s => s.week && /^\d+W\d+$/.test(s.week));
+          if (isNewFormat) {
+            this.statsEntries = stats.map(s => ({
+              id: s.id, year: s.year || '2026年', month: s.month, week: s.week, platform: s.platform,
+              account: s.account, personId: s.person_id, person: s.person,
+              fans: s.fans, posts: s.posts, plays: s.plays, likes: s.likes,
+              comments: s.comments, shares: s.shares, note: s.note
+            }));
+            save('statsEntries', this.statsEntries);
+          }
         }
         if (dashboard && dashboard.length) {
-          this.dashboardDetail = dashboard.map(d => ({
-            person: d.person, personId: d.person_id, platform: d.platform,
-            fans: d.fans, plays: d.plays, likes: d.likes, comments: d.comments,
-            shares: d.shares, posts: d.posts, likeRate: d.like_rate
-          }));
+          // 云端 dashboard 可能包含多周历史数据，用 stats 中最新的有效周重建
+          const monthNum = m => { const n = (m||'').match(/(\d+)/); return n ? parseInt(n[1]) : 0; };
+          const weekNum = w => { const m2 = (w||'').match(/^(\d+)W(\d+)$/); if (m2) return parseInt(m2[2]); const n = (w||'').match(/第(\d+)周/); return n ? parseInt(n[1]) : 0; };
+          // 按 month+week 分组
+          const groups = {};
+          this.statsEntries.filter(s => s.month && s.week).forEach(s => {
+            const k = s.month + '|' + s.week;
+            if (!groups[k]) groups[k] = { month: s.month, week: s.week, plays: 0, items: [] };
+            groups[k].plays += parseInt(s.plays) || 0;
+            groups[k].items.push(s);
+          });
+          // 按时间倒序，取第一个有播放量的最新周
+          const sortedGroups = Object.values(groups).sort((a,b) => {
+            const ma = monthNum(a.month), mb = monthNum(b.month);
+            if (ma !== mb) return mb - ma;
+            return weekNum(b.week) - weekNum(a.week);
+          });
+          const best = sortedGroups.find(g => g.plays > 0);
+          if (best && best.items.length > 0) {
+            this.dashboardDetail = best.items.map(s => {
+              const p = parseInt(s.plays) || 0;
+              const l = parseInt(s.likes) || 0;
+              return {
+                person: s.person,
+                personId: s.person === '刘老师' ? 'liu' : 'wei',
+                platform: s.platform,
+                accountName: s.account,
+                operator: s.operator,
+                week: s.week,
+                fans: parseInt(s.fans) || 0,
+                plays: p,
+                likes: l,
+                comments: parseInt(s.comments) || 0,
+                shares: parseInt(s.shares) || 0,
+                posts: parseInt(s.posts) || 0,
+                likeRate: p > 0 ? (l/p*100).toFixed(2)+'%' : '0.00%'
+              };
+            });
+          } else {
+            this.dashboardDetail = dashboard.map(d => ({
+              person: d.person, personId: d.person_id, platform: d.platform,
+              week: d.week || '',
+              fans: d.fans, plays: d.plays, likes: d.likes, comments: d.comments,
+              shares: d.shares, posts: d.posts, likeRate: d.like_rate
+            })).slice(0, 12);
+          }
           save('dashboardDetail', this.dashboardDetail);
         }
         this.showToast('已从云端加载最新数据');
@@ -1971,12 +1875,28 @@ createApp({
     },
     
     renderAdminCharts() {
-      const weekLabels = ['W2','W3','W4'];
+      // 从 statsEntries 动态提取所有周的汇总数据
+      const weeks = [...new Set(this.statsEntries.map(e => e.week).filter(Boolean))].sort();
+      const weekLabels = weeks.length > 0 ? weeks : ['6W2','6W3','6W4'];
       
-      // Chart 1: 魏总播放量趋势
+      // 按周和人物汇总播放量和发布数
+      const getPersonWeekData = (person, field) => {
+        return weekLabels.map(w => {
+          return this.statsEntries
+            .filter(e => e.week === w && e.person === person)
+            .reduce((s, e) => s + (parseInt(e[field]) || 0), 0);
+        });
+      };
+      
+      const weiPlaysData = getPersonWeekData('魏总', 'plays');
+      const liuPlaysData = getPersonWeekData('刘老师', 'plays');
+      const weiPostsData = getPersonWeekData('魏总', 'posts');
+      const liuPostsData = getPersonWeekData('刘老师', 'posts');
+      
+      // Chart 1: 魏总播放量趋势（万次）
       const c1 = document.getElementById('chartWeiPlays');
       if (c1) {
-        const weiData = [366.0, 612.2, 566.5]; // 万次
+        const weiData = weiPlaysData.map(v => parseFloat((v/10000).toFixed(1)));
         this.chartInstances.weiPlays = new Chart(c1, {
           type: 'line',
           data: {
@@ -1991,15 +1911,14 @@ createApp({
         });
       }
       
-      // Chart 2: 刘老师播放量趋势
+      // Chart 2: 刘老师播放量趋势（次）
       const c2 = document.getElementById('chartLiuPlays');
       if (c2) {
-        const liuData = [23835, 10409, 34435]; // 次
         this.chartInstances.liuPlays = new Chart(c2, {
           type: 'line',
           data: {
             labels: weekLabels,
-            datasets: [{ label: '刘老师', data: liuData, borderColor: '#f97316', backgroundColor: 'rgba(249,115,22,0.1)', tension: 0.3, fill: true }]
+            datasets: [{ label: '刘老师', data: liuPlaysData, borderColor: '#f97316', backgroundColor: 'rgba(249,115,22,0.1)', tension: 0.3, fill: true }]
           },
           options: {
             responsive: true, plugins: { legend: { display: false } },
@@ -2009,14 +1928,65 @@ createApp({
         });
       }
       
-      // Chart 3: 播放量占比 doughnut（显示百分比）
-      const c3 = document.getElementById('chartPlatformShare');
+      // Chart 3: 周度发布数趋势 - 两人分开
+      const c3 = document.getElementById('chartPostsTrend');
       if (c3) {
-        this.chartInstances.platformShare = new Chart(c3, {
+        this.chartInstances.postsTrend = new Chart(c3, {
+          type: 'bar',
+          data: {
+            labels: weekLabels,
+            datasets: [
+              { label: '魏总', data: weiPostsData, backgroundColor: '#3b82f6' },
+              { label: '刘老师', data: liuPostsData, backgroundColor: '#f97316' }
+            ]
+          },
+          options: {
+            responsive: true, plugins: { legend: { position: 'top' } },
+            scales: { y: { title: { display: true, text: '条' } } },
+            animation: { onComplete: function() { const ctx=this.ctx; ctx.font='bold 9px sans-serif'; ctx.textAlign='center'; this.data.datasets.forEach(function(ds,i){ ctx.fillStyle=ds.backgroundColor; ds.data.forEach(function(v,j){ if(v===0)return; const pt=this.getDatasetMeta(i).data[j]; ctx.fillText(v,pt.x,pt.y-6); },this); },this); } }
+          }
+        });
+      }
+      
+      // Chart 4: 各平台粉丝量对比（基于 dashboardDetail 最新数据）
+      const c4 = document.getElementById('chartPlatformFans');
+      if (c4) {
+        const platforms = ['抖音', '视频号', '微博', '公众号', '雪球', '淘股吧', '东方财富'];
+        const weiFans = platforms.map(p => this.dashboardDetail.filter(d => d.person === '魏总' && d.platform === p).reduce((s,d) => s + (d.fans||0), 0));
+        const liuFans = platforms.map(p => this.dashboardDetail.filter(d => d.person === '刘老师' && d.platform === p).reduce((s,d) => s + (d.fans||0), 0));
+        this.chartInstances.platformFans = new Chart(c4, {
+          type: 'bar',
+          data: {
+            labels: platforms,
+            datasets: [
+              { label: '魏总', data: weiFans, backgroundColor: '#3b82f6' },
+              { label: '刘老师', data: liuFans, backgroundColor: '#f97316' }
+            ]
+          },
+          options: {
+            responsive: true, indexAxis: 'y',
+            plugins: { legend: { position: 'top' } },
+            animation: { onComplete: function() { const ctx=this.ctx; ctx.font='bold 10px sans-serif'; this.data.datasets.forEach(function(ds,i){ ctx.fillStyle=ds.backgroundColor; ctx.textAlign='left'; ds.data.forEach(function(v,j){ if(v===0)return; const pt=this.getDatasetMeta(i).data[j]; ctx.fillText(v,pt.x+4,pt.y+4); },this); },this); } }
+          }
+        });
+      }
+      
+      // Chart 5: 播放量占比（基于 dashboardDetail）
+      const c5 = document.getElementById('chartPlatformShare');
+      if (c5) {
+        const platPlays = {};
+        this.dashboardDetail.forEach(d => {
+          platPlays[d.platform] = (platPlays[d.platform] || 0) + (d.plays || 0);
+        });
+        const totalPlays = Object.values(platPlays).reduce((s,v) => s+v, 0) || 1;
+        const platLabels = Object.keys(platPlays).sort((a,b) => platPlays[b] - platPlays[a]);
+        const platPercents = platLabels.map(p => parseFloat((platPlays[p]/totalPlays*100).toFixed(1)));
+        const colors = ['#e53e3e','#8b5cf6','#3b82f6','#22c55e','#eab308','#f97316','#06b6d4'];
+        this.chartInstances.platformShare = new Chart(c5, {
           type: 'doughnut',
           data: {
-            labels: ['微博','雪球','抖音','视频号','公众号','淘股吧','东方财富'],
-            datasets: [{ data: [83.5, 11.2, 4.8, 0.3, 0.2, 0.0, 0.0], backgroundColor: ['#e53e3e','#8b5cf6','#3b82f6','#22c55e','#eab308','#f97316','#06b6d4'] }]
+            labels: platLabels,
+            datasets: [{ data: platPercents, backgroundColor: colors.slice(0, platLabels.length) }]
           },
           options: {
             responsive: true,
@@ -2028,59 +1998,30 @@ createApp({
         });
       }
       
-      // Chart 4: 平台粉丝量对比
-      const c4 = document.getElementById('chartPlatformFans');
-      if (c4) {
-        this.chartInstances.platformFans = new Chart(c4, {
-          type: 'bar',
-          data: {
-            labels: ['抖音', '视频号', '微博', '公众号', '雪球', '淘股吧', '东方财富'],
-            datasets: [
-              { label: '魏总', data: [3466, 4284, 52686, 45996, 1164, 9, 8], backgroundColor: '#3b82f6' },
-              { label: '刘老师', data: [279, 509, 0, 0, 0, 0, 0], backgroundColor: '#f97316' }
-            ]
-          },
-          options: {
-            responsive: true, indexAxis: 'y',
-            plugins: { legend: { position: 'top' } },
-            animation: { onComplete: function() { const ctx=this.ctx; ctx.font='bold 10px sans-serif'; this.data.datasets.forEach(function(ds,i){ ctx.fillStyle=ds.backgroundColor; ctx.textAlign='left'; ds.data.forEach(function(v,j){ if(v===0)return; const pt=this.getDatasetMeta(i).data[j]; ctx.fillText(v,pt.x+4,pt.y+4); },this); },this); } }
-          }
+      // Chart 6: 点赞率（基于 dashboardDetail 各平台汇总）
+      const c6 = document.getElementById('chartLikeRate');
+      if (c6) {
+        const platLikes = {}, platPlays2 = {};
+        this.dashboardDetail.forEach(d => {
+          platLikes[d.platform] = (platLikes[d.platform] || 0) + (d.likes || 0);
+          platPlays2[d.platform] = (platPlays2[d.platform] || 0) + (d.plays || 0);
         });
-      }
-      
-      // Chart 5: 点赞率
-      const c5 = document.getElementById('chartLikeRate');
-      if (c5) {
-        this.chartInstances.likeRate = new Chart(c5, {
+        const platList = Object.keys(platLikes).sort((a,b) => {
+          const ra = platPlays2[a] > 0 ? platLikes[a]/platPlays2[a]*100 : 0;
+          const rb = platPlays2[b] > 0 ? platLikes[b]/platPlays2[b]*100 : 0;
+          return rb - ra;
+        });
+        const likeRates = platList.map(p => platPlays2[p] > 0 ? parseFloat((platLikes[p]/platPlays2[p]*100).toFixed(2)) : 0);
+        this.chartInstances.likeRate = new Chart(c6, {
           type: 'bar',
           data: {
-            labels: ['抖音', '视频号', '微博', '公众号', '雪球', '淘股吧', '东方财富'],
-            datasets: [{ label: '点赞率', data: [0.99, 1.15, 0.17, 0.95, 0.10, 0.11, 0.62], backgroundColor: '#3182ce' }]
+            labels: platList,
+            datasets: [{ label: '点赞率', data: likeRates, backgroundColor: '#3182ce' }]
           },
           options: {
             responsive: true, plugins: { legend: { display: false } },
             scales: { y: { title: { display: true, text: '%' } } },
             animation: { onComplete: function() { const ctx=this.ctx; ctx.font='bold 10px sans-serif'; ctx.fillStyle='#3182ce'; ctx.textAlign='center'; this.data.datasets[0].data.forEach(function(v,j){ const pt=this.getDatasetMeta(0).data[j]; ctx.fillText(v+'%',pt.x,pt.y-6); },this); } }
-          }
-        });
-      }
-      
-      // Chart 6: 周度发布数趋势 - 两人分开
-      const c6 = document.getElementById('chartPostsTrend');
-      if (c6) {
-        this.chartInstances.postsTrend = new Chart(c6, {
-          type: 'bar',
-          data: {
-            labels: weekLabels,
-            datasets: [
-              { label: '魏总', data: [166, 222, 253], backgroundColor: '#3b82f6' },
-              { label: '刘老师', data: [11, 8, 12], backgroundColor: '#f97316' }
-            ]
-          },
-          options: {
-            responsive: true, plugins: { legend: { position: 'top' } },
-            scales: { y: { title: { display: true, text: '条' } } },
-            animation: { onComplete: function() { const ctx=this.ctx; ctx.font='bold 9px sans-serif'; ctx.textAlign='center'; this.data.datasets.forEach(function(ds,i){ ctx.fillStyle=ds.backgroundColor; ds.data.forEach(function(v,j){ if(v===0)return; const pt=this.getDatasetMeta(i).data[j]; ctx.fillText(v,pt.x,pt.y-6); },this); },this); } }
           }
         });
       }
@@ -2141,17 +2082,25 @@ createApp({
         }
       });
       this.saveStats();
-      // 同步到数据看板 dashboardDetail
-      this.currentWeekStats.forEach(s => {
-        const existing = this.dashboardDetail.find(d => d.accountName === s.account && d.platform === s.platform);
-        if (existing) {
-          existing.fans = parseInt(s.fans) || 0;
-          existing.plays = parseInt(s.plays) || 0;
-          existing.likes = parseInt(s.likes) || 0;
-          existing.comments = parseInt(s.comments) || 0;
-          existing.shares = parseInt(s.shares) || 0;
-          existing.posts = parseInt(s.posts) || 0;
-        }
+      // 用当前周数据重建 dashboardDetail（始终只保留最新一周）
+      this.dashboardDetail = this.currentWeekStats.map(s => {
+        const p = parseInt(s.plays) || 0;
+        const l = parseInt(s.likes) || 0;
+        return {
+          person: s.person,
+          personId: s.person === '刘老师' ? 'liu' : 'wei',
+          platform: s.platform,
+          accountName: s.account,
+          operator: s.operator,
+          week: s.week,
+          fans: parseInt(s.fans) || 0,
+          plays: p,
+          likes: l,
+          comments: parseInt(s.comments) || 0,
+          shares: parseInt(s.shares) || 0,
+          posts: parseInt(s.posts) || 0,
+          likeRate: p > 0 ? (l/p*100).toFixed(2)+'%' : '0.00%'
+        };
       });
       this.saveDashboardData();
       // 刷新所有图表（数据看板 + 数据大屏）
@@ -2397,6 +2346,7 @@ createApp({
   
   mounted() {
     // 每次打开都显示登录页，不自动恢复
+    this.saveStats();
     this.$nextTick(() => {
       this.renderCharts();
       // 延迟初始化 Supabase，避免阻塞页面
