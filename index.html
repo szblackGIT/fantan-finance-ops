@@ -1347,23 +1347,14 @@ createApp({
           year: this.statsYear, month: this.statsForm.month, week: this.statsForm.week,
           ...a, fans: 0, posts: 0, plays: 0, likes: 0, comments: 0, shares: 0, dm: 0, lead: 0, note: ''
         }));
-        // 异步保存（不阻塞渲染）
-        this.$nextTick(() => {
-          list.forEach(e => this.statsEntries.push(e));
-          // 确保魏总在成员列表中
-    if (!this.allMembers.find(m => m.id === 'wei')) {
-      const weiDefault = defaultMembers.find(m => m.id === 'wei');
-      if (weiDefault) this.allMembers.push({...weiDefault});
-    }
-    this.saveStats();
+        // 同步立即加入 statsEntries，避免 computed 重复触发导致重复创建
+        list.forEach(e => {
+          if (!this.statsEntries.find(x => x.id === e.id)) {
+            this.statsEntries.push(e);
+          }
         });
+        this.saveStats();
       }
-      // 自动将临时账号加入 statsEntries
-      list.forEach(s => {
-        if (s.id && s.id.toString().startsWith('auto') && !this.statsEntries.find(e => e.id === s.id)) {
-          this.statsEntries.push(s);
-        }
-      });
       return list.sort((a,b) => { const o = {'魏总':1,'刘老师':2}; return (o[a.person]||3) - (o[b.person]||3); });
     },
     statsSummary() {
