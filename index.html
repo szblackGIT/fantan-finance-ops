@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>梵天金融 · 新媒体矩阵运营管理系统 v11.2.0</title>
+<title>梵天金融 · 新媒体矩阵运营管理系统 v11.3</title>
 <script>
 // 自动清除旧版本 localStorage 数据
 (function(){
-  var v = 'v11.2.0';
+  var v = 'v11.3';
   if (localStorage.getItem('_v') !== v) {
     for (var i = localStorage.length - 1; i >= 0; i--) {
       var k = localStorage.key(i);
@@ -235,7 +235,7 @@ textarea { resize:vertical; min-height:60px; }
 <div v-if="!currentRole" class="login-screen">
   <div class="login-card">
     <h1>📊 梵天金融</h1>
-    <p class="subtitle">新媒体矩阵运营管理系统 · 请选择身份进入</p>
+    <p class="subtitle">新媒体矩阵运营管理系统 v11.3 · 请选择身份进入</p>
     <div style="margin-bottom:20px">
       <div @click="viewBigScreen" style="padding:16px;border-radius:10px;border:2px solid #3182ce;background:linear-gradient(135deg,#1a365d,#2c5282);cursor:pointer;font-size:15px;font-weight:600;display:flex;align-items:center;gap:10px;text-align:left;color:#fff;">
         <span style="font-size:28px;">📺</span>
@@ -1191,7 +1191,7 @@ textarea { resize:vertical; min-height:60px; }
   </div>
 </div>
 </main>
-<div class="footer" v-if="currentTab !== 'bigscreen'">梵天金融 · 新媒体矩阵运营管理系统 v11.2.0 | 数据存储于浏览器本地 | {{ todayStr }}</div>
+<div class="footer" v-if="currentTab !== 'bigscreen'">梵天金融 · 新媒体矩阵运营管理系统 v11.3 | 数据存储于浏览器本地 | {{ todayStr }}</div>
 
 <!-- Toast -->
 <div v-if="toast.show" :class="['toast','toast-'+toast.type]">{{ toast.msg }}</div>
@@ -1241,7 +1241,7 @@ const defaultStatsEntries = [
 ];
 
 
-const STORAGE = 'fantan_v13_';
+const STORAGE = 'fantan_v14_';
 const save = (k, v) => { localStorage.setItem(STORAGE + k, JSON.stringify(v)); };
 const load = (k, d) => { const r = localStorage.getItem(STORAGE + k); return r ? JSON.parse(r) : d; };
 
@@ -2609,6 +2609,6 @@ createApp({
 }).mount('#app');
 </script>
 </body>
-<!-- build: 202607050500 -->
-<!-- v11.2.0: 完全按Excel重建数据大屏 -->
+<!-- build: 202607060100 -->
+<!-- v11.3: 完全按Excel重建数据大屏 -->
 </html>
