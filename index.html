@@ -1013,42 +1013,42 @@ textarea { resize:vertical; min-height:60px; }
 const { createApp } = Vue;
 
 const defaultStatsEntries = [
-  { id: 's01', year: '2026年', month: '6月', week: '6W2', person: '魏总', platform: '抖音', account: '7号魏帅', operator: '成家琦', fans: 625, posts: 0, plays: 0, likes: 0, comments: 0, shares: 0, dm: 0, lead: 0, note: '减少推荐到6.28' },
-  { id: 's02', year: '2026年', month: '6月', week: '6W2', person: '魏总', platform: '抖音', account: '梵天咨询（蓝V）', operator: '成家琦', fans: 4, posts: 7, plays: 1390, likes: 26, comments: 0, shares: 0, dm: 0, lead: 0, note: '' },
-  { id: 's03', year: '2026年', month: '6月', week: '6W2', person: '魏总', platform: '抖音', account: '魏帅情报局', operator: '姜四', fans: 40, posts: 4, plays: 30560, likes: 215, comments: 13, shares: 29, dm: 0, lead: 0, note: '新号' },
-  { id: 's04', year: '2026年', month: '6月', week: '6W2', person: '魏总', platform: '视频号', account: '7号魏帅', operator: '成家琦', fans: 4116, posts: 6, plays: 10275, likes: 247, comments: 24, shares: 376, dm: 0, lead: 0, note: '' },
-  { id: 's05', year: '2026年', month: '6月', week: '6W2', person: '魏总', platform: '公众号', account: '7号魏帅', operator: '姜四', fans: 45530, posts: 3, plays: 4336, likes: 181, comments: 119, shares: 33, dm: 0, lead: 0, note: '周三恢复' },
-  { id: 's06', year: '2026年', month: '6月', week: '6W2', person: '魏总', platform: '微博', account: '7号魏帅', operator: '魏总', fans: 51472, posts: 106, plays: 3110000, likes: 4016, comments: 1048, shares: 364, dm: 0, lead: 0, note: '浏览量单位为万取整' },
-  { id: 's07', year: '2026年', month: '6月', week: '6W2', person: '魏总', platform: '雪球', account: '魏帅投研', operator: '魏总', fans: 982, posts: 30, plays: 503000, likes: 313, comments: 144, shares: 6, dm: 0, lead: 0, note: '浏览量单位为万取整' },
-  { id: 's08', year: '2026年', month: '6月', week: '6W2', person: '魏总', platform: '淘股吧', account: '7号魏帅', operator: '王珏', fans: 0, posts: 6, plays: 631, likes: 1, comments: 6, shares: 0, dm: 0, lead: 0, note: '新号-后台无数据统计手工测算' },
-  { id: 's09', year: '2026年', month: '6月', week: '6W2', person: '魏总', platform: '东方财富股吧', account: '七号魏帅', operator: '王珏', fans: 0, posts: 4, plays: 124, likes: 0, comments: 0, shares: 0, dm: 0, lead: 0, note: '新号' },
-  { id: 's10', year: '2026年', month: '6月', week: '6W2', person: '刘老师', platform: '抖音', account: '老刘说周期', operator: '成家琦', fans: 118, posts: 0, plays: 0, likes: 0, comments: 0, shares: 0, dm: 0, lead: 0, note: '禁言到6.21' },
-  { id: 's11', year: '2026年', month: '6月', week: '6W2', person: '刘老师', platform: '抖音', account: '老刘说周期（个人）', operator: '成家琦', fans: 111, posts: 6, plays: 17404, likes: 140, comments: 12, shares: 9, dm: 0, lead: 0, note: '' },
-  { id: 's12', year: '2026年', month: '6月', week: '6W2', person: '刘老师', platform: '视频号', account: '老刘说周期', operator: '成家琦', fans: 443, posts: 5, plays: 6431, likes: 63, comments: 8, shares: 111, dm: 0, lead: 0, note: '' },
-  { id: 's13', year: '2026年', month: '6月', week: '6W3', person: '魏总', platform: '抖音', account: '7号魏帅', operator: '成家琦', fans: 673, posts: 0, plays: 0, likes: 0, comments: 0, shares: 0, dm: 0, lead: 0, note: '减少推荐到6.28' },
-  { id: 's14', year: '2026年', month: '6月', week: '6W3', person: '魏总', platform: '抖音', account: '梵天咨询（蓝V）', operator: '成家琦', fans: 16, posts: 4, plays: 1528, likes: 23, comments: 2, shares: 0, dm: 0, lead: 0, note: '' },
-  { id: 's15', year: '2026年', month: '6月', week: '6W3', person: '魏总', platform: '抖音', account: '魏帅情报局', operator: '姜四', fans: 2135, posts: 5, plays: 764835, likes: 8613, comments: 648, shares: 2360, dm: 0, lead: 0, note: '其中6.18单条67.23w播放量' },
-  { id: 's16', year: '2026年', month: '6月', week: '6W3', person: '魏总', platform: '视频号', account: '7号魏帅', operator: '成家琦', fans: 4224, posts: 5, plays: 8321, likes: 207, comments: 21, shares: 186, dm: 0, lead: 0, note: '' },
-  { id: 's17', year: '2026年', month: '6月', week: '6W3', person: '魏总', platform: '公众号', account: '7号魏帅投研笔记', operator: '姜四', fans: 45882, posts: 4, plays: 8192, likes: 353, comments: 71, shares: 351, dm: 0, lead: 0, note: '' },
-  { id: 's18', year: '2026年', month: '6月', week: '6W3', person: '魏总', platform: '微博', account: '7号魏帅', operator: '魏总', fans: 52046, posts: 146, plays: 4693000, likes: 6687, comments: 1695, shares: 695, dm: 0, lead: 0, note: '' },
-  { id: 's19', year: '2026年', month: '6月', week: '6W3', person: '魏总', platform: '雪球', account: '魏帅投研', operator: '魏总', fans: 1096, posts: 30, plays: 644000, likes: 566, comments: 74, shares: 6, dm: 0, lead: 0, note: '' },
-  { id: 's20', year: '2026年', month: '6月', week: '6W3', person: '魏总', platform: '淘股吧', account: '7号魏帅', operator: '王珏', fans: 10, posts: 13, plays: 1702, likes: 2, comments: 1, shares: 0, dm: 0, lead: 0, note: '后台无数据统计手工测算' },
-  { id: 's21', year: '2026年', month: '6月', week: '6W3', person: '魏总', platform: '东方财富股吧', account: '七号魏帅', operator: '王珏', fans: 6, posts: 15, plays: 717, likes: 0, comments: 2, shares: 0, dm: 0, lead: 0, note: '' },
-  { id: 's22', year: '2026年', month: '6月', week: '6W3', person: '刘老师', platform: '抖音', account: '老刘说周期', operator: '成家琦', fans: 118, posts: 0, plays: 0, likes: 0, comments: 0, shares: 0, dm: 0, lead: 0, note: '禁言到6.21' },
-  { id: 's23', year: '2026年', month: '6月', week: '6W3', person: '刘老师', platform: '抖音', account: '老刘说周期（个人）', operator: '成家琦', fans: 114, posts: 4, plays: 4747, likes: 57, comments: 9, shares: 5, dm: 0, lead: 0, note: '' },
-  { id: 's24', year: '2026年', month: '6月', week: '6W3', person: '刘老师', platform: '视频号', account: '老刘说周期', operator: '成家琦', fans: 468, posts: 4, plays: 5662, likes: 43, comments: 0, shares: 112, dm: 0, lead: 0, note: '' },
-  { id: 's25', year: '2026年', month: '6月', week: '6W4', person: '魏总', platform: '抖音', account: '7号魏帅', operator: '成家琦', fans: 678, posts: 5, plays: 431, likes: 19, comments: 1, shares: 0, dm: 0, lead: 0, note: '' },
-  { id: 's26', year: '2026年', month: '6月', week: '6W4', person: '魏总', platform: '抖音', account: '梵天咨询（蓝V）', operator: '成家琦', fans: 19, posts: 2, plays: 42, likes: 2, comments: 0, shares: 1, dm: 0, lead: 0, note: '' },
-  { id: 's27', year: '2026年', month: '6月', week: '6W4', person: '魏总', platform: '抖音', account: '魏帅情报局', operator: '姜四', fans: 2769, posts: 11, plays: 248713, likes: 2484, comments: 84, shares: 815, dm: 0, lead: 0, note: '' },
-  { id: 's28', year: '2026年', month: '6月', week: '6W4', person: '魏总', platform: '视频号', account: '7号魏帅', operator: '成家琦', fans: 4284, posts: 6, plays: 8034, likes: 157, comments: 16, shares: 167, dm: 0, lead: 0, note: '' },
-  { id: 's29', year: '2026年', month: '6月', week: '6W4', person: '魏总', platform: '公众号', account: '7号魏帅投研笔记', operator: '姜四', fans: 45996, posts: 5, plays: 8549, likes: 81, comments: 35, shares: 270, dm: 0, lead: 0, note: '' },
-  { id: 's30', year: '2026年', month: '6月', week: '6W4', person: '魏总', platform: '微博', account: '7号魏帅', operator: '魏总', fans: 52686, posts: 164, plays: 4756000, likes: 7851, comments: 1429, shares: 651, dm: 0, lead: 0, note: '' },
-  { id: 's31', year: '2026年', month: '6月', week: '6W4', person: '魏总', platform: '雪球', account: '魏帅投研', operator: '魏总', fans: 1164, posts: 30, plays: 641000, likes: 626, comments: 56, shares: 5, dm: 0, lead: 0, note: '' },
-  { id: 's32', year: '2026年', month: '6月', week: '6W4', person: '魏总', platform: '淘股吧', account: '7号魏帅', operator: '王珏', fans: 9, posts: 8, plays: 900, likes: 1, comments: 0, shares: 0, dm: 0, lead: 0, note: '后台无数据统计手工测算' },
-  { id: 's33', year: '2026年', month: '6月', week: '6W4', person: '魏总', platform: '东方财富股吧', account: '七号魏帅', operator: '王珏', fans: 8, posts: 22, plays: 969, likes: 6, comments: 3, shares: 1, dm: 0, lead: 0, note: '' },
-  { id: 's34', year: '2026年', month: '6月', week: '6W4', person: '刘老师', platform: '抖音', account: '老刘说周期', operator: '成家琦', fans: 119, posts: 0, plays: 0, likes: 0, comments: 0, shares: 0, dm: 0, lead: 0, note: '禁言解除暂缓发布' },
-  { id: 's35', year: '2026年', month: '6月', week: '6W4', person: '刘老师', platform: '抖音', account: '老刘说周期（个人）', operator: '成家琦', fans: 160, posts: 6, plays: 24573, likes: 216, comments: 13, shares: 19, dm: 0, lead: 0, note: '' },
-  { id: 's36', year: '2026年', month: '6月', week: '6W4', person: '刘老师', platform: '视频号', account: '老刘说周期', operator: '成家琦', fans: 509, posts: 6, plays: 9862, likes: 49, comments: 4, shares: 167, dm: 0, lead: 0, note: '' }
+  { id: 's01', year: '2026年', month: '6月', week: '6.8-6.14', person: '魏总', platform: '抖音', account: '7号魏帅', operator: '成家琦', fans: 625, posts: 0, plays: 0, likes: 0, comments: 0, shares: 0, dm: 0, lead: 0, note: '减少推荐到6.28' },
+  { id: 's02', year: '2026年', month: '6月', week: '6.8-6.14', person: '魏总', platform: '抖音', account: '梵天咨询（蓝V）', operator: '成家琦', fans: 4, posts: 7, plays: 1390, likes: 26, comments: 0, shares: 0, dm: 0, lead: 0, note: '' },
+  { id: 's03', year: '2026年', month: '6月', week: '6.8-6.14', person: '魏总', platform: '抖音', account: '魏帅情报局', operator: '姜四', fans: 40, posts: 4, plays: 30560, likes: 215, comments: 13, shares: 29, dm: 0, lead: 0, note: '新号' },
+  { id: 's04', year: '2026年', month: '6月', week: '6.8-6.14', person: '魏总', platform: '视频号', account: '7号魏帅', operator: '成家琦', fans: 4116, posts: 6, plays: 10275, likes: 247, comments: 24, shares: 376, dm: 0, lead: 0, note: '' },
+  { id: 's05', year: '2026年', month: '6月', week: '6.8-6.14', person: '魏总', platform: '公众号', account: '7号魏帅', operator: '姜四', fans: 45530, posts: 3, plays: 4336, likes: 181, comments: 119, shares: 33, dm: 0, lead: 0, note: '周三恢复' },
+  { id: 's06', year: '2026年', month: '6月', week: '6.8-6.14', person: '魏总', platform: '微博', account: '7号魏帅', operator: '魏总', fans: 51472, posts: 106, plays: 3110000, likes: 4016, comments: 1048, shares: 364, dm: 0, lead: 0, note: '浏览量单位为万取整' },
+  { id: 's07', year: '2026年', month: '6月', week: '6.8-6.14', person: '魏总', platform: '雪球', account: '魏帅投研', operator: '魏总', fans: 982, posts: 30, plays: 503000, likes: 313, comments: 144, shares: 6, dm: 0, lead: 0, note: '浏览量单位为万取整' },
+  { id: 's08', year: '2026年', month: '6月', week: '6.8-6.14', person: '魏总', platform: '淘股吧', account: '7号魏帅', operator: '王珏', fans: 0, posts: 6, plays: 631, likes: 1, comments: 6, shares: 0, dm: 0, lead: 0, note: '新号-后台无数据统计手工测算' },
+  { id: 's09', year: '2026年', month: '6月', week: '6.8-6.14', person: '魏总', platform: '东方财富股吧', account: '七号魏帅', operator: '王珏', fans: 0, posts: 4, plays: 124, likes: 0, comments: 0, shares: 0, dm: 0, lead: 0, note: '新号' },
+  { id: 's10', year: '2026年', month: '6月', week: '6.8-6.14', person: '刘老师', platform: '抖音', account: '老刘说周期', operator: '成家琦', fans: 118, posts: 0, plays: 0, likes: 0, comments: 0, shares: 0, dm: 0, lead: 0, note: '禁言到6.21' },
+  { id: 's11', year: '2026年', month: '6月', week: '6.8-6.14', person: '刘老师', platform: '抖音', account: '老刘说周期（个人）', operator: '成家琦', fans: 111, posts: 6, plays: 17404, likes: 140, comments: 12, shares: 9, dm: 0, lead: 0, note: '' },
+  { id: 's12', year: '2026年', month: '6月', week: '6.8-6.14', person: '刘老师', platform: '视频号', account: '老刘说周期', operator: '成家琦', fans: 443, posts: 5, plays: 6431, likes: 63, comments: 8, shares: 111, dm: 0, lead: 0, note: '' },
+  { id: 's13', year: '2026年', month: '6月', week: '6.15-6.21', person: '魏总', platform: '抖音', account: '7号魏帅', operator: '成家琦', fans: 673, posts: 0, plays: 0, likes: 0, comments: 0, shares: 0, dm: 0, lead: 0, note: '减少推荐到6.28' },
+  { id: 's14', year: '2026年', month: '6月', week: '6.15-6.21', person: '魏总', platform: '抖音', account: '梵天咨询（蓝V）', operator: '成家琦', fans: 16, posts: 4, plays: 1528, likes: 23, comments: 2, shares: 0, dm: 0, lead: 0, note: '' },
+  { id: 's15', year: '2026年', month: '6月', week: '6.15-6.21', person: '魏总', platform: '抖音', account: '魏帅情报局', operator: '姜四', fans: 2135, posts: 5, plays: 764835, likes: 8613, comments: 648, shares: 2360, dm: 0, lead: 0, note: '其中6.18单条67.23w播放量' },
+  { id: 's16', year: '2026年', month: '6月', week: '6.15-6.21', person: '魏总', platform: '视频号', account: '7号魏帅', operator: '成家琦', fans: 4224, posts: 5, plays: 8321, likes: 207, comments: 21, shares: 186, dm: 0, lead: 0, note: '' },
+  { id: 's17', year: '2026年', month: '6月', week: '6.15-6.21', person: '魏总', platform: '公众号', account: '7号魏帅投研笔记', operator: '姜四', fans: 45882, posts: 4, plays: 8192, likes: 353, comments: 71, shares: 351, dm: 0, lead: 0, note: '' },
+  { id: 's18', year: '2026年', month: '6月', week: '6.15-6.21', person: '魏总', platform: '微博', account: '7号魏帅', operator: '魏总', fans: 52046, posts: 146, plays: 4693000, likes: 6687, comments: 1695, shares: 695, dm: 0, lead: 0, note: '' },
+  { id: 's19', year: '2026年', month: '6月', week: '6.15-6.21', person: '魏总', platform: '雪球', account: '魏帅投研', operator: '魏总', fans: 1096, posts: 30, plays: 644000, likes: 566, comments: 74, shares: 6, dm: 0, lead: 0, note: '' },
+  { id: 's20', year: '2026年', month: '6月', week: '6.15-6.21', person: '魏总', platform: '淘股吧', account: '7号魏帅', operator: '王珏', fans: 10, posts: 13, plays: 1702, likes: 2, comments: 1, shares: 0, dm: 0, lead: 0, note: '后台无数据统计手工测算' },
+  { id: 's21', year: '2026年', month: '6月', week: '6.15-6.21', person: '魏总', platform: '东方财富股吧', account: '七号魏帅', operator: '王珏', fans: 6, posts: 15, plays: 717, likes: 0, comments: 2, shares: 0, dm: 0, lead: 0, note: '' },
+  { id: 's22', year: '2026年', month: '6月', week: '6.15-6.21', person: '刘老师', platform: '抖音', account: '老刘说周期', operator: '成家琦', fans: 118, posts: 0, plays: 0, likes: 0, comments: 0, shares: 0, dm: 0, lead: 0, note: '禁言到6.21' },
+  { id: 's23', year: '2026年', month: '6月', week: '6.15-6.21', person: '刘老师', platform: '抖音', account: '老刘说周期（个人）', operator: '成家琦', fans: 114, posts: 4, plays: 4747, likes: 57, comments: 9, shares: 5, dm: 0, lead: 0, note: '' },
+  { id: 's24', year: '2026年', month: '6月', week: '6.15-6.21', person: '刘老师', platform: '视频号', account: '老刘说周期', operator: '成家琦', fans: 468, posts: 4, plays: 5662, likes: 43, comments: 0, shares: 112, dm: 0, lead: 0, note: '' },
+  { id: 's25', year: '2026年', month: '6月', week: '6.22-6.28', person: '魏总', platform: '抖音', account: '7号魏帅', operator: '成家琦', fans: 678, posts: 5, plays: 431, likes: 19, comments: 1, shares: 0, dm: 0, lead: 0, note: '' },
+  { id: 's26', year: '2026年', month: '6月', week: '6.22-6.28', person: '魏总', platform: '抖音', account: '梵天咨询（蓝V）', operator: '成家琦', fans: 19, posts: 2, plays: 42, likes: 2, comments: 0, shares: 1, dm: 0, lead: 0, note: '' },
+  { id: 's27', year: '2026年', month: '6月', week: '6.22-6.28', person: '魏总', platform: '抖音', account: '魏帅情报局', operator: '姜四', fans: 2769, posts: 11, plays: 248713, likes: 2484, comments: 84, shares: 815, dm: 0, lead: 0, note: '' },
+  { id: 's28', year: '2026年', month: '6月', week: '6.22-6.28', person: '魏总', platform: '视频号', account: '7号魏帅', operator: '成家琦', fans: 4284, posts: 6, plays: 8034, likes: 157, comments: 16, shares: 167, dm: 0, lead: 0, note: '' },
+  { id: 's29', year: '2026年', month: '6月', week: '6.22-6.28', person: '魏总', platform: '公众号', account: '7号魏帅投研笔记', operator: '姜四', fans: 45996, posts: 5, plays: 8549, likes: 81, comments: 35, shares: 270, dm: 0, lead: 0, note: '' },
+  { id: 's30', year: '2026年', month: '6月', week: '6.22-6.28', person: '魏总', platform: '微博', account: '7号魏帅', operator: '魏总', fans: 52686, posts: 164, plays: 4756000, likes: 7851, comments: 1429, shares: 651, dm: 0, lead: 0, note: '' },
+  { id: 's31', year: '2026年', month: '6月', week: '6.22-6.28', person: '魏总', platform: '雪球', account: '魏帅投研', operator: '魏总', fans: 1164, posts: 30, plays: 641000, likes: 626, comments: 56, shares: 5, dm: 0, lead: 0, note: '' },
+  { id: 's32', year: '2026年', month: '6月', week: '6.22-6.28', person: '魏总', platform: '淘股吧', account: '7号魏帅', operator: '王珏', fans: 9, posts: 8, plays: 900, likes: 1, comments: 0, shares: 0, dm: 0, lead: 0, note: '后台无数据统计手工测算' },
+  { id: 's33', year: '2026年', month: '6月', week: '6.22-6.28', person: '魏总', platform: '东方财富股吧', account: '七号魏帅', operator: '王珏', fans: 8, posts: 22, plays: 969, likes: 6, comments: 3, shares: 1, dm: 0, lead: 0, note: '' },
+  { id: 's34', year: '2026年', month: '6月', week: '6.22-6.28', person: '刘老师', platform: '抖音', account: '老刘说周期', operator: '成家琦', fans: 119, posts: 0, plays: 0, likes: 0, comments: 0, shares: 0, dm: 0, lead: 0, note: '禁言解除暂缓发布' },
+  { id: 's35', year: '2026年', month: '6月', week: '6.22-6.28', person: '刘老师', platform: '抖音', account: '老刘说周期（个人）', operator: '成家琦', fans: 160, posts: 6, plays: 24573, likes: 216, comments: 13, shares: 19, dm: 0, lead: 0, note: '' },
+  { id: 's36', year: '2026年', month: '6月', week: '6.22-6.28', person: '刘老师', platform: '视频号', account: '老刘说周期', operator: '成家琦', fans: 509, posts: 6, plays: 9862, likes: 49, comments: 4, shares: 167, dm: 0, lead: 0, note: '' }
 ];
 
 
@@ -1104,18 +1104,18 @@ const defaultMembers = [
 
 // Default dashboard detail rows（始终只保留最新一周数据）
 const defaultDashboardDetail = [
-  { person: '魏总', personId: 'wei', platform: '抖音', accountName: '7号魏帅', operator: '成家琦', week: '6W4', fans: 678, plays: 431, likes: 19, comments: 1, shares: 0, posts: 5, likeRate: '4.41%' },
-  { person: '魏总', personId: 'wei', platform: '抖音', accountName: '梵天咨询（蓝V）', operator: '成家琦', week: '6W4', fans: 19, plays: 42, likes: 2, comments: 0, shares: 1, posts: 2, likeRate: '4.76%' },
-  { person: '魏总', personId: 'wei', platform: '抖音', accountName: '魏帅情报局', operator: '姜四', week: '6W4', fans: 2769, plays: 248713, likes: 2484, comments: 84, shares: 815, posts: 11, likeRate: '1.00%' },
-  { person: '魏总', personId: 'wei', platform: '视频号', accountName: '7号魏帅', operator: '成家琦', week: '6W4', fans: 4284, plays: 8034, likes: 157, comments: 16, shares: 167, posts: 6, likeRate: '1.95%' },
-  { person: '魏总', personId: 'wei', platform: '公众号', accountName: '7号魏帅投研笔记', operator: '姜四', week: '6W4', fans: 45996, plays: 8549, likes: 81, comments: 35, shares: 270, posts: 5, likeRate: '0.95%' },
-  { person: '魏总', personId: 'wei', platform: '微博', accountName: '7号魏帅', operator: '魏总', week: '6W4', fans: 52686, plays: 4756000, likes: 7851, comments: 1429, shares: 651, posts: 164, likeRate: '0.17%' },
-  { person: '魏总', personId: 'wei', platform: '雪球', accountName: '魏帅投研', operator: '魏总', week: '6W4', fans: 1164, plays: 641000, likes: 626, comments: 56, shares: 5, posts: 30, likeRate: '0.10%' },
-  { person: '魏总', personId: 'wei', platform: '淘股吧', accountName: '7号魏帅', operator: '王珏', week: '6W4', fans: 9, plays: 900, likes: 1, comments: 0, shares: 0, posts: 8, likeRate: '0.11%' },
-  { person: '魏总', personId: 'wei', platform: '东方财富股吧', accountName: '七号魏帅', operator: '王珏', week: '6W4', fans: 8, plays: 969, likes: 6, comments: 3, shares: 1, posts: 22, likeRate: '0.62%' },
-  { person: '刘老师', personId: 'liu', platform: '抖音', accountName: '老刘说周期', operator: '成家琦', week: '6W4', fans: 119, plays: 0, likes: 0, comments: 0, shares: 0, posts: 0, likeRate: '0.00%' },
-  { person: '刘老师', personId: 'liu', platform: '抖音', accountName: '老刘说周期（个人）', operator: '成家琦', week: '6W4', fans: 160, plays: 24573, likes: 216, comments: 13, shares: 19, posts: 6, likeRate: '0.88%' },
-  { person: '刘老师', personId: 'liu', platform: '视频号', accountName: '老刘说周期', operator: '成家琦', week: '6W4', fans: 509, plays: 9862, likes: 49, comments: 4, shares: 167, posts: 6, likeRate: '0.50%' }
+  { person: '魏总', personId: 'wei', platform: '抖音', accountName: '7号魏帅', operator: '成家琦', week: '6.22-6.28', fans: 678, plays: 431, likes: 19, comments: 1, shares: 0, posts: 5, likeRate: '4.41%' },
+  { person: '魏总', personId: 'wei', platform: '抖音', accountName: '梵天咨询（蓝V）', operator: '成家琦', week: '6.22-6.28', fans: 19, plays: 42, likes: 2, comments: 0, shares: 1, posts: 2, likeRate: '4.76%' },
+  { person: '魏总', personId: 'wei', platform: '抖音', accountName: '魏帅情报局', operator: '姜四', week: '6.22-6.28', fans: 2769, plays: 248713, likes: 2484, comments: 84, shares: 815, posts: 11, likeRate: '1.00%' },
+  { person: '魏总', personId: 'wei', platform: '视频号', accountName: '7号魏帅', operator: '成家琦', week: '6.22-6.28', fans: 4284, plays: 8034, likes: 157, comments: 16, shares: 167, posts: 6, likeRate: '1.95%' },
+  { person: '魏总', personId: 'wei', platform: '公众号', accountName: '7号魏帅投研笔记', operator: '姜四', week: '6.22-6.28', fans: 45996, plays: 8549, likes: 81, comments: 35, shares: 270, posts: 5, likeRate: '0.95%' },
+  { person: '魏总', personId: 'wei', platform: '微博', accountName: '7号魏帅', operator: '魏总', week: '6.22-6.28', fans: 52686, plays: 4756000, likes: 7851, comments: 1429, shares: 651, posts: 164, likeRate: '0.17%' },
+  { person: '魏总', personId: 'wei', platform: '雪球', accountName: '魏帅投研', operator: '魏总', week: '6.22-6.28', fans: 1164, plays: 641000, likes: 626, comments: 56, shares: 5, posts: 30, likeRate: '0.10%' },
+  { person: '魏总', personId: 'wei', platform: '淘股吧', accountName: '7号魏帅', operator: '王珏', week: '6.22-6.28', fans: 9, plays: 900, likes: 1, comments: 0, shares: 0, posts: 8, likeRate: '0.11%' },
+  { person: '魏总', personId: 'wei', platform: '东方财富股吧', accountName: '七号魏帅', operator: '王珏', week: '6.22-6.28', fans: 8, plays: 969, likes: 6, comments: 3, shares: 1, posts: 22, likeRate: '0.62%' },
+  { person: '刘老师', personId: 'liu', platform: '抖音', accountName: '老刘说周期', operator: '成家琦', week: '6.22-6.28', fans: 119, plays: 0, likes: 0, comments: 0, shares: 0, posts: 0, likeRate: '0.00%' },
+  { person: '刘老师', personId: 'liu', platform: '抖音', accountName: '老刘说周期（个人）', operator: '成家琦', week: '6.22-6.28', fans: 160, plays: 24573, likes: 216, comments: 13, shares: 19, posts: 6, likeRate: '0.88%' },
+  { person: '刘老师', personId: 'liu', platform: '视频号', accountName: '老刘说周期', operator: '成家琦', week: '6.22-6.28', fans: 509, plays: 9862, likes: 49, comments: 4, shares: 167, posts: 6, likeRate: '0.50%' }
 ];
 
 
@@ -1245,7 +1245,7 @@ createApp({
       myContentForm: { date: '', platform: '抖音', account: '7号魏帅', type: '短视频', title: '', link: '', plays: '', likes: '', comments: '', shares: '', status: '待发布' },
       historyMonth: today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0'),
       
-      statsForm: { year: '2026年', month: '6月', week: '6W4' },
+      statsForm: { year: '2026年', month: '6月', week: '6.22-6.28' },
       
       // Chart instances
       chartInstances: {},
@@ -1476,11 +1476,17 @@ createApp({
     // 获取 statsEntries 中最新一周的数据
     latestWeekStats() {
       if (this.statsEntries.length === 0) return [];
-      // 按年月周排序，取最新
+      // 按自然周排序：提取起始日期数值比较，如 6.22-6.28 → 6.22
+      const parseWeek = (w) => {
+        const m = (w || '').match(/^(\d+)\.(\d+)/);
+        if (!m) return 0;
+        return parseInt(m[1]) * 100 + parseInt(m[2]); // 6.22 → 622
+      };
       const sorted = [...this.statsEntries].sort((a, b) => {
-        const ka = a.year + a.month + a.week;
-        const kb = b.year + b.month + b.week;
-        return kb.localeCompare(ka); // 降序
+        const ma = parseInt(a.month) || 0;
+        const mb = parseInt(b.month) || 0;
+        if (ma !== mb) return mb - ma; // 月降序
+        return parseWeek(b.week) - parseWeek(a.week); // 周降序
       });
       const latestKey = sorted[0].year + '|' + sorted[0].month + '|' + sorted[0].week;
       return sorted.filter(s => (s.year + '|' + s.month + '|' + s.week) === latestKey);
@@ -1490,14 +1496,23 @@ createApp({
     latestWeekLabel() {
       const latest = this.latestWeekStats;
       if (latest.length === 0) return '';
-      return latest[0].month + ' ' + latest[0].week;
+      return latest[0].month + '（' + latest[0].week + '）';
     },
     weekOptions() {
-      // 根据选中的月份动态生成周标签，如 6月 → ['6W1','6W2','6W3','6W4','6W5']
+      // 自然周列表，格式如 6.8-6.14
+      const naturalWeeks = [
+        '6.1-6.7', '6.8-6.14', '6.15-6.21', '6.22-6.28', '6.29-7.5',
+        '7.6-7.12', '7.13-7.19', '7.20-7.26', '7.27-8.2',
+        '8.3-8.9', '8.10-8.16', '8.17-8.23', '8.24-8.30', '8.31-9.6',
+        '9.7-9.13', '9.14-9.20', '9.21-9.27', '9.28-10.4',
+        '10.5-10.11', '10.12-10.18', '10.19-10.25', '10.26-11.1',
+        '11.2-11.8', '11.9-11.15', '11.16-11.22', '11.23-11.29', '11.30-12.6',
+        '12.7-12.13', '12.14-12.20', '12.21-12.27', '12.28-1.3'
+      ];
       const m = (this.statsForm.month || '').replace('月', '');
       const num = parseInt(m);
-      if (!num) return ['6W1','6W2','6W3','6W4','6W5'];
-      return ['W1','W2','W3','W4','W5'].map(w => num + w);
+      if (!num) return naturalWeeks;
+      return naturalWeeks.filter(w => w.startsWith(num + '.'));
     },
     
     filteredContents() {
@@ -1591,34 +1606,19 @@ createApp({
     formatNum(n) { if (!n && n !== 0) return '0'; return n >= 10000 ? (n/10000).toFixed(1)+'万' : n.toLocaleString(); },
     
     updateWeekDate() {
-      // 动态计算日期范围：基于年月周自动推算
-      const monthNum = parseInt(this.statsForm.month);
+      // 自然周格式：直接使用选择的周范围字符串（如 6.22-6.28）
       const weekStr = this.statsForm.week || '';
-      const weekMatch = weekStr.match(/W(\d+)$/) || weekStr.match(/(\d+)$/);
-      const weekNum = weekMatch ? parseInt(weekMatch[1]) : 1;
-      const yearNum = parseInt(this.statsYear);
-      if (isNaN(monthNum) || isNaN(yearNum)) {
-        this.weekDateRange = '';
-        return;
+      const rangeMatch = weekStr.match(/(\d+)\.(\d+)-(\d+)\.(\d+)/);
+      if (rangeMatch) {
+        const yearNum = parseInt(this.statsYear);
+        const m1 = parseInt(rangeMatch[1]), d1 = parseInt(rangeMatch[2]);
+        const m2 = parseInt(rangeMatch[3]), d2 = parseInt(rangeMatch[4]);
+        if (!isNaN(yearNum) && !isNaN(m1) && !isNaN(d1) && !isNaN(m2) && !isNaN(d2)) {
+          this.weekDateRange = yearNum + '.' + m1 + '.' + d1 + ' - ' + yearNum + '.' + m2 + '.' + d2;
+          return;
+        }
       }
-      // 计算该月第N周的周一日期
-      // 先找该月1号是周几，然后算第N周的周一
-      const firstDay = new Date(yearNum, monthNum - 1, 1);
-      const firstDayOfWeek = firstDay.getDay(); // 0=周日
-      // 第1周的周一：如果1号不是周一，第1周从1号开始
-      // 我们定义：每月第1周从1号开始，第N周从 (N-1)*7+1 号开始
-      const weekStartDay = (weekNum - 1) * 7 + 1;
-      const startDate = new Date(yearNum, monthNum - 1, weekStartDay);
-      // 周末 = 开始+6天
-      const endDate = new Date(startDate);
-      endDate.setDate(startDate.getDate() + 6);
-      // 如果结束日期超出当月，截断到月末
-      const lastDayOfMonth = new Date(yearNum, monthNum, 0).getDate();
-      if (endDate.getDate() > lastDayOfMonth && endDate.getMonth() === monthNum - 1) {
-        endDate.setDate(lastDayOfMonth);
-      }
-      const fd = d => d.getFullYear() + '.' + (d.getMonth() + 1) + '.' + d.getDate();
-      this.weekDateRange = fd(startDate) + ' - ' + fd(endDate);
+      this.weekDateRange = weekStr || '';
     },
     
     exportPDF() {
@@ -1798,23 +1798,21 @@ createApp({
           save('customers', this.customerList);
         }
         if (stats && stats.length) {
-          // 仅当云端 stats 全部使用新格式（如 6W4）时才覆盖本地，避免旧格式污染
-          const isNewFormat = stats.every(s => s.week && /^\d+W\d+$/.test(s.week));
-          if (isNewFormat) {
+          // 仅当云端 stats 使用自然周格式（如 6.8-6.14）时才覆盖本地
+          const isNaturalWeek = stats.every(s => s.week && /^\d+\.\d+-\d+\.\d+/.test(s.week));
+          if (isNaturalWeek) {
             this.statsEntries = stats.map(s => ({
               id: s.id, year: s.year || '2026年', month: s.month, week: s.week, platform: s.platform,
               account: s.account, personId: s.person_id, person: s.person,
               fans: s.fans, posts: s.posts, plays: s.plays, likes: s.likes,
-              comments: s.comments, shares: s.shares, note: s.note
+              comments: s.comments, shares: s.shares, dm: s.dm || 0, lead: s.lead || 0, note: s.note
             }));
             save('statsEntries', this.statsEntries);
           }
         }
         if (dashboard && dashboard.length) {
-          // 云端 dashboard 可能包含多周历史数据，用 stats 中最新的有效周重建
-          const monthNum = m => { const n = (m||'').match(/(\d+)/); return n ? parseInt(n[1]) : 0; };
-          const weekNum = w => { const m2 = (w||'').match(/^(\d+)W(\d+)$/); if (m2) return parseInt(m2[2]); const n = (w||'').match(/第(\d+)周/); return n ? parseInt(n[1]) : 0; };
-          // 按 month+week 分组
+          // 云端 dashboard 可能包含多周历史数据，用 stats 中最新周重建
+          const parseWeek = (w) => { const m = (w||'').match(/^(\d+)\.(\d+)/); return m ? parseInt(m[1])*100+parseInt(m[2]) : 0; };
           const groups = {};
           this.statsEntries.filter(s => s.month && s.week).forEach(s => {
             const k = s.month + '|' + s.week;
@@ -1824,9 +1822,9 @@ createApp({
           });
           // 按时间倒序，取第一个有播放量的最新周
           const sortedGroups = Object.values(groups).sort((a,b) => {
-            const ma = monthNum(a.month), mb = monthNum(b.month);
+            const ma = parseInt(a.month) || 0, mb = parseInt(b.month) || 0;
             if (ma !== mb) return mb - ma;
-            return weekNum(b.week) - weekNum(a.week);
+            return parseWeek(b.week) - parseWeek(a.week);
           });
           const best = sortedGroups.find(g => g.plays > 0);
           if (best && best.items.length > 0) {
@@ -1904,9 +1902,10 @@ createApp({
     },
     
     renderAdminCharts() {
-      // 从 statsEntries 动态提取所有周的汇总数据
-      const weeks = [...new Set(this.statsEntries.map(e => e.week).filter(Boolean))].sort();
-      const weekLabels = weeks.length > 0 ? weeks : ['6W2','6W3','6W4'];
+      // 从 statsEntries 动态提取所有周的汇总数据，按自然周日期排序
+      const parseWeek = (w) => { const m = (w||'').match(/^(\d+)\.(\d+)/); return m ? parseInt(m[1])*100+parseInt(m[2]) : 0; };
+      const weeks = [...new Set(this.statsEntries.map(e => e.week).filter(Boolean))].sort((a,b) => parseWeek(a)-parseWeek(b));
+      const weekLabels = weeks.length > 0 ? weeks : ['6.8-6.14','6.15-6.21','6.22-6.28'];
       
       // 按周和人物汇总播放量和发布数
       const getPersonWeekData = (person, field) => {
