@@ -948,35 +948,52 @@ textarea { resize:vertical; min-height:60px; }
     </div>
   </div>
 
-  <!-- 数据表格 -->
+  <!-- 数据表格（严格按Excel表头顺序） -->
   <div class="card">
     <div class="card-header"><h3>📋 {{ statsYear }} {{ statsForm.month }} {{ statsForm.week }} 数据明细</h3><span style="font-size:12px;color:var(--text-secondary)">所有字段可直接编辑</span></div>
-    <div class="card-body no-padding"><div class="table-wrap">
-      <table>
+    <div class="card-body no-padding"><div class="table-wrap" style="overflow-x:auto">
+      <table style="min-width:1400px">
         <thead><tr>
-          <th>博主</th><th>平台</th><th>账号名称</th><th>管理人</th>
-          <th>粉丝数</th><th>发布数</th><th>播放量</th><th>点赞</th><th>评论</th><th>转发</th><th>备注</th><th>操作</th>
+          <th style="width:40px">序号</th>
+          <th style="width:70px">主理人</th>
+          <th style="width:130px">帐号</th>
+          <th style="width:80px">运营平台</th>
+          <th style="width:70px">运营人</th>
+          <th style="width:70px">粉丝数据</th>
+          <th style="width:70px">发布作品数</th>
+          <th style="width:90px">播放/浏览量</th>
+          <th style="width:70px">点赞数</th>
+          <th style="width:60px">评论数</th>
+          <th style="width:60px">转发数</th>
+          <th style="width:60px">私信</th>
+          <th style="width:60px">留资</th>
+          <th style="width:140px">数据异常备注</th>
+          <th style="width:40px">操作</th>
         </tr></thead>
         <tbody>
-          <tr v-if="currentWeekStats.length===0"><td colspan="12" style="text-align:center;padding:20px">该周暂无数据，点击"新增账号行"添加</td></tr>
+          <tr v-if="currentWeekStats.length===0"><td colspan="15" style="text-align:center;padding:20px">该周暂无数据，点击下方"新增账号行"添加</td></tr>
           <tr v-for="(e,i) in currentWeekStats" :key="e.id || i">
-            <td><select v-model="e.person" @change="saveStats" style="font-size:12px;width:80px"><option>魏总</option><option>刘老师</option><option>—</option></select></td>
-            <td><select v-model="e.platform" @change="saveStats" style="font-size:12px;width:90px"><option v-for="p in allPlatforms" :key="p" :value="p">{{ p }}</option></select></td>
+            <td style="text-align:center;color:var(--text-secondary)">{{ i+1 }}</td>
+            <td><select v-model="e.person" @change="saveStats" style="font-size:12px;width:65px"><option>魏总</option><option>刘老师</option></select></td>
             <td><input v-model="e.account" @change="saveStats" style="width:120px;font-size:12px"></td>
-            <td><select v-model="e.operator" @change="saveStats" style="font-size:12px;width:80px"><option v-for="p in allMembers" :key="p.id" :value="p.name">{{ p.name }}</option></select></td>
-            <td><input v-model.number="e.fans" type="number" @change="saveStats" style="width:80px;font-size:12px"></td>
-            <td><input v-model.number="e.posts" type="number" @change="saveStats" style="width:65px;font-size:12px"></td>
-            <td><input v-model.number="e.plays" type="number" @change="saveStats" style="width:90px;font-size:12px"></td>
-            <td><input v-model.number="e.likes" type="number" @change="saveStats" style="width:70px;font-size:12px"></td>
-            <td><input v-model.number="e.comments" type="number" @change="saveStats" style="width:65px;font-size:12px"></td>
-            <td><input v-model.number="e.shares" type="number" @change="saveStats" style="width:65px;font-size:12px"></td>
-            <td><input v-model="e.note" @change="saveStats" style="width:100px;font-size:12px"></td>
-            <td><button class="btn btn-xs btn-outline" style="color:var(--danger)" @click="deleteStatsEntry(e.id)">🗑️</button></td>
+            <td><select v-model="e.platform" @change="saveStats" style="font-size:12px;width:75px"><option v-for="p in allPlatforms" :key="p" :value="p">{{ p }}</option></select></td>
+            <td><select v-model="e.operator" @change="saveStats" style="font-size:12px;width:65px"><option v-for="p in allMembers" :key="p.id" :value="p.name">{{ p.name }}</option></select></td>
+            <td><input v-model.number="e.fans" type="number" @change="saveStats" style="width:70px;font-size:12px"></td>
+            <td><input v-model.number="e.posts" type="number" @change="saveStats" style="width:60px;font-size:12px"></td>
+            <td><input v-model.number="e.plays" type="number" @change="saveStats" style="width:85px;font-size:12px"></td>
+            <td><input v-model.number="e.likes" type="number" @change="saveStats" style="width:65px;font-size:12px"></td>
+            <td><input v-model.number="e.comments" type="number" @change="saveStats" style="width:55px;font-size:12px"></td>
+            <td><input v-model.number="e.shares" type="number" @change="saveStats" style="width:55px;font-size:12px"></td>
+            <td><input v-model.number="e.dm" type="number" @change="saveStats" style="width:55px;font-size:12px"></td>
+            <td><input v-model.number="e.lead" type="number" @change="saveStats" style="width:55px;font-size:12px"></td>
+            <td><input v-model="e.note" @change="saveStats" style="width:130px;font-size:12px" placeholder="异常备注"></td>
+            <td><button class="btn btn-xs btn-outline" style="color:var(--danger);font-size:11px" @click="deleteStatsEntry(e.id)">🗑️</button></td>
           </tr>
           <tr v-if="currentWeekStats.length>0" style="background:#f0f4f8;font-weight:700">
-            <td colspan="4">📊 合计</td>
+            <td colspan="5" style="text-align:center">📊 合计</td>
             <td>{{ statsSummary.fans }}</td><td>{{ statsSummary.posts }}</td><td>{{ statsSummary.plays }}</td>
             <td>{{ statsSummary.likes }}</td><td>{{ statsSummary.comments }}</td><td>{{ statsSummary.shares }}</td>
+            <td>{{ statsSummary.dm }}</td><td>{{ statsSummary.lead }}</td>
             <td colspan="2"></td>
           </tr>
         </tbody>
@@ -996,42 +1013,42 @@ textarea { resize:vertical; min-height:60px; }
 const { createApp } = Vue;
 
 const defaultStatsEntries = [
-  { id: 's01', year: '2026年', month: '6月', week: '6W2', person: '魏总', platform: '抖音', account: '7号魏帅', operator: '成家琦', fans: 625, posts: 0, plays: 0, likes: 0, comments: 0, shares: 0, note: '减少推荐到6.28' },
-  { id: 's02', year: '2026年', month: '6月', week: '6W2', person: '魏总', platform: '抖音', account: '梵天咨询（蓝V）', operator: '成家琦', fans: 4, posts: 7, plays: 1390, likes: 26, comments: 0, shares: 0, note: '' },
-  { id: 's03', year: '2026年', month: '6月', week: '6W2', person: '魏总', platform: '抖音', account: '魏帅情报局', operator: '姜四', fans: 40, posts: 4, plays: 30560, likes: 215, comments: 13, shares: 29, note: '新号' },
-  { id: 's04', year: '2026年', month: '6月', week: '6W2', person: '魏总', platform: '视频号', account: '7号魏帅', operator: '成家琦', fans: 4116, posts: 6, plays: 10275, likes: 247, comments: 24, shares: 376, note: '' },
-  { id: 's05', year: '2026年', month: '6月', week: '6W2', person: '魏总', platform: '公众号', account: '7号魏帅', operator: '姜四', fans: 45530, posts: 3, plays: 4336, likes: 181, comments: 119, shares: 33, note: '周三恢复' },
-  { id: 's06', year: '2026年', month: '6月', week: '6W2', person: '魏总', platform: '微博', account: '7号魏帅', operator: '魏总', fans: 51472, posts: 106, plays: 3110000, likes: 4016, comments: 1048, shares: 364, note: '浏览量单位为万取整' },
-  { id: 's07', year: '2026年', month: '6月', week: '6W2', person: '魏总', platform: '雪球', account: '魏帅投研', operator: '魏总', fans: 982, posts: 30, plays: 503000, likes: 313, comments: 144, shares: 6, note: '浏览量单位为万取整' },
-  { id: 's08', year: '2026年', month: '6月', week: '6W2', person: '魏总', platform: '淘股吧', account: '7号魏帅', operator: '王珏', fans: 0, posts: 6, plays: 631, likes: 1, comments: 6, shares: 0, note: '新号-后台无数据统计手工测算' },
-  { id: 's09', year: '2026年', month: '6月', week: '6W2', person: '魏总', platform: '东方财富股吧', account: '七号魏帅', operator: '王珏', fans: 0, posts: 4, plays: 124, likes: 0, comments: 0, shares: 0, note: '新号' },
-  { id: 's10', year: '2026年', month: '6月', week: '6W2', person: '刘老师', platform: '抖音', account: '老刘说周期', operator: '成家琦', fans: 118, posts: 0, plays: 0, likes: 0, comments: 0, shares: 0, note: '禁言到6.21' },
-  { id: 's11', year: '2026年', month: '6月', week: '6W2', person: '刘老师', platform: '抖音', account: '老刘说周期（个人）', operator: '成家琦', fans: 111, posts: 6, plays: 17404, likes: 140, comments: 12, shares: 9, note: '' },
-  { id: 's12', year: '2026年', month: '6月', week: '6W2', person: '刘老师', platform: '视频号', account: '老刘说周期', operator: '成家琦', fans: 443, posts: 5, plays: 6431, likes: 63, comments: 8, shares: 111, note: '' },
-  { id: 's13', year: '2026年', month: '6月', week: '6W3', person: '魏总', platform: '抖音', account: '7号魏帅', operator: '成家琦', fans: 673, posts: 0, plays: 0, likes: 0, comments: 0, shares: 0, note: '减少推荐到6.28' },
-  { id: 's14', year: '2026年', month: '6月', week: '6W3', person: '魏总', platform: '抖音', account: '梵天咨询（蓝V）', operator: '成家琦', fans: 16, posts: 4, plays: 1528, likes: 23, comments: 2, shares: 0, note: '' },
-  { id: 's15', year: '2026年', month: '6月', week: '6W3', person: '魏总', platform: '抖音', account: '魏帅情报局', operator: '姜四', fans: 2135, posts: 5, plays: 764835, likes: 8613, comments: 648, shares: 2360, note: '其中6.18单条67.23w播放量' },
-  { id: 's16', year: '2026年', month: '6月', week: '6W3', person: '魏总', platform: '视频号', account: '7号魏帅', operator: '成家琦', fans: 4224, posts: 5, plays: 8321, likes: 207, comments: 21, shares: 186, note: '' },
-  { id: 's17', year: '2026年', month: '6月', week: '6W3', person: '魏总', platform: '公众号', account: '7号魏帅投研笔记', operator: '姜四', fans: 45882, posts: 4, plays: 8192, likes: 353, comments: 71, shares: 351, note: '' },
-  { id: 's18', year: '2026年', month: '6月', week: '6W3', person: '魏总', platform: '微博', account: '7号魏帅', operator: '魏总', fans: 52046, posts: 146, plays: 4693000, likes: 6687, comments: 1695, shares: 695, note: '' },
-  { id: 's19', year: '2026年', month: '6月', week: '6W3', person: '魏总', platform: '雪球', account: '魏帅投研', operator: '魏总', fans: 1096, posts: 30, plays: 644000, likes: 566, comments: 74, shares: 6, note: '' },
-  { id: 's20', year: '2026年', month: '6月', week: '6W3', person: '魏总', platform: '淘股吧', account: '7号魏帅', operator: '王珏', fans: 10, posts: 13, plays: 1702, likes: 2, comments: 1, shares: 0, note: '后台无数据统计手工测算' },
-  { id: 's21', year: '2026年', month: '6月', week: '6W3', person: '魏总', platform: '东方财富股吧', account: '七号魏帅', operator: '王珏', fans: 6, posts: 15, plays: 717, likes: 0, comments: 2, shares: 0, note: '' },
-  { id: 's22', year: '2026年', month: '6月', week: '6W3', person: '刘老师', platform: '抖音', account: '老刘说周期', operator: '成家琦', fans: 118, posts: 0, plays: 0, likes: 0, comments: 0, shares: 0, note: '禁言到6.21' },
-  { id: 's23', year: '2026年', month: '6月', week: '6W3', person: '刘老师', platform: '抖音', account: '老刘说周期（个人）', operator: '成家琦', fans: 114, posts: 4, plays: 4747, likes: 57, comments: 9, shares: 5, note: '' },
-  { id: 's24', year: '2026年', month: '6月', week: '6W3', person: '刘老师', platform: '视频号', account: '老刘说周期', operator: '成家琦', fans: 468, posts: 4, plays: 5662, likes: 43, comments: 0, shares: 112, note: '' },
-  { id: 's25', year: '2026年', month: '6月', week: '6W4', person: '魏总', platform: '抖音', account: '7号魏帅', operator: '成家琦', fans: 678, posts: 5, plays: 431, likes: 19, comments: 1, shares: 0, note: '' },
-  { id: 's26', year: '2026年', month: '6月', week: '6W4', person: '魏总', platform: '抖音', account: '梵天咨询（蓝V）', operator: '成家琦', fans: 19, posts: 2, plays: 42, likes: 2, comments: 0, shares: 1, note: '' },
-  { id: 's27', year: '2026年', month: '6月', week: '6W4', person: '魏总', platform: '抖音', account: '魏帅情报局', operator: '姜四', fans: 2769, posts: 11, plays: 248713, likes: 2484, comments: 84, shares: 815, note: '' },
-  { id: 's28', year: '2026年', month: '6月', week: '6W4', person: '魏总', platform: '视频号', account: '7号魏帅', operator: '成家琦', fans: 4284, posts: 6, plays: 8034, likes: 157, comments: 16, shares: 167, note: '' },
-  { id: 's29', year: '2026年', month: '6月', week: '6W4', person: '魏总', platform: '公众号', account: '7号魏帅投研笔记', operator: '姜四', fans: 45996, posts: 5, plays: 8549, likes: 81, comments: 35, shares: 270, note: '' },
-  { id: 's30', year: '2026年', month: '6月', week: '6W4', person: '魏总', platform: '微博', account: '7号魏帅', operator: '魏总', fans: 52686, posts: 164, plays: 4756000, likes: 7851, comments: 1429, shares: 651, note: '' },
-  { id: 's31', year: '2026年', month: '6月', week: '6W4', person: '魏总', platform: '雪球', account: '魏帅投研', operator: '魏总', fans: 1164, posts: 30, plays: 641000, likes: 626, comments: 56, shares: 5, note: '' },
-  { id: 's32', year: '2026年', month: '6月', week: '6W4', person: '魏总', platform: '淘股吧', account: '7号魏帅', operator: '王珏', fans: 9, posts: 8, plays: 900, likes: 1, comments: 0, shares: 0, note: '后台无数据统计手工测算' },
-  { id: 's33', year: '2026年', month: '6月', week: '6W4', person: '魏总', platform: '东方财富股吧', account: '七号魏帅', operator: '王珏', fans: 8, posts: 22, plays: 969, likes: 6, comments: 3, shares: 1, note: '' },
-  { id: 's34', year: '2026年', month: '6月', week: '6W4', person: '刘老师', platform: '抖音', account: '老刘说周期', operator: '成家琦', fans: 119, posts: 0, plays: 0, likes: 0, comments: 0, shares: 0, note: '禁言解除暂缓发布' },
-  { id: 's35', year: '2026年', month: '6月', week: '6W4', person: '刘老师', platform: '抖音', account: '老刘说周期（个人）', operator: '成家琦', fans: 160, posts: 6, plays: 24573, likes: 216, comments: 13, shares: 19, note: '' },
-  { id: 's36', year: '2026年', month: '6月', week: '6W4', person: '刘老师', platform: '视频号', account: '老刘说周期', operator: '成家琦', fans: 509, posts: 6, plays: 9862, likes: 49, comments: 4, shares: 167, note: '' }
+  { id: 's01', year: '2026年', month: '6月', week: '6W2', person: '魏总', platform: '抖音', account: '7号魏帅', operator: '成家琦', fans: 625, posts: 0, plays: 0, likes: 0, comments: 0, shares: 0, dm: 0, lead: 0, note: '减少推荐到6.28' },
+  { id: 's02', year: '2026年', month: '6月', week: '6W2', person: '魏总', platform: '抖音', account: '梵天咨询（蓝V）', operator: '成家琦', fans: 4, posts: 7, plays: 1390, likes: 26, comments: 0, shares: 0, dm: 0, lead: 0, note: '' },
+  { id: 's03', year: '2026年', month: '6月', week: '6W2', person: '魏总', platform: '抖音', account: '魏帅情报局', operator: '姜四', fans: 40, posts: 4, plays: 30560, likes: 215, comments: 13, shares: 29, dm: 0, lead: 0, note: '新号' },
+  { id: 's04', year: '2026年', month: '6月', week: '6W2', person: '魏总', platform: '视频号', account: '7号魏帅', operator: '成家琦', fans: 4116, posts: 6, plays: 10275, likes: 247, comments: 24, shares: 376, dm: 0, lead: 0, note: '' },
+  { id: 's05', year: '2026年', month: '6月', week: '6W2', person: '魏总', platform: '公众号', account: '7号魏帅', operator: '姜四', fans: 45530, posts: 3, plays: 4336, likes: 181, comments: 119, shares: 33, dm: 0, lead: 0, note: '周三恢复' },
+  { id: 's06', year: '2026年', month: '6月', week: '6W2', person: '魏总', platform: '微博', account: '7号魏帅', operator: '魏总', fans: 51472, posts: 106, plays: 3110000, likes: 4016, comments: 1048, shares: 364, dm: 0, lead: 0, note: '浏览量单位为万取整' },
+  { id: 's07', year: '2026年', month: '6月', week: '6W2', person: '魏总', platform: '雪球', account: '魏帅投研', operator: '魏总', fans: 982, posts: 30, plays: 503000, likes: 313, comments: 144, shares: 6, dm: 0, lead: 0, note: '浏览量单位为万取整' },
+  { id: 's08', year: '2026年', month: '6月', week: '6W2', person: '魏总', platform: '淘股吧', account: '7号魏帅', operator: '王珏', fans: 0, posts: 6, plays: 631, likes: 1, comments: 6, shares: 0, dm: 0, lead: 0, note: '新号-后台无数据统计手工测算' },
+  { id: 's09', year: '2026年', month: '6月', week: '6W2', person: '魏总', platform: '东方财富股吧', account: '七号魏帅', operator: '王珏', fans: 0, posts: 4, plays: 124, likes: 0, comments: 0, shares: 0, dm: 0, lead: 0, note: '新号' },
+  { id: 's10', year: '2026年', month: '6月', week: '6W2', person: '刘老师', platform: '抖音', account: '老刘说周期', operator: '成家琦', fans: 118, posts: 0, plays: 0, likes: 0, comments: 0, shares: 0, dm: 0, lead: 0, note: '禁言到6.21' },
+  { id: 's11', year: '2026年', month: '6月', week: '6W2', person: '刘老师', platform: '抖音', account: '老刘说周期（个人）', operator: '成家琦', fans: 111, posts: 6, plays: 17404, likes: 140, comments: 12, shares: 9, dm: 0, lead: 0, note: '' },
+  { id: 's12', year: '2026年', month: '6月', week: '6W2', person: '刘老师', platform: '视频号', account: '老刘说周期', operator: '成家琦', fans: 443, posts: 5, plays: 6431, likes: 63, comments: 8, shares: 111, dm: 0, lead: 0, note: '' },
+  { id: 's13', year: '2026年', month: '6月', week: '6W3', person: '魏总', platform: '抖音', account: '7号魏帅', operator: '成家琦', fans: 673, posts: 0, plays: 0, likes: 0, comments: 0, shares: 0, dm: 0, lead: 0, note: '减少推荐到6.28' },
+  { id: 's14', year: '2026年', month: '6月', week: '6W3', person: '魏总', platform: '抖音', account: '梵天咨询（蓝V）', operator: '成家琦', fans: 16, posts: 4, plays: 1528, likes: 23, comments: 2, shares: 0, dm: 0, lead: 0, note: '' },
+  { id: 's15', year: '2026年', month: '6月', week: '6W3', person: '魏总', platform: '抖音', account: '魏帅情报局', operator: '姜四', fans: 2135, posts: 5, plays: 764835, likes: 8613, comments: 648, shares: 2360, dm: 0, lead: 0, note: '其中6.18单条67.23w播放量' },
+  { id: 's16', year: '2026年', month: '6月', week: '6W3', person: '魏总', platform: '视频号', account: '7号魏帅', operator: '成家琦', fans: 4224, posts: 5, plays: 8321, likes: 207, comments: 21, shares: 186, dm: 0, lead: 0, note: '' },
+  { id: 's17', year: '2026年', month: '6月', week: '6W3', person: '魏总', platform: '公众号', account: '7号魏帅投研笔记', operator: '姜四', fans: 45882, posts: 4, plays: 8192, likes: 353, comments: 71, shares: 351, dm: 0, lead: 0, note: '' },
+  { id: 's18', year: '2026年', month: '6月', week: '6W3', person: '魏总', platform: '微博', account: '7号魏帅', operator: '魏总', fans: 52046, posts: 146, plays: 4693000, likes: 6687, comments: 1695, shares: 695, dm: 0, lead: 0, note: '' },
+  { id: 's19', year: '2026年', month: '6月', week: '6W3', person: '魏总', platform: '雪球', account: '魏帅投研', operator: '魏总', fans: 1096, posts: 30, plays: 644000, likes: 566, comments: 74, shares: 6, dm: 0, lead: 0, note: '' },
+  { id: 's20', year: '2026年', month: '6月', week: '6W3', person: '魏总', platform: '淘股吧', account: '7号魏帅', operator: '王珏', fans: 10, posts: 13, plays: 1702, likes: 2, comments: 1, shares: 0, dm: 0, lead: 0, note: '后台无数据统计手工测算' },
+  { id: 's21', year: '2026年', month: '6月', week: '6W3', person: '魏总', platform: '东方财富股吧', account: '七号魏帅', operator: '王珏', fans: 6, posts: 15, plays: 717, likes: 0, comments: 2, shares: 0, dm: 0, lead: 0, note: '' },
+  { id: 's22', year: '2026年', month: '6月', week: '6W3', person: '刘老师', platform: '抖音', account: '老刘说周期', operator: '成家琦', fans: 118, posts: 0, plays: 0, likes: 0, comments: 0, shares: 0, dm: 0, lead: 0, note: '禁言到6.21' },
+  { id: 's23', year: '2026年', month: '6月', week: '6W3', person: '刘老师', platform: '抖音', account: '老刘说周期（个人）', operator: '成家琦', fans: 114, posts: 4, plays: 4747, likes: 57, comments: 9, shares: 5, dm: 0, lead: 0, note: '' },
+  { id: 's24', year: '2026年', month: '6月', week: '6W3', person: '刘老师', platform: '视频号', account: '老刘说周期', operator: '成家琦', fans: 468, posts: 4, plays: 5662, likes: 43, comments: 0, shares: 112, dm: 0, lead: 0, note: '' },
+  { id: 's25', year: '2026年', month: '6月', week: '6W4', person: '魏总', platform: '抖音', account: '7号魏帅', operator: '成家琦', fans: 678, posts: 5, plays: 431, likes: 19, comments: 1, shares: 0, dm: 0, lead: 0, note: '' },
+  { id: 's26', year: '2026年', month: '6月', week: '6W4', person: '魏总', platform: '抖音', account: '梵天咨询（蓝V）', operator: '成家琦', fans: 19, posts: 2, plays: 42, likes: 2, comments: 0, shares: 1, dm: 0, lead: 0, note: '' },
+  { id: 's27', year: '2026年', month: '6月', week: '6W4', person: '魏总', platform: '抖音', account: '魏帅情报局', operator: '姜四', fans: 2769, posts: 11, plays: 248713, likes: 2484, comments: 84, shares: 815, dm: 0, lead: 0, note: '' },
+  { id: 's28', year: '2026年', month: '6月', week: '6W4', person: '魏总', platform: '视频号', account: '7号魏帅', operator: '成家琦', fans: 4284, posts: 6, plays: 8034, likes: 157, comments: 16, shares: 167, dm: 0, lead: 0, note: '' },
+  { id: 's29', year: '2026年', month: '6月', week: '6W4', person: '魏总', platform: '公众号', account: '7号魏帅投研笔记', operator: '姜四', fans: 45996, posts: 5, plays: 8549, likes: 81, comments: 35, shares: 270, dm: 0, lead: 0, note: '' },
+  { id: 's30', year: '2026年', month: '6月', week: '6W4', person: '魏总', platform: '微博', account: '7号魏帅', operator: '魏总', fans: 52686, posts: 164, plays: 4756000, likes: 7851, comments: 1429, shares: 651, dm: 0, lead: 0, note: '' },
+  { id: 's31', year: '2026年', month: '6月', week: '6W4', person: '魏总', platform: '雪球', account: '魏帅投研', operator: '魏总', fans: 1164, posts: 30, plays: 641000, likes: 626, comments: 56, shares: 5, dm: 0, lead: 0, note: '' },
+  { id: 's32', year: '2026年', month: '6月', week: '6W4', person: '魏总', platform: '淘股吧', account: '7号魏帅', operator: '王珏', fans: 9, posts: 8, plays: 900, likes: 1, comments: 0, shares: 0, dm: 0, lead: 0, note: '后台无数据统计手工测算' },
+  { id: 's33', year: '2026年', month: '6月', week: '6W4', person: '魏总', platform: '东方财富股吧', account: '七号魏帅', operator: '王珏', fans: 8, posts: 22, plays: 969, likes: 6, comments: 3, shares: 1, dm: 0, lead: 0, note: '' },
+  { id: 's34', year: '2026年', month: '6月', week: '6W4', person: '刘老师', platform: '抖音', account: '老刘说周期', operator: '成家琦', fans: 119, posts: 0, plays: 0, likes: 0, comments: 0, shares: 0, dm: 0, lead: 0, note: '禁言解除暂缓发布' },
+  { id: 's35', year: '2026年', month: '6月', week: '6W4', person: '刘老师', platform: '抖音', account: '老刘说周期（个人）', operator: '成家琦', fans: 160, posts: 6, plays: 24573, likes: 216, comments: 13, shares: 19, dm: 0, lead: 0, note: '' },
+  { id: 's36', year: '2026年', month: '6月', week: '6W4', person: '刘老师', platform: '视频号', account: '老刘说周期', operator: '成家琦', fans: 509, posts: 6, plays: 9862, likes: 49, comments: 4, shares: 167, dm: 0, lead: 0, note: '' }
 ];
 
 
@@ -1328,7 +1345,7 @@ createApp({
         list = defaultAccounts.map((a, i) => ({
           id: 'auto' + now + i,
           year: this.statsYear, month: this.statsForm.month, week: this.statsForm.week,
-          ...a, fans: 0, posts: 0, plays: 0, likes: 0, comments: 0, shares: 0, note: ''
+          ...a, fans: 0, posts: 0, plays: 0, likes: 0, comments: 0, shares: 0, dm: 0, lead: 0, note: ''
         }));
         // 异步保存（不阻塞渲染）
         this.$nextTick(() => {
@@ -1353,6 +1370,8 @@ createApp({
         likes: list.reduce((s,e) => s + (parseInt(e.likes)||0), 0),
         comments: list.reduce((s,e) => s + (parseInt(e.comments)||0), 0),
         shares: list.reduce((s,e) => s + (parseInt(e.shares)||0), 0),
+        dm: list.reduce((s,e) => s + (parseInt(e.dm)||0), 0),
+        lead: list.reduce((s,e) => s + (parseInt(e.lead)||0), 0),
       };
     },
     myMonthPlays() { const m = this.todayStr.substring(0,7); const total = this.allContents.filter(c => c.personId === this.currentRole && c.date.startsWith(m)).reduce((s,c) => s + (parseInt(c.plays)||0), 0); return total >= 10000 ? (total/10000).toFixed(1)+'万' : total; },
@@ -2130,7 +2149,7 @@ createApp({
       const d = defaults[this.currentWeekStats.length % defaults.length];
       this.statsEntries.push({
         id, year: this.statsYear, month: this.statsForm.month, week: this.statsForm.week,
-        ...d, fans: 0, posts: 0, plays: 0, likes: 0, comments: 0, shares: 0, note: ''
+        ...d, fans: 0, posts: 0, plays: 0, likes: 0, comments: 0, shares: 0, dm: 0, lead: 0, note: ''
       });
       this.saveStats();
       this.showToast('已添加新行');
