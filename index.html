@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>梵天金融 · 新媒体矩阵运营管理系统 v14.0</title>
+<title>梵天金融 · 新媒体矩阵运营管理系统 v15.0</title>
 <script>
 // 自动清除旧版本 localStorage 数据
 (function(){
-  var v = 'v14.0';
+  var v = 'v15.0';
   if (localStorage.getItem('_v') !== v) {
     for (var i = localStorage.length - 1; i >= 0; i--) {
       var k = localStorage.key(i);
@@ -1002,7 +1002,7 @@ textarea { resize:vertical; min-height:60px; }
   </div>
 </div>
 </main>
-<div class="footer" v-if="currentTab !== 'bigscreen'">梵天金融 · 新媒体矩阵运营管理系统 v14.0 | 数据存储于浏览器本地 | {{ todayStr }}</div>
+<div class="footer" v-if="currentTab !== 'bigscreen'">梵天金融 · 新媒体矩阵运营管理系统 v15.0 | 数据存储于浏览器本地 | {{ todayStr }}</div>
 
 <!-- Toast -->
 <div v-if="toast.show" :class="['toast','toast-'+toast.type]">{{ toast.msg }}</div>
@@ -1052,7 +1052,7 @@ const defaultStatsEntries = [
 ];
 
 
-const STORAGE = 'fantan_v16_';
+const STORAGE = 'fantan_v17_';
 const save = (k, v) => { localStorage.setItem(STORAGE + k, JSON.stringify(v)); };
 const load = (k, d) => { const r = localStorage.getItem(STORAGE + k); return r ? JSON.parse(r) : d; };
 
@@ -1350,7 +1350,12 @@ createApp({
         // 异步保存（不阻塞渲染）
         this.$nextTick(() => {
           list.forEach(e => this.statsEntries.push(e));
-          this.saveStats();
+          // 确保魏总在成员列表中
+    if (!this.allMembers.find(m => m.id === 'wei')) {
+      const weiDefault = defaultMembers.find(m => m.id === 'wei');
+      if (weiDefault) this.allMembers.push({...weiDefault});
+    }
+    this.saveStats();
         });
       }
       // 自动将临时账号加入 statsEntries
@@ -1749,6 +1754,11 @@ createApp({
             color: m.color, bgColor: m.bg_color, textColor: m.text_color,
             desc: m.description, accounts: m.accounts
           }));
+          // 确保魏总始终在成员列表中
+          if (!this.allMembers.find(m => m.id === 'wei')) {
+            const weiDefault = defaultMembers.find(m => m.id === 'wei');
+            if (weiDefault) this.allMembers.push({...weiDefault});
+          }
           save('members', this.allMembers);
         }
         if (contents && contents.length) {
@@ -2109,7 +2119,12 @@ createApp({
           }
         }
       });
-      this.saveStats();
+      // 确保魏总在成员列表中
+    if (!this.allMembers.find(m => m.id === 'wei')) {
+      const weiDefault = defaultMembers.find(m => m.id === 'wei');
+      if (weiDefault) this.allMembers.push({...weiDefault});
+    }
+    this.saveStats();
       // 用当前周数据重建 dashboardDetail（始终只保留最新一周）
       this.dashboardDetail = this.currentWeekStats.map(s => {
         const p = parseInt(s.plays) || 0;
@@ -2150,7 +2165,12 @@ createApp({
         id, year: this.statsYear, month: this.statsForm.month, week: this.statsForm.week,
         ...d, fans: 0, posts: 0, plays: 0, likes: 0, comments: 0, shares: 0, dm: 0, lead: 0, note: ''
       });
-      this.saveStats();
+      // 确保魏总在成员列表中
+    if (!this.allMembers.find(m => m.id === 'wei')) {
+      const weiDefault = defaultMembers.find(m => m.id === 'wei');
+      if (weiDefault) this.allMembers.push({...weiDefault});
+    }
+    this.saveStats();
       this.showToast('已添加新行');
     },
     
@@ -2375,6 +2395,11 @@ createApp({
   mounted() {
     // 暴露 Vue 实例到全局用于调试和外部访问
     window.__vueApp = this;
+    // 确保魏总在成员列表中
+    if (!this.allMembers.find(m => m.id === 'wei')) {
+      const weiDefault = defaultMembers.find(m => m.id === 'wei');
+      if (weiDefault) this.allMembers.push({...weiDefault});
+    }
     this.saveStats();
     this.$nextTick(() => {
       this.renderCharts();
