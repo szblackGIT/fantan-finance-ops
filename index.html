@@ -321,10 +321,16 @@ textarea { resize:vertical; min-height:60px; }
     </div>
   </div>
 
-  <!-- Row 3: 周度播放量趋势 -->
-  <div class="card" style="margin-bottom:16px">
-    <div class="card-header"><h3>📈 周度播放量趋势（魏总 vs 刘老师）</h3><span style="font-size:12px;color:var(--text-secondary)">单位：万次</span></div>
-    <div class="card-body"><div class="chart-container"><canvas id="chartPlaysTrend"></canvas></div></div>
+  <!-- Row 3: 周度播放量趋势 - 分开两人 -->
+  <div class="grid grid-2" style="margin-bottom:16px">
+    <div class="card">
+      <div class="card-header"><h3>📈 魏总 · 周度播放量趋势</h3><span style="font-size:12px;color:var(--text-secondary)">单位：万次</span></div>
+      <div class="card-body"><div class="chart-container"><canvas id="chartWeiPlays"></canvas></div></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><h3>📈 刘老师 · 周度播放量趋势</h3><span style="font-size:12px;color:var(--text-secondary)">单位：次</span></div>
+      <div class="card-body"><div class="chart-container"><canvas id="chartLiuPlays"></canvas></div></div>
+    </div>
   </div>
 
   <!-- Row 4: 平台分布 -->
@@ -339,7 +345,7 @@ textarea { resize:vertical; min-height:60px; }
     </div>
   </div>
 
-  <!-- Row 5: 互动产出 -->
+  <!-- Row 5: 点赞率 + 发布数趋势分开两人 -->
   <div class="grid grid-2" style="margin-bottom:16px">
     <div class="card">
       <div class="card-header"><h3>📊 各平台点赞率对比</h3></div>
@@ -349,12 +355,6 @@ textarea { resize:vertical; min-height:60px; }
       <div class="card-header"><h3>📊 周度发布作品数趋势</h3></div>
       <div class="card-body"><div class="chart-container"><canvas id="chartPostsTrend"></canvas></div></div>
     </div>
-  </div>
-
-  <!-- Row 6: 月度数据对比图 -->
-  <div class="card" style="margin-bottom:16px">
-    <div class="card-header"><h3>📅 月度数据对比（播放量 + 发布数）</h3></div>
-    <div class="card-body"><div class="chart-container"><canvas id="chartMonthlyCompare" style="max-height:320px"></canvas></div></div>
   </div>
 
   <!-- Row 7: 重点平台拆解 -->
@@ -1960,9 +1960,9 @@ createApp({
     // Charts
     renderCharts() {
       this.destroyCharts();
-      if (this.isAdmin && this.currentTab === 'dashboard') { this.renderAdminCharts(); this.renderMonthlyCompareChart(); }
+      if (this.isAdmin && this.currentTab === 'dashboard') { this.renderAdminCharts(); }
       if (!this.isAdmin && this.currentTab === 'dashboard') this.renderMyChart();
-      if (this.currentTab === 'bigscreen') { this.renderAdminCharts(); this.renderMonthlyCompareChart(); }
+      if (this.currentTab === 'bigscreen') { this.renderAdminCharts(); }
     },
     
     destroyCharts() {
@@ -1971,281 +1971,121 @@ createApp({
     },
     
     renderAdminCharts() {
-      const weekLabels = ["3W1","3W2","3W3","3W4","4W1","4W2","4W3","4W4","5W1","6W1","6W2","6W3","6W4"];
-      const weiData = [2.1, 2.5, 5.1, 240.0, 165.3, 125.2, 185.6, 0, 291.9, 398.3, 366.0, 612.2, 0];
-      const liuData = [0, 0, 0.3, 1.7, 1.11, 2.36, 0.92, 0, 1.41, 1.57, 2.38, 1.04, 0];
+      const weekLabels = ['W2','W3','W4'];
       
-      // Chart 1: Plays trend
-      const c1 = document.getElementById('chartPlaysTrend');
+      // Chart 1: 魏总播放量趋势
+      const c1 = document.getElementById('chartWeiPlays');
       if (c1) {
-        this.chartInstances.playsTrend = new Chart(c1, {
+        const weiData = [366.0, 612.2, 566.5]; // 万次
+        this.chartInstances.weiPlays = new Chart(c1, {
           type: 'line',
           data: {
             labels: weekLabels,
-            datasets: [
-              { label: '魏总', data: weiData, borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.1)', tension: 0.3, fill: true },
-              { label: '刘老师', data: liuData, borderColor: '#f97316', backgroundColor: 'rgba(249,115,22,0.1)', tension: 0.3, fill: true },
-            ]
+            datasets: [{ label: '魏总', data: weiData, borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.1)', tension: 0.3, fill: true }]
+          },
+          options: {
+            responsive: true, plugins: { legend: { display: false } },
+            scales: { y: { title: { display: true, text: '万次' } } },
+            animation: { onComplete: function() { const ctx=this.ctx; ctx.fillStyle='#3b82f6'; ctx.font='bold 11px sans-serif'; ctx.textAlign='center'; this.data.datasets[0].data.forEach(function(v,j){ const pt=this.getDatasetMeta(0).data[j]; ctx.fillText(v,pt.x,pt.y-8); },this); } }
+          }
+        });
+      }
+      
+      // Chart 2: 刘老师播放量趋势
+      const c2 = document.getElementById('chartLiuPlays');
+      if (c2) {
+        const liuData = [23835, 10409, 34435]; // 次
+        this.chartInstances.liuPlays = new Chart(c2, {
+          type: 'line',
+          data: {
+            labels: weekLabels,
+            datasets: [{ label: '刘老师', data: liuData, borderColor: '#f97316', backgroundColor: 'rgba(249,115,22,0.1)', tension: 0.3, fill: true }]
+          },
+          options: {
+            responsive: true, plugins: { legend: { display: false } },
+            scales: { y: { title: { display: true, text: '次' } } },
+            animation: { onComplete: function() { const ctx=this.ctx; ctx.fillStyle='#f97316'; ctx.font='bold 11px sans-serif'; ctx.textAlign='center'; this.data.datasets[0].data.forEach(function(v,j){ const pt=this.getDatasetMeta(0).data[j]; ctx.fillText(v,pt.x,pt.y-8); },this); } }
+          }
+        });
+      }
+      
+      // Chart 3: 播放量占比 doughnut（显示百分比）
+      const c3 = document.getElementById('chartPlatformShare');
+      if (c3) {
+        this.chartInstances.platformShare = new Chart(c3, {
+          type: 'doughnut',
+          data: {
+            labels: ['微博','雪球','抖音','视频号','公众号','淘股吧','东方财富'],
+            datasets: [{ data: [83.5, 11.2, 4.8, 0.3, 0.2, 0.0, 0.0], backgroundColor: ['#e53e3e','#8b5cf6','#3b82f6','#22c55e','#eab308','#f97316','#06b6d4'] }]
           },
           options: {
             responsive: true,
-            plugins: { legend: { position: 'top' } },
-            scales: { y: { title: { display: true, text: '万次' } } },
-            animation: {
-              onComplete: function() {
-                const ctx = this.ctx;
-                this.data.datasets.forEach(function(ds, i) {
-                  ctx.fillStyle = ds.borderColor;
-                  ctx.font = 'bold 11px sans-serif';
-                  ctx.textAlign = 'center';
-                  ds.data.forEach(function(v, j) {
-                    if (v === 0) return;
-                    const meta = this.getDatasetMeta(i);
-                    const pt = meta.data[j];
-                    ctx.fillText(v, pt.x, pt.y - 8);
-                  }, this);
-                }, this);
-              }
+            plugins: {
+              legend: { position: 'right' },
+              tooltip: { callbacks: { label: function(ctx) { return ctx.label + ': ' + ctx.raw + '%'; } } }
             }
           }
         });
       }
       
-      // Chart 2: Platform share (播放量占比 - doughnut)
-      const c2 = document.getElementById('chartPlatformShare');
-      if (c2) {
-        this.chartInstances.platformShare = new Chart(c2, {
-          type: 'doughnut',
-          data: {
-            labels: ['微博', '抖音', '雪球', '视频号', '公众号', '淘股吧', '东方财富'],
-            datasets: [{ data: [4.8, 0.3, 83.5, 0.2, 11.2, 0.0, 0.0], backgroundColor: ['#e53e3e','#3b82f6','#8b5cf6','#22c55e','#eab308','#f97316','#06b6d4'] }]
-          },
-          options: { responsive: true, plugins: { legend: { position: 'right' } } }
-        });
-      }
-      
-      // Chart 3: Platform fans (各平台粉丝量对比 - bar)
-      const c3 = document.getElementById('chartPlatformFans');
-      if (c3) {
-        this.chartInstances.platformFans = new Chart(c3, {
+      // Chart 4: 平台粉丝量对比
+      const c4 = document.getElementById('chartPlatformFans');
+      if (c4) {
+        this.chartInstances.platformFans = new Chart(c4, {
           type: 'bar',
           data: {
             labels: ['抖音', '视频号', '微博', '公众号', '雪球', '淘股吧', '东方财富'],
             datasets: [
-              { label: '魏总', data: [3466, 4284, 52686, 45996, 1164, 9, 0], backgroundColor: '#3b82f6' },
-              { label: '刘老师', data: [279, 509, 0, 0, 0, 0, 0], backgroundColor: '#f97316' },
+              { label: '魏总', data: [3466, 4284, 52686, 45996, 1164, 9, 8], backgroundColor: '#3b82f6' },
+              { label: '刘老师', data: [279, 509, 0, 0, 0, 0, 0], backgroundColor: '#f97316' }
             ]
           },
           options: {
             responsive: true, indexAxis: 'y',
             plugins: { legend: { position: 'top' } },
-            animation: {
-              onComplete: function() {
-                const ctx = this.ctx;
-                ctx.font = 'bold 10px sans-serif';
-                this.data.datasets.forEach(function(ds, i) {
-                  ctx.fillStyle = ds.backgroundColor;
-                  ctx.textAlign = 'left';
-                  ds.data.forEach(function(v, j) {
-                    if (v === 0) return;
-                    const meta = this.getDatasetMeta(i);
-                    const pt = meta.data[j];
-                    ctx.fillText(v, pt.x + 4, pt.y + 4);
-                  }, this);
-                }, this);
-              }
-            }
+            animation: { onComplete: function() { const ctx=this.ctx; ctx.font='bold 10px sans-serif'; this.data.datasets.forEach(function(ds,i){ ctx.fillStyle=ds.backgroundColor; ctx.textAlign='left'; ds.data.forEach(function(v,j){ if(v===0)return; const pt=this.getDatasetMeta(i).data[j]; ctx.fillText(v,pt.x+4,pt.y+4); },this); },this); } }
           }
         });
       }
       
-      // Chart 4: Like rate
-      const c4 = document.getElementById('chartLikeRate');
-      if (c4) {
-        this.chartInstances.likeRate = new Chart(c4, {
+      // Chart 5: 点赞率
+      const c5 = document.getElementById('chartLikeRate');
+      if (c5) {
+        this.chartInstances.likeRate = new Chart(c5, {
           type: 'bar',
           data: {
             labels: ['抖音', '视频号', '微博', '公众号', '雪球', '淘股吧', '东方财富'],
-            datasets: [{ label: '点赞率', data: [0.99, 1.15, 0.17, 0.95, 0.1, 0.11, 0.00], backgroundColor: '#3182ce' }]
+            datasets: [{ label: '点赞率', data: [0.99, 1.15, 0.17, 0.95, 0.10, 0.11, 0.62], backgroundColor: '#3182ce' }]
           },
           options: {
-            responsive: true,
-            plugins: { legend: { display: false } },
+            responsive: true, plugins: { legend: { display: false } },
             scales: { y: { title: { display: true, text: '%' } } },
-            animation: {
-              onComplete: function() {
-                const ctx = this.ctx;
-                ctx.font = 'bold 10px sans-serif';
-                ctx.fillStyle = '#3182ce';
-                ctx.textAlign = 'center';
-                this.data.datasets[0].data.forEach(function(v, j) {
-                  const meta = this.getDatasetMeta(0);
-                  const pt = meta.data[j];
-                  ctx.fillText(v + '%', pt.x, pt.y - 6);
-                }, this);
-              }
-            }
+            animation: { onComplete: function() { const ctx=this.ctx; ctx.font='bold 10px sans-serif'; ctx.fillStyle='#3182ce'; ctx.textAlign='center'; this.data.datasets[0].data.forEach(function(v,j){ const pt=this.getDatasetMeta(0).data[j]; ctx.fillText(v+'%',pt.x,pt.y-6); },this); } }
           }
         });
       }
       
-      // Chart 5: Posts trend
-      const c5 = document.getElementById('chartPostsTrend');
-      if (c5) {
-        const weiPosts = [0,0,0,153,128,153,138,0,142,146,145,188,0];
-        const liuPosts = [0,0,4,13,13,22,9,0,14,9,10,10,0];
-        this.chartInstances.postsTrend = new Chart(c5, {
+      // Chart 6: 周度发布数趋势 - 两人分开
+      const c6 = document.getElementById('chartPostsTrend');
+      if (c6) {
+        this.chartInstances.postsTrend = new Chart(c6, {
           type: 'bar',
           data: {
             labels: weekLabels,
             datasets: [
-              { label: '魏总', data: weiPosts, backgroundColor: '#3b82f6' },
-              { label: '刘老师', data: liuPosts, backgroundColor: '#f97316' },
+              { label: '魏总', data: [166, 222, 253], backgroundColor: '#3b82f6' },
+              { label: '刘老师', data: [11, 8, 12], backgroundColor: '#f97316' }
             ]
           },
           options: {
-            responsive: true,
-            plugins: { legend: { position: 'top' } },
+            responsive: true, plugins: { legend: { position: 'top' } },
             scales: { y: { title: { display: true, text: '条' } } },
-            animation: {
-              onComplete: function() {
-                const ctx = this.ctx;
-                ctx.font = 'bold 9px sans-serif';
-                ctx.textAlign = 'center';
-                this.data.datasets.forEach(function(ds, i) {
-                  ctx.fillStyle = ds.backgroundColor;
-                  ds.data.forEach(function(v, j) {
-                    if (v === 0) return;
-                    const meta = this.getDatasetMeta(i);
-                    const pt = meta.data[j];
-                    ctx.fillText(v, pt.x, pt.y - 6);
-                  }, this);
-                }, this);
-              }
-            }
+            animation: { onComplete: function() { const ctx=this.ctx; ctx.font='bold 9px sans-serif'; ctx.textAlign='center'; this.data.datasets.forEach(function(ds,i){ ctx.fillStyle=ds.backgroundColor; ds.data.forEach(function(v,j){ if(v===0)return; const pt=this.getDatasetMeta(i).data[j]; ctx.fillText(v,pt.x,pt.y-6); },this); },this); } }
           }
         });
       }
     },
     
-    
-    renderBigScreenCharts() {
-      // Month trend
-      const c1 = document.getElementById('chartBigMonth');
-      if (c1) {
-        const months = ['3月','4月','5月','6月'];
-        this.chartInstances.bigMonth = new Chart(c1, {
-          type: 'bar',
-          data: {
-            labels: months,
-            datasets: [
-              { label: '魏总播放量(万)', data: [240, 165, 292, 612], backgroundColor: '#60a5fa' },
-              { label: '刘老师播放量(万)', data: [1.7, 1.1, 1.4, 1.0], backgroundColor: '#f472b6' },
-            ]
-          },
-          options: {
-            responsive: true,
-            plugins: { legend: { labels: { color: '#e2e8f0' } } },
-            scales: { x: { ticks: { color: '#94a3b8' } }, y: { ticks: { color: '#94a3b8' } } }
-          }
-        });
-      }
-      // Person output
-      const c2 = document.getElementById('chartBigPerson');
-      if (c2) {
-        const persons = ['钟晓华','姜四','成家琦','王珏'];
-        const now = new Date(); const m = now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
-        const counts = persons.map((p,i) => {
-          const pid = ['zhong','jiang','cheng','wang'][i];
-          return this.allContents.filter(c => c.personId === pid && c.date.startsWith(m)).length;
-        });
-        this.chartInstances.bigPerson = new Chart(c2, {
-          type: 'bar',
-          data: {
-            labels: persons,
-            datasets: [{ label: '本月产出(条)', data: counts, backgroundColor: ['#fbbf24','#ef4444','#3b82f6','#8b5cf6'] }]
-          },
-          options: {
-            responsive: true,
-            plugins: { legend: { labels: { color: '#e2e8f0' } } },
-            scales: { x: { ticks: { color: '#94a3b8' } }, y: { ticks: { color: '#94a3b8' } } }
-          }
-        });
-      }
-      // Platform share
-      const c3 = document.getElementById('chartBigPlatform');
-      if (c3) {
-        this.chartInstances.bigPlatform = new Chart(c3, {
-          type: 'doughnut',
-          data: {
-            labels: ['微博','抖音','雪球','公众号','视频号'],
-            datasets: [{ data: [80.1, 5.5, 12.8, 0.4, 0.9], backgroundColor: ['#60a5fa','#f472b6','#34d399','#fbbf24','#a78bfa'] }]
-          },
-          options: { responsive: true, plugins: { legend: { position: 'right', labels: { color: '#e2e8f0' } } } }
-        });
-      }
-      // Community
-      const c4 = document.getElementById('chartBigCommunity');
-      if (c4) {
-        this.chartInstances.bigCommunity = new Chart(c4, {
-          type: 'bar',
-          data: {
-            labels: this.communityData.map(g => g.name),
-            datasets: [{ label: '成员数', data: this.communityData.map(g => g.members), backgroundColor: ['#60a5fa','#f472b6','#34d399','#fbbf24','#a78bfa','#fb923c'] }]
-          },
-          options: {
-            indexAxis: 'y',
-            responsive: true,
-            plugins: { 
-              legend: { labels: { color: '#e2e8f0' } },
-              tooltip: { callbacks: { label: ctx => ctx.raw + ' 人' } }
-            },
-            scales: { x: { ticks: { color: '#94a3b8' } }, y: { ticks: { color: '#94a3b8' } } },
-            animation: {
-              onComplete: function() {
-                const ctx = this.ctx;
-                ctx.font = 'bold 12px sans-serif';
-                ctx.fillStyle = '#e2e8f0';
-                ctx.textAlign = 'left';
-                this.data.datasets[0].data.forEach(function(v, j) {
-                  const meta = this.getDatasetMeta(0);
-                  const pt = meta.data[j];
-                  ctx.fillText(v + '人', pt.x + 4, pt.y + 4);
-                }, this);
-              }
-            }
-          }
-        });
-      }
-    },
-    
-    renderMonthlyCompareChart() {
-      const c6 = document.getElementById('chartMonthlyCompare');
-      if (c6) {
-        const months = ['1月','2月','3月','4月','5月','6月'];
-        this.chartInstances.monthlyCompare = new Chart(c6, {
-          type: 'line',
-          data: {
-            labels: months,
-            datasets: [
-              { label: '总播放量(万)', data: [0, 0, 242, 167, 294, 613], borderColor: '#3182ce', backgroundColor: 'rgba(49,130,206,0.1)', tension: 0.3, fill: true, yAxisID: 'y', pointRadius: 5, pointBackgroundColor: '#3182ce' },
-              { label: '总发布数(条)', data: [0, 0, 157, 141, 156, 198], borderColor: '#38a169', backgroundColor: 'rgba(56,161,105,0.1)', tension: 0.3, fill: true, yAxisID: 'y1', pointRadius: 5, pointBackgroundColor: '#38a169' },
-            ]
-          },
-          options: {
-            responsive: true,
-            plugins: {
-              legend: { position: 'top' },
-              tooltip: { callbacks: { label: function(ctx) { return ctx.dataset.label + ': ' + ctx.raw; } } }
-            },
-            scales: {
-              y: { type: 'linear', position: 'left', title: { display: true, text: '播放量(万)' }, beginAtZero: true },
-              y1: { type: 'linear', position: 'right', title: { display: true, text: '发布数(条)' }, grid: { drawOnChartArea: false }, beginAtZero: true },
-            }
-          }
-        });
-      }
-    },
     
     renderMyChart() {
       const c = document.getElementById('chartMyMonth');
