@@ -1082,6 +1082,7 @@ const defaultMembers = [
   { id: 'jiang', name: '姜四', icon: '🔴', role: 'operator', color: '#ef4444', bgColor: '#FEE2E2', textColor: '#991b1b', desc: '内容输出 · 公众号 · 排行榜 · 素材库', accounts: '公众号@7号魏帅投研笔记, 抖音@魏帅情报局' },
   { id: 'cheng', name: '成家琦', icon: '🔵', role: 'operator', color: '#3b82f6', bgColor: '#DBEAFE', textColor: '#1e40af', desc: '视频拍摄 · 剪辑 · 内容输出 · 沙龙', accounts: '抖音(5账号), 视频号(3账号)' },
   { id: 'wang', name: '王珏', icon: '🟣', role: 'operator', color: '#8b5cf6', bgColor: '#E0E7FF', textColor: '#3730a3', desc: '账号运营 · 社群运营 · 客服 · 数据统计', accounts: '微博@老刘说周期, 淘股吧, 东方财富' },
+  { id: 'wei', name: '魏总', icon: '🔷', role: 'boss', color: '#2563eb', bgColor: '#DBEAFE', textColor: '#1e40af', desc: '微博 · 雪球 · 内容输出 · 直播', accounts: '微博@7号魏帅, 雪球@魏帅投研' },
 ];
 
 // Default dashboard detail rows（始终只保留最新一周数据）
@@ -1233,7 +1234,7 @@ createApp({
       chartInstances: {},
       
       // Constants
-      allPlatforms: ['抖音', '视频号', '微博', '雪球', '淘股吧', '东方财富', '公众号', '小红书', '小鹅通圈子', '微信群'],
+      allPlatforms: ['抖音', '视频号', '微博', '雪球', '淘股吧', '东方财富', '公众号', '小红书', '小鹅通圈子'],
       allAccounts: ['7号魏帅', '老刘说周期', '梵天咨询(蓝V)', '魏帅情报局', '7号小助理', '小助理是我呀', '7号魏帅滴小助理', '魏帅投研', '七号魏帅', '7号魏帅投研笔记', '老刘说周期(个人)', '7号魏帅(小黑屋)', '梵天金融小鹅通'],
       contentTypes: ['短视频', '图文', '长文', '海报', '直播', '沙龙演讲', '复盘视频', '金句视频', '排行榜', '资讯转发', '客户互动', '其他'],
       
@@ -1257,7 +1258,8 @@ createApp({
       yearOptions: ['2025年','2026年','2027年'],
       statsYear: '2026年',
       weekDateRange: '',
-      weekOptions: ['6W1', '6W2', '6W3', '6W4', '6W5'],
+      // weekOptions 现在是 computed 属性，根据当前月份动态生成
+
       
       // communityGroups 现在是 computed，从 communityData 动态生成
       
@@ -1282,7 +1284,6 @@ createApp({
         '公众号': ['7号魏帅投研笔记'],
         '小红书': ['7号魏帅(小黑屋)', '老刘说周期'],
         '小鹅通圈子': ['梵天金融小鹅通'],
-        '微信群': ['16个微信群'],
       },
     };
   },
@@ -1472,6 +1473,13 @@ createApp({
       if (latest.length === 0) return '';
       return latest[0].month + ' ' + latest[0].week;
     },
+    weekOptions() {
+      // 根据选中的月份动态生成周标签，如 6月 → ['6W1','6W2','6W3','6W4','6W5']
+      const m = (this.statsForm.month || '').replace('月', '');
+      const num = parseInt(m);
+      if (!num) return ['6W1','6W2','6W3','6W4','6W5'];
+      return ['W1','W2','W3','W4','W5'].map(w => num + w);
+    },
     
     filteredContents() {
       let list = [...this.allContents];
@@ -1566,9 +1574,11 @@ createApp({
     updateWeekDate() {
       // 动态计算日期范围：基于年月周自动推算
       const monthNum = parseInt(this.statsForm.month);
-      const weekNum = parseInt(this.statsForm.week);
+      const weekStr = this.statsForm.week || '';
+      const weekMatch = weekStr.match(/W(\d+)$/) || weekStr.match(/(\d+)$/);
+      const weekNum = weekMatch ? parseInt(weekMatch[1]) : 1;
       const yearNum = parseInt(this.statsYear);
-      if (isNaN(monthNum) || isNaN(weekNum) || isNaN(yearNum)) {
+      if (isNaN(monthNum) || isNaN(yearNum)) {
         this.weekDateRange = '';
         return;
       }
@@ -2345,7 +2355,8 @@ createApp({
   },
   
   mounted() {
-    // 每次打开都显示登录页，不自动恢复
+    // 暴露 Vue 实例到全局用于调试和外部访问
+    window.__vueApp = this;
     this.saveStats();
     this.$nextTick(() => {
       this.renderCharts();
@@ -2367,5 +2378,5 @@ createApp({
 </script>
 </body>
 <!-- build: 202607060300 -->
-<!-- v12.0: 完全按Excel重建数据大屏 -->
+<!-- v14.0: 数据大屏重新设计，6W格式，动态绑定 -->
 </html>
